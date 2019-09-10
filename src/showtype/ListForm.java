@@ -35,12 +35,13 @@ public class ListForm extends CustomForm {
     private MenuDao menuDao;
     private FormDao formDao;
     private FormFiledDao filedDao;
-   // private String publish; //   1 pc,2 mobile
+    // private String publish; //   1 pc,2 mobile
     private String isShow;  //  不为空,可以修改,   1   替换页面,   2 上下页面
     private int group;   // 判断是否有分组
 
 
-    public String one,two,three,four;
+    public String one, two, three, four;
+
     @Override
     public HtmlBodyElement<?> createViews() {
         Div div = new Div();
@@ -48,6 +49,7 @@ public class ListForm extends CustomForm {
         make(div);
         return div;
     }
+
     //数据模型初始化
     protected void initDao(SQLHelper pSQLHelper) {
         if (sReplacer == null) {
@@ -57,23 +59,23 @@ public class ListForm extends CustomForm {
                 }
             }
         }
-        menuDao=new MenuDao(pSQLHelper);
+        menuDao = new MenuDao(pSQLHelper);
         formDao = new FormDao(pSQLHelper);
         filedDao = new FormFiledDao(pSQLHelper);
     }
+
     @Override
     protected void loadData(String sql) {
-        Menus=menuDao.getMenu(getCompanyId(),getFormName());
+        Menus = menuDao.getMenu(getCompanyId(), getFormName());
 
-        if (Menus!=null){
+        if (Menus != null) {
             isShow = Menus.getIsShow();
         }
         //查询是否有分组
         group = 0;  //默认没有分组
-        List<Map<String,Object>> filedList=filedDao.getFormFeildList(getCompanyId(),formName);
-        for (Map<String, Object> filed : filedList)
-        {
-            if ((String) filed.get("filedGroup")!= null || "".equals(filed.get("filedGroup"))){
+        List<Map<String, Object>> filedList = filedDao.getFormFeildList(getCompanyId(), formName);
+        for (Map<String, Object> filed : filedList) {
+            if ((String) filed.get("filedGroup") != null || "".equals(filed.get("filedGroup"))) {
                 group = 1;
             }
         }
@@ -106,26 +108,27 @@ public class ListForm extends CustomForm {
 
     /**
      * 后台没有分组
+     *
      * @param div
      */
-    public void showBack(Div div){
+    public void showBack(Div div) {
         List<View> views = getViews();
-        Table table=div.table().addCssClass("layui-table");
-        THead thead=table.thead();
-        TableRow rowTh=new TableRow();  //表头
+        Table table = div.table().addCssClass("layui-table");
+        THead thead = table.thead();
+        TableRow rowTh = new TableRow();  //表头
         for (View view : views) {
             rowTh.td(view.getTitle());
         }
-        if (isShow!=null){
+        if (isShow != null) {
             rowTh.td("操作");
         }
         thead.tr(rowTh);
-        TBody tBody=table.tbody();
+        TBody tBody = table.tbody();
         for (Map<String, Object> line : mDatas) {
             String html = getHtmlTemplate();
             List<String> list = new ArrayList<String>();
-            TableRow row=new TableRow();
-            System.out.println("Id === "+line.get("id"));
+            TableRow row = new TableRow();
+            System.out.println("Id === " + line.get("id"));
             System.out.println(mDatas.toString());
             for (View view : views) {
                 html = makeViews(list, view, line, html);
@@ -136,8 +139,8 @@ public class ListForm extends CustomForm {
             for (String v : list) {
                 row.td(v);
             }
-            if (isShow!=null){
-                Span span=row.td().span();
+            if (isShow != null) {
+                Span span = row.td().span();
 
             }
             tBody.tr(row);
@@ -147,9 +150,10 @@ public class ListForm extends CustomForm {
 
     /**
      * 前端没有分组
+     *
      * @param div
      */
-    public void list(Div div){
+    public void list(Div div) {
         if (mDatas != null) {
             List<View> views = getViews();
             for (Map<String, Object> line : mDatas) {
@@ -162,16 +166,16 @@ public class ListForm extends CustomForm {
 //            if (transferParams != null) {
 //                line.put("transferParams", transferParams.replace("{serviceid}", serviceid));
 //            }
-                String onclick = getPage().getDataProvider().getOnClick(this, null,line);
+                String onclick = getPage().getDataProvider().getOnClick(this, null, line);
                 if (onclick != null) {
                     item.onClick(onclick);
                 }
 
-                System.out.println("state:"+line.get("state"));
+                System.out.println("state:" + line.get("state"));
                 int state = (Integer) line.get("state");
 
-                if(state==-666){
-                    item.style("display","none");
+                if (state == -666) {
+                    item.style("display", "none");
                 }
                 for (View view : views) {
                     html = makeViews(list, view, line, html);
@@ -201,7 +205,6 @@ public class ListForm extends CustomForm {
                     tmpList.add(filed);
                     resultMap.put(filed.getFiledGroup(), tmpList);
                 }
-
             }
 
         } catch (Exception e) {
@@ -211,6 +214,8 @@ public class ListForm extends CustomForm {
         return resultMap;
 
     }
+    public static void main(String[] args) {
 
 
+    }
 }
