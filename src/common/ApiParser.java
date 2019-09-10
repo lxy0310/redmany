@@ -36,7 +36,7 @@ public class ApiParser {
     public static String getShopCarUrl(int userId, String search) {
         return CommonUtils.GetUrl3 + "language="+CommonUtils.language+"&Company_Id=" + Page.COMPANYID + "&userid=" + userId + "&formName=shoppingCart" +
                 "&updateType=all&startRowNo=&rowCount=&interactiveLatitude=23.137658&interactiveLongitude=113.351191&interactiveAreaId=";
-
+//fasf
     }
 
     /**
