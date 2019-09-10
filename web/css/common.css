@@ -1,0 +1,1457 @@
+button{
+    border: transparent;
+    outline: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+}
+#main {
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+    padding-bottom: 100px;
+   /* background-color: #007aff;*/
+   /* background-image: url("../images/500349597.jpg");
+    background-repeat: no-repeat;*/
+    position: relative;
+}
+#loc-city {
+    float: left;
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    color: #fff;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    font-size: 1em;
+    padding-left: 10px;
+    margin-bottom: 0;
+}
+
+
+.footer-item{
+    width: 30px;
+    height: 28px;
+    margin: 4px 0 6px 0;
+}
+/*首页 智能在线问诊等广告图*/
+.Medical_Function-item{
+    display: inline-block;
+    width: 33%;
+    padding: 10px 0;
+}
+/*推荐名医*/
+#Medical_MainMenu{
+    margin-bottom: 50px;
+}
+.Medical_MainMenu-item{
+    border-bottom: 1px solid #f0f0f0;
+    padding: 10px 3%;
+}
+.Medical_MainMenu-item:last-child{
+    border-bottom:none;
+}
+#Medical_selectTopBar{
+    width: 100%;
+    height: 52px;
+    line-height: 52px;
+}
+#Medical_select_tz,#Medical_select_his{
+    width: 100%;
+    height: 42px;
+    line-height: 30px;
+    padding: 6px;
+    color: #888;
+}
+.Medical_select_tzMenu-item,.Medical_officeList-item{
+    font-size: 0px;
+}
+#Medical_Function,#Medical_NearTopBar,#Medical_VisitTop,#Medical_UsefulExpressionsTopBar,#Medical_Mywallet{
+    font-size: 0px;
+}
+#Medical_Headline{
+    position: relative;
+    margin: 6px 0;
+}
+/*附近医馆等标题*/
+#Medical_Title2,#Medical_Title3,#Medical_Title1{
+    width: 100%;
+    padding: 2%;
+}
+#Medical_ygList{
+    width: 100%;
+    font-size: 0;
+}
+.Medical_ygList-item{
+    display: inline-block;
+    width: 50%;
+    font-size: 14px;
+    padding: 1% 3%;
+}
+#Medical_mygoods,#Medical_mykeep{
+    width: 100%;
+}
+/*我的银行卡*/
+#Ant_BankCard_topbar{
+    width: 100%;
+    height: 46px;!important;
+    line-height: 46px;
+    background: #555;!important;
+}
+
+.Ant_BankCard_list-item {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 10px;
+    margin: 20px 20px;
+    background: #f1f1f1;
+    color: #444;
+    line-height: 30px;
+    box-shadow: 5px 5px 5px #ddd;
+    border: 1px solid #ddd;
+}
+#Ant_hyCard{
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+#Ant_hyCard #icon{
+    width: 86px;
+    position: absolute;
+    left: 15%;
+    top: 90px;
+}
+#Ant_hyCard #name{
+    position: absolute;
+    left: 42%;
+    top: 112px;
+    font-size: 17px;
+}
+#Ant_hyCard #userLevel{
+    position: absolute;
+    left: 42%;
+    top: 135px;
+    font-size: 17px;
+}
+#Ant_hyCard #qrcode{
+    position: absolute;
+    left: 18%;
+    top: 224px;
+    width: 236px;
+}
+#Ant_hyCard #backImg{
+    background-color: #5E4;
+    height: 467px;
+    witdh: 100px;
+    margin-top: 38px;
+    border-radius: 40px;
+}
+.shop-table tr{
+    display: flex;
+}
+#number {
+    text-align: right;
+}
+/*附近医馆*/
+.Medical_More_YG-item {
+    position: relative;
+    width: 100%;
+    height: 110px;
+    padding: 6px 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.Medical_More_YG-item:after,.news-content:after{
+    display: block;
+    content: '.';
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+/*用户中心*/
+#simpleIDInfo_09{
+    width: 100%;
+    height: 166px;
+    background-color: #0060bb;
+    position: relative;
+    padding: 50px 10px 10px;
+    color: #fff;
+    font-size: 0px;
+}
+.homePage-item{
+    width: 100%;
+    border-bottom: 1px solid #F0F0F0;
+    position:relative;
+}
+.homePage-item #name {
+     margin-bottom: 0;
+}
+/*智能导诊*/
+.guide-wrapper{
+    font-size: 0;
+    width: 100%;
+    height: 46px;
+    line-height: 46px;
+}
+.top-title{
+    width: 100%;
+    height: 52px;
+    line-height: 52px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+/*按科室*/
+#Medical_HospitalGuide_office{
+    width: 100%;
+    font-size: 0;
+}
+.Medical_HospitalGuide_office-item {
+    display: inline-block;
+    width: 25%;
+    font-size: 14px;
+    text-align: center;
+    padding: 6px 0;
+}
+/*推荐名医*/
+.Medical_getDoctorData-item {
+    position: relative;
+    width: 100%;
+    padding: 8px 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+/*医生管理*/
+.Medical_DoctorManager-item {
+    width: 100%;
+    height: 56px;
+    line-height: 56px;
+    padding: 0 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+/*出诊管理*/
+.Medical_VisitList-item{
+    position: relative;
+    font-size: 0px;
+    padding-top: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+/*我的评价*/
+.Medical_hospital_praise-item {
+    width: 100%;
+    padding: 2% 4%;
+    border-bottom: 1px solid #f0f0f0;
+}
+/*我的常用语*/
+.Medical_UsefulExpressionsList-item {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 4%;
+    border-bottom: 1px solid #f0f0f0;
+}
+.Medical_UsefulExpressionsList-item:after{
+    display: block;
+    content: '.';
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+.Medical_MyPrescription_list-item {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 4%;
+}
+.Medical_MyPrescription_list-item:after,.Medical_consultPage-item:after,.Medical_MainMenu-item:after,#Medical_HospitalMessage:after,.Medical_hospital_main-item:after,.Medical_hospital_doctor-item:after{
+    display: block;
+    content: '.';
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+.Medical_consultPage-item {
+    width: 100%;
+    padding: 8px 0 8px 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+/*医院详情*/
+#Medical_HospitalMessage{
+    position: relative;
+    font-size: 0px;
+    width: 100%;
+    height: 165px;
+    text-align: center;
+}
+/*医院详情-挂号医生*/
+.Medical_hospital_main-item {
+    position: relative;
+    width: 100%;
+    padding: 8px 0 6px 14px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.Medical_hospital_doctor-item {
+    position: relative;
+    width: 100%;
+    padding: 6px 10px 6px 18px;
+    border-bottom: 1px solid #f0f0f0;
+}
+/*医药商城*/
+#Medical_GoodsPage_adimg{
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+/*.swiper-wrapper img {*/
+    /*width: 100%;*/
+    /*height: 200px;*/
+/*}*/
+
+.Medical_GoodsPage_menu-item{
+    display: inline-block;
+    float: left;
+    text-align: center;
+    width: 25%;
+    overflow: hidden;
+} 
+#Medical_GoodsPage_menu img{
+    width: 60%;
+    margin: 20px 10px 5px;
+}
+
+.edt-ipt{
+    width: 100%;
+    height: 52px;
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+    text-indent: 6px;
+    outline: none;
+}
+
+/*医院简介*/
+#Medical_hospital_details{
+    color: white;
+    border-top: 1px solid transparent;
+    text-align: center;
+    height:165px;
+
+}
+#Medical_introOther>img:last-child{
+    width: 100%;
+    padding: 10px 25px;
+}
+#imgList .imgcls {
+    width: 32%;
+}
+
+#zzImg .imgcls {
+    width: 49%;
+}
+
+/*药方详情*/
+#Medical_Drug_details{
+    padding: 25px;
+}
+.Medical_Drug_list-item{
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/*添加药方*/
+#Medical_MyPrescription_add{
+    padding: 25px;
+}
+#Medical_MyPrescription_add .edit-Name {
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+#Medical_MyPrescription_add .Name-ipt {
+    border: none;
+    border-bottom: 1px solid #888;
+    width: 80%;
+}
+#Medical_MyPrescription_add .edit-drug {
+    margin-right: 25px;
+    font-weight: bold;
+    font-size: 16px;
+}
+#Medical_MyPrescription_add .drug-ipt {
+    border: none;
+    border-bottom: 1px solid #888;
+    width: 80%;
+}
+#Medical_MyPrescription_add .element-txt {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    width: 100%;
+    border: 2px solid #85f2dc;
+    padding: 5px;
+    margin: 5px 0;
+}
+
+/*添加常用语*/
+#Medical_UsefulExpressionsAdd{
+    padding: 25px;
+}
+#Medical_UsefulExpressionsAdd .expressions-txt {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #85f2dc;
+}
+
+/*出诊申请*/
+#Medical_VisitSet {
+    padding: 25px;
+}
+#Medical_VisitSet .hospitalID-sel {
+    padding: 5px;
+}
+#Medical_VisitSet .edit-registrationFee {
+    font-weight: bold;
+}
+
+/*医生资料编辑*/
+#Medical_Edt {
+    padding: 25px;
+}
+#Medical_Edt .speciality1-ipt {
+    width: 100%;
+    padding: 5px 2px;
+}
+#Medical_Edt .speciality2-ipt {
+    width: 100%;
+    padding: 5px 2px;
+}
+#Medical_Edt .speciality3-ipt {
+    width: 100%;
+    padding: 5px 2px;
+}
+#Medical_Edt .backdrop-txt {
+    width: 100%;
+    border: #85f2dc solid 1px;
+    padding: 10px;
+}
+#Medical_Edt .sendword-txt {
+    width: 100%;
+    border: #85f2dc solid 1px;
+    padding: 10px;
+}
+#ShoppingCart-list{
+    margin-bottom: 100px;
+}
+
+
+/*医生认证*/
+#Medical_DoctorApprove {
+    padding: 25px;
+}
+#Medical_DoctorApprove .Name-ipt {
+    border: none;
+    border-bottom: solid 1px #888;
+    margin-left: 10px;
+}
+#Medical_DoctorApprove .professionalNsme-sel {
+    padding: 5px 10px;
+}
+#Medical_DoctorApprove .hospitalID-sel {
+    padding: 5px 10px;
+}
+#Medical_DoctorApprove .intro-txt  {
+    width: 100%;
+    border: #85f2dc solid 1px;
+    padding: 10px;
+}
+
+/*添加银行卡*/
+#Ant_addBandCard{
+    padding: 25px;
+    font-size: 15px;
+}
+#Ant_addBandCard .cardType-sel {
+    padding: 5px 10px;
+    margin-left: 5px;
+}
+#Ant_addBandCard .number-bank,.bank-ipt,.branch-ipt,.phone-ipt {
+    border: none;
+    border-bottom: solid 1px #888;
+    margin-left: 10px;
+}
+
+/*我的就诊人*/
+#Medical_my_patient_list{
+    padding: 25px;
+}
+#Medical_my_patient_list .Medical_my_patient_list-item{
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0
+}
+
+    /*添加就诊人*/
+#Medical_add_my_patient{
+    padding: 25px;
+}
+#Medical_add_my_patient .realName-ipt{
+    border: none;
+    border-bottom: solid 1px #888;
+    width: 80%;
+    margin-left: 10px;
+}
+#Medical_add_my_patient .mobile-ipt{
+    border: none;
+    border-bottom: solid 1px #888;
+    width: 80%;
+    margin-left: 10px;
+}
+#Medical_add_my_patient .gender-sel{
+    margin-left: 10px;
+    padding: 5px 10px;
+}
+/*医生详情*/
+#Medical_dordetail1 {
+    width: 100%;
+    height: 200px;
+    color: white;
+    font-size: 0px;
+}
+#Medical_dordetail3{
+    position: relative;
+}
+#Medical_dordetail25,#Medical_dordetail5{
+    padding: 10px;
+    font-size: 0px;
+}
+#Medical_dordetail23{
+    padding: 10px;
+}
+#Medical_dordetail8{
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    font-size: 0px;
+    width: 100%;
+}
+/*医院管理*/
+.Medical_HospitalManager-item {
+    width: 100%;
+    border-bottom: 1px solid #f0f0f0;
+}
+.Medical_HospitalManager-item:last-child {
+    width: 100%;
+    border-bottom: none;
+}
+
+.form-horizontal {
+    padding:10px 25px;
+}
+/*快报详情*/
+#News_TopBar{
+    height: 60px;
+}
+#News_TopBar #backImg{
+    width: 30px;
+    margin: 15px 0 0 25px;
+}
+#NewsInfo_Content{
+    padding: 25px;
+}
+#NewsInfo_Content #title{
+    margin-bottom: 10px;
+}
+#NewsInfo_Mid{
+    padding: 25px;
+}
+#NewsInfo_Mid #Contents{
+    letter-spacing: 3px;
+}
+#NewsInfo_Title{
+    padding: 0 25px;
+    text-align: right;
+}
+#NewsInfo_Title #praiseCount{
+    display: inline-block;
+}
+#NewsInfo_Title #visitCount{
+    display: inline-block;
+}
+#NewsInfo_Title #icon3{
+    display: none;
+}
+input,select{
+    outline: none;
+}
+/*名医导诊-按人群*/
+#Medical_HospitalGuide_people{
+    position: relative;
+}
+.sex-wapper{
+    font-size: 0px;
+}
+.sex-content {
+    width: 100%;
+}
+.medical-content {
+    display: block;
+    width: 70%;
+    margin: 0 auto;
+}
+.medical-man,.medical-won,.switch-sex,.medical-child {
+    width: 40px;
+    height: 40px;
+}
+.sex-man {
+    display: inline-block;
+    width: 33%;
+    text-align: right;
+    padding-right: 10px;
+}
+.sex-women {
+    display: inline-block;
+    width: 34%;
+    padding-left: 10px;
+    text-align: center;
+}
+.sex-child {
+    display: inline-block;
+    width: 33%;
+    padding-left: 10px;
+}
+.sex-change {
+    position: absolute;
+    right: 30px;
+    top: 50px;
+}
+/*科普*/
+#medical-news{
+    width: 100%;
+    padding-left: 2%;
+}
+.medical-news-icon{
+    display: inline-block;
+}
+.news-content{
+    padding: 10px 2%;
+    border-bottom: 1px solid #f0f0f0;
+}
+.newtitle{
+    display: inline-block;
+    width: 70%;
+    padding: 0px 2% 16px 0px;
+}
+.imglist-1,.imglist-2,.imglist-3{
+    display: flex;
+    display: -webkit-flex;
+}
+.imglist-1{
+    float: right;
+    width: 30%;
+}
+.imglist-1 img{
+    width: 100px;
+    height: 82px;
+}
+.imglist-2 img{
+    width: 48%;
+    height: 82px;
+}
+.imglist-3 img{
+    width: 33%;
+    height: 82px;
+}
+div:first-child
+/*名医咨询*/
+#Medical_DoctorConsult-swiper{
+    padding: 10px 0px 20px 0px;
+}
+#Medical_DoctorConsult{
+    height: 100%;
+    background-color: #EDEDED;
+}
+#doctor-detail{
+    width: 90%;
+    background: #fff;
+    margin: 10px auto;
+    border-radius: 6px;
+}
+#Medical_DoctorConsult-title{
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+#Medical_DoctorConsult-lists{
+    padding: 0px 10px;
+}
+.doctor-wapper{
+    padding: 12px 0px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.headImg img{
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    float: left;
+}
+.basic-info,.hospitalname,.intro{
+    padding-left: 76px;
+}
+
+    /*提现--我的银行卡*/
+#Ant_BankCard_chooseList {
+    padding: 25px;
+}
+.Ant_BankCard_chooseList-item {
+    background: red;
+    color: #fff;
+    padding: 25px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    line-height: 25px;
+}
+
+/*提现--添加银行卡*/
+#Ant_txPage {
+    background: #eee;
+    margin: 25px;
+    line-height: 40px;
+    padding: 50px 25px;
+}
+
+/*商品订单*/
+#Order_main{
+    padding: 10px 0;
+    line-height: 28px;
+}
+#Order_main .Order_main-item {
+    border-bottom: 15px solid #f1f1f1;
+    padding: 6px 0px;
+}
+#Order_details{
+    margin-top: 60px;
+    padding: 0 25px;
+    line-height: 30px;
+}
+
+/*挂号订单*/
+.Medical_RegistrationPage-item {
+    border-bottom: 10px solid #eee;
+    padding-bottom: 80px;
+}
+
+/*抓药订单*/
+.Medical_PrescriptionPage-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 20px 30px;
+}
+
+/*账单*/
+.Medical_mybill-item {
+    padding: 20px 30px;
+    font-size: 16px;
+    border-bottom: 1px solid #ddd;
+}
+
+/*推荐*/
+.Medical_TzPage_histroy-item {
+    padding: 10px 25px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+.Medical_TzPage_histroy-item #name{
+    color: #CD3333;
+}
+/*商城*/
+.Medical_GoodsPage_tz-item:not(:first-child) {
+    display: none;
+}
+#Medical_GoodsPage_hot{
+    padding: 10px 25px;
+}
+.Medical_GoodsPage_hot-item:not(:first-child) {
+    display: none;
+}
+.Medical_GoodsPage_hot-item:first-child{
+    display: inline-block;
+    width: 44%;
+    float: left;
+}
+.Medical_GoodsPage_hot-item:nth-child(2){
+    display: inline-block;
+    width: 44%;
+    float: right;
+}
+
+/*商品详情*/
+#product_describe_free{
+    width: 100%!important;
+    height: auto;
+    position: fixed;
+    bottom: 0;
+    font-size: 0;
+}
+
+/*添加药方*/
+#Medical_DrugAdd{
+    padding: 10px 25px;
+}
+#Medical_DrugAdd #keyword{
+    border: none;
+    border-bottom: 1px solid #888;
+    float: right;
+    width: 80%;
+    text-align: center;
+}
+#Medical_DrugAdd .dosage-ipt {
+    border: none;
+    border-bottom: 1px solid #888;
+    clear: right;
+    float: right;
+    width: 80%;
+}
+
+#Medical_walletPage_main,#Medical_incomePage_main{
+    position: relative;
+    color: #fff;
+}
+.Medical_MoreComment-item{
+    padding: 10px;
+}
+/*商品--更多*/
+#GoodsListPage{
+    width: 100%!important;
+}
+.GoodsListPage-item {
+    padding: 15px 10px;
+    border-bottom: 1px solid #ddd;
+    height: 120px;
+    line-height: 25px;
+}
+
+/*挂号订单详情*/
+#Medical_RegistrationDetails{
+    line-height: 25px;
+    border-top: 1px solid transparent;
+}
+
+/*我的圈子--中医馆*/
+#Medical_mykeephospital .Medical_mykeephospital-item {
+    padding: 20px 15px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+/*医生主页*/
+#Medical_DoctorDetails {
+    padding: 10px 25px;
+}
+
+/*中医支付*/
+#Medical_orderpayPage .headTitle  {
+    font-weight: bold;
+    padding: 10px 20px;
+    color: #000;
+    font-size: 16px;
+}
+#Medical_orderpayPage .doctorName  {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+#Medical_orderpayPage .doctorName .gh-doctor {
+    margin-right: 15px;
+}
+#Medical_orderpayPage .doctorName .price  {
+    float: right;
+    color: red;
+}
+#Medical_orderpayPage .doctorHospital {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+#Medical_orderpayPage .doctorHospital .hospital-title  {
+    margin-right: 15px;
+}
+#Medical_orderpayPage .visitTime  {
+    padding: 10px 20px;
+    border-bottom: 5px #ddd solid;
+}
+#Medical_orderpayPage .visitTime .period-time {
+    margin-right: 15px;
+}
+#Medical_orderpayPage .visitCoupons  {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+#Medical_orderpayPage .visitCoupons .isused {
+    position: absolute;
+    right: 40px;
+    color: red;
+}
+#Medical_orderpayPage .visitCoupons .right-icon {
+    float: right;
+}
+#Medical_orderpayPage .visitTotal   {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+#Medical_orderpayPage .visitTotal .price {
+    float: right;
+    color: red;
+}
+#Medical_orderpayPage .topay{
+    margin: 0 auto;
+    display: block;
+    width: 80%;
+    margin-top: 50px;
+    border: none;
+    background: #ff0000;
+    color: #fff;
+    line-height: 40px;
+}
+/*我的圈子--产品*/
+.Medical_mykeepgoods-item {
+    padding: 10px 15px;
+}
+
+/*咨询订单*/
+.Medical_mygoodsproduct-item{
+    padding: 10px 15px;
+    line-height: 30px;
+    border-bottom: 10px solid #eee;
+}
+
+/*医馆编辑*/
+#Medical_hospital_editPage{
+    padding: 10px 25px;
+}
+#navigation_02 {
+    width: 100%;
+    height: 45px;
+    background-color: #0060bb;
+}
+#Ant_mainMenu{
+    font-size: 0px;
+    padding-top: 8px;
+}
+#Ant_Personal{
+    font-size: 0px;
+    width: 100%;
+    margin: 10px 0px;
+}
+#homePage_free_02{
+    width: 100%;
+    line-height: 46px;
+}
+.mineFunction-item {
+    display: inline-block;
+    width: 24%;
+    text-align: center;
+    font-size: 14px;
+}
+#mineFunction{
+    margin: 20px 0px;
+}
+#homePage{
+    color:#666;
+    margin-bottom: 100px;
+}
+#adImg-swiper .imgcls{
+    width: 100%;
+}
+#likesHeader{
+    width: 100%;
+    padding: 6px;
+}
+#likesThree{
+    font-size: 0px;
+}
+.likesThree-item {
+    display: inline-block;
+    width: 33%;
+    text-align: center;
+}
+#seachImg{
+    width: 100%;
+    position: fixed;
+    z-index: 999;
+    background: white;
+}
+#Classfy{
+    padding: 12px 0px;
+}
+#Classfy:after{
+    display: block;
+    content: ".";
+    visibility: hidden;
+    height: 0;
+    clear: none;
+}
+#Classfy-lItem{
+    position: fixed;
+    text-align: center;
+    background: #252829;
+    color: white;
+    line-height: 9vh;
+}
+.sub-title, .sub-title-img{
+    display: block;
+    padding: 10px 0;
+}
+.menu {
+    padding: 0 25px;
+}
+#Classfy-rItem{
+   padding-left: 30%;
+}
+.sub-item {
+    width: 50%;
+    float: left;
+    text-align: center;
+}
+.sub-item:nth-child(odd){
+    clear: left;
+}
+.sub-item:last-child{
+    margin-bottom: 100px;
+}
+.sub-item img {
+    height: 100px;
+}
+#Ant_Notice{
+    position: relative;
+}
+#Ant_Mywallet{
+    padding: 30px 12px 0px;
+}
+#Ant_rechargePage{
+    padding: 20px 10px;
+}
+#payfee .edit-payfee {
+    display: inline-block;
+    width: 26%;
+}
+#payfee .payfee-ipt {
+    display: inline-block;
+    width: 72%;
+    border: transparent;
+}
+#Ant_integrals_main,#Ant_Count_main{
+    width: 100%;
+    height: 158px;
+    position: relative;
+    background-color: #0060bb;
+    color: #fff;
+}
+#Ant_integrals_list,#Ant_Count_list{
+    padding-left: 12px;
+}
+.Ant_integrals_list-item,.Ant_Count_list-item  {
+    font-size: 0px;
+    border-bottom: 1px solid #f1f1f1;
+}
+.Ant_record-item{
+    border-bottom: 10px solid #eee;
+    padding-bottom: 20px;
+}
+.Ant_record-item:last-child{
+    margin-bottom: 50px;
+}
+.Product_collection-item{
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px #ddd;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+.My_set_listForm-item{
+    border-bottom: 1px solid #eee;
+}
+.housekeepingFour-item {
+    width: 100%;
+    padding: 12px 4% 6px 4%;
+    border-bottom: 1px solid #f1f1f1;
+}
+.delivery_address_manage_list2-item{
+    padding-bottom: 60px;
+    border-bottom: 1px solid #ddd;
+}
+#Event{
+    font-size: 0px;
+}
+.Event-item {
+    display: inline-block;
+    font-size: 14px;
+    overflow: hidden;
+    padding: 10px 20px;
+    margin-top: 12px;
+    line-height: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+#avatarStatic img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: relative;
+    left: 70%;
+}
+#affirmative div{
+    display: inline-block;
+    position: relative;
+    left: 70%;
+}
+#phoneStatic div{
+    display: inline-block;
+    position: relative;
+    left: 70%;
+}
+
+
+#guige{
+    padding: 10px 0;
+    height: 105px;
+}
+.priceParent{
+    display: block;
+    padding-left: 130px;
+    color: #FF3435;
+    padding-bottom: 3px;
+}
+.stockParent{
+    display: block;
+    padding-left: 130px;
+    padding-bottom: 10px;
+}
+.cspecParent{
+    display: block;
+    padding-left: 130px;
+}
+.btn0{
+    background-color: red;
+    outline: none;
+    border: transparent;
+    color: #fff;
+    border-radius: 6px;
+    padding: 5px;
+    margin-left: 14px;
+}
+.btn1{
+    background-color: #E8E8E8;
+    outline: none;
+    border: transparent;
+    border-radius: 6px;
+    padding: 5px;
+    margin-left: 20px;
+}
+/*容量 capacity*/
+.capacity{
+    padding: 10px;
+}
+/*购买数量 标签上面的div标签*/
+.purchase-quantity{
+    padding: 10px;
+}
+/*-号*/
+.number-delete{
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    margin-left: 150px;
+    text-align: center;
+    background-color: #F3F3F3;
+}
+
+.number{
+    display: inline-block;
+    width: 55px;
+    height: 35px;
+    line-height: 35px;
+    background-color: #F3F3F3;
+    text-align: center;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+/*+号*/
+.number-add{
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    background-color: #F3F3F3;
+}
+/*加入购物车*/
+.add-shopcart{
+    width: 50%;
+    height: 50px;
+    background-color: #87CEFA;
+    color: #fff;
+    outline: none;
+    border: transparent;
+}
+/*立即购买*/
+.quick-buy{
+    width: 50%;
+    height: 50px;
+    background-color: #76EEC6;
+    color: #fff;
+    outline: none;
+    border: transparent;
+}
+/*遮罩层*/
+.modal-maska{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 4999;
+    background-color: rgba(0,0,0,0.4);
+    display: none;
+}
+.modal-actionsheet {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 50%;
+    -webkit-transform: translate(0, 100%);
+    transform: translate(0, 100%);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    z-index: 5000;
+    width: 100%;
+    background-color: #fff;
+    -webkit-transition: -webkit-transform .3s;
+    transition: -webkit-transform .3s;
+    transition: transform .3s;
+    transition: transform .3s, -webkit-transform .3s;
+}
+.modal-actionsheet_toggle {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+.itemImg{
+    width: 110px;
+}
+.item-text {
+    display: inline-block;
+    width: 50%;
+    margin-left: 5%;
+    vertical-align: middle;
+    line-height: 25px;
+}
+#ShoppingCart-item{
+    width: 100%;
+    padding: 5px 25px;
+    border-bottom: 10px solid #f1f1f1;
+}
+#item-chb{
+    margin-right: 10px;
+}
+.item-price {
+    color: darkturquoise;
+    font-size: 1.5rem;
+}
+.item-count{
+    color: darksalmon;
+}
+
+/*checkbox*/
+.demo--radio{
+    opacity: 0;
+}
+.demo--radioInput{
+    background-color:#fff;
+    border:1px solid rgba(0,0,0,0.15);
+    border-radius:100%;
+    display:inline-block;
+    height:16px;
+    margin-right:10px;
+    vertical-align:middle;
+    width:16px;
+    line-height:1;
+    position: absolute;
+    margin-top: 13%;
+    left: 23px;
+    z-index: -1;
+}
+.demo--radio:checked + .demo--radioInput:after{
+    background-color:#57ad68;
+    border-radius:100%;
+    content:"";
+    display:inline-block;
+    height:12px;
+    margin:1px;
+    width:12px;
+}
+.demo--checkbox.demo--radioInput,.demo--radio:checked + .demo--checkbox.demo--radioInput:after{
+    border-radius:0;
+}
+
+
+#ShoppingCart-bottom{
+    width: 100%;
+    height: 46px;
+    line-height: 46px;
+    bottom: 60px;
+    font-size: 0px;
+    background-color: #f1f1f1;
+    position: fixed;
+}
+.titleImg{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.item-detailimg{
+    width: 90px;
+    height: 90px;
+    float: left;
+    margin-right: 8px;
+    border-radius: 4px;
+}
+.allOrderMsg{
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 46px;
+    line-height: 46px;
+    font-size: 0px;
+}
+.leftMsg{
+    display: inline-block;
+    width: 75%;
+    font-size: 14px;
+    text-align: right;
+    background-color: rgba(0,0,0,0.7);
+    color: #fff;
+    padding: 0px 10px;
+}
+.subOrder{
+    display: inline-block;
+    width: 25%;
+    font-size: 14px;
+    text-align: center;
+    background-color: #FF0005;
+    color: #fff;
+}
+.payAddress {
+    border-bottom: 2px solid #f1f1f1;
+    margin-bottom: 6px;
+    padding: 0px 12px;
+}
+.otherAddress {
+    padding: 4px;
+    text-align: right;
+    color: #0060bb;
+}
+.addressWapper,.detailAddress{
+    padding: 4px 0px;
+}
+.addressPerson {
+    padding-right: 12px;
+}
+.shopTitle {
+    width: 100%;
+    height: 52px;
+    padding-bottom: 6px;
+    padding-left: 12px;
+}
+.shopName {
+    display: inline-block;
+    height: 46px;
+    line-height: 46px;
+    padding-left: 10px;
+}
+.item-detail {
+    width: 100%;
+    height: 110px;
+    background-color: #EFEFF4;
+    padding: 10px 16px;
+}
+.rtMsg {
+    padding-left: 98px;
+}
+.item-productname {
+    padding-top: 6px;
+}
+.item-sku {
+    display: inline-block;
+    width: 50%;
+    padding-top: 6px;
+}
+.item-total {
+    display: inline-block;
+    padding-top: 6px;
+}
+.freight,.coupon {
+    width: 100%;
+    padding: 6px 12px;
+}
+.freightDetail,.couponSelect {
+    float: right;
+}
+.buyMsg{
+    padding: 0px 12px;
+}
+.buyMsgTitle {
+    width: 100%;
+    padding: 6px 0px;
+}
+.txtarea{
+    border-radius: 6px;
+    border-color: red;
+}
+#item-all{
+    display: inline-block;
+    width: 75%;
+    font-size: 14px;
+    text-align: right;
+    padding: 0px 10px;
+}
+.settlement{
+    display: inline-block;
+    width: 25%;
+    background-color: #FF0005;
+    color: #fff;
+    font-size: 14px;
+    border: transparent;
+    outline: none;
+}
+#OrderConfirm-list{
+    padding-bottom: 50px;
+}
+#Ant_pay_cz #icon2{
+    display: none;
+}
+#Ant_pay_cz #aliBtn{
+    display: none;
+}
+#UserRegister #code0{
+    position: absolute;
+    top: 367px;
+}
+
+@media only screen and (min-width: 768px){
+    .hovertable td {
+        background-color: white;
+        vertical-align: middle;
+        border: none;
+        border-top: 1px solid #ddd;
+        text-align: center !important;
+        border-radius: 0!important;
+        box-sizing: border-box;
+        display: table-cell;
+        cursor: default;
+    }
+
+
+
+}
+
+
+
