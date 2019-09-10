@@ -9,7 +9,7 @@ public interface APPConfig {
     //域名
     String HOST = "oa.redmany.com";
     //项目名
-    String COMPANYID = "GuoyuHall";//waihui  CloudMall
+    String COMPANYID = "AntMall";//waihui  CloudMall
 
     int VERSION=11;
 

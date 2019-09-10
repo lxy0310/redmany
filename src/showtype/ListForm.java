@@ -40,6 +40,7 @@ public class ListForm extends CustomForm {
     private int group;   // 判断是否有分组
 
 
+
     public String one, two, three, four;
 
     @Override
@@ -86,6 +87,7 @@ public class ListForm extends CustomForm {
         } else {
             System.out.println("getData()>>>>>>>>>>>>>>>>>>>>>>" + getDatas().toString());
         }
+
     }
 
     @Override
@@ -93,16 +95,16 @@ public class ListForm extends CustomForm {
         div.add(new Script("js/newForm.js"));
         div.add(new Script("js/jquery-1.12.4.js"));
         list(div);
-//        if (platform.equals("1")){//1为后台
-//            //没有分组
-//            if (group==0){
-//                showBack(div);
-//            }else{
-//
-//            }
-//        }else{ // 前端
-//            list(div);
-//        }
+        if (platform.equals("1")){//1为后台
+            //没有分组
+            if (group==0){
+                showBack(div);
+            }else{
+
+            }
+        }else{ // 前端
+            list(div);
+        }
 
     }
 
@@ -141,7 +143,6 @@ public class ListForm extends CustomForm {
             }
             if (isShow != null) {
                 Span span = row.td().span();
-
             }
             tBody.tr(row);
         }
@@ -163,9 +164,9 @@ public class ListForm extends CustomForm {
                 item.addCssClass(formName + "-item");
                 String transferParams = get(line, "transferParams");
 //            String serviceid = get(line, "serviceid");
-//            if (transferParams != null) {
-//                line.put("transferParams", transferParams.replace("{serviceid}", serviceid));
-//            }
+                if (transferParams != null) {
+                    line.put("transferParams", transferParams.replace("{"+transferParams+"}",transferParams ));
+                }
                 String onclick = getPage().getDataProvider().getOnClick(this, null, line);
                 if (onclick != null) {
                     item.onClick(onclick);
