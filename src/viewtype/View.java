@@ -34,6 +34,7 @@ public class View {
     private String iosAttribute;
     private String androidAttribute;
     private String windowsAttribute;
+    private  String listAttributeId;
     private String transferParams;
 
     /**
@@ -233,6 +234,14 @@ public class View {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getListAttributeId() {
+        return listAttributeId;
+    }
+
+    public void setListAttributeId(String listAttributeId) {
+        this.listAttributeId = listAttributeId;
     }
 
     @Override
