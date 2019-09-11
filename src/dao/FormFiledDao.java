@@ -150,11 +150,13 @@ public class FormFiledDao extends BaseDao {
         if (showType != null) {
             sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
+            sb.append(",FormFiled.listAttributeId ");
             sb.append(" from FormFiled INNER JOIN OaCopModel_b ON OaCopModel_b.copFormName=FormFiled.FormName");
             sb.append(" AND OaCopModel_b.showType='" + showType + "'");
         } else {
             sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
+            sb.append(",FormFiled.listAttributeId ");
             sb.append(" from FormFiled ");
             sb.append(" where FormFiled.FormName='" + formName + "'");
         }

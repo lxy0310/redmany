@@ -6,6 +6,7 @@ import com.sangupta.htmlgen.tags.body.table.Table;
 import com.sangupta.htmlgen.tags.body.table.TableDataCell;
 import com.sangupta.htmlgen.tags.body.table.TableRow;
 
+
 public class Main {
 
     public static void main(String[] args) {

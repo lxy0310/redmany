@@ -2,6 +2,7 @@ package dao;
 
 
 import common.SQLHelper;
+import model.OaAttribute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,14 @@ public class OaAttributeDao  extends BaseDao {
         return  sqlHelper.ExecScalar(CompanyId,sql,parameters)!=null?(String)sqlHelper.ExecScalar(CompanyId,sql,parameters):null;
     }
 
+    public OaAttribute getOaAttributeById(String CompanyId, Integer id){
 
+        String sql = "SELECT name,wapAttribute,windowsAttribute FROM [OaAttribute_b] WHERE id=?";
+        String[] parameters ={id.toString()};
+       // System.out.println("OaAttribute+++"+ sqlHelper.ExecScalar(CompanyId,sql,parameters));
+        return  find(CompanyId,sql,parameters,OaAttribute.class);
+
+   }
 
 
 }
