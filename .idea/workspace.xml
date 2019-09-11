@@ -6,13 +6,43 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5c393ee-7944-4ae1-a4fd-24b2b187ceb4" name="Default Changelist" comment="测试">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/FormFileAttribute.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/impl/FormFileAttributeImpl.java" afterDir="false" />
+    <list default="true" id="d5c393ee-7944-4ae1-a4fd-24b2b187ceb4" name="Default Changelist" comment="20190911测试">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/redmanyLib.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/viewtype/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/viewtype/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/com/company/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/APPConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/APPConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/ApiParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/ApiParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/SQLHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/SQLHelper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/dao/FormFiledDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/dao/FormFiledDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/page/Page.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/page/Page.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/BaseServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/BaseServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/OrderChangeServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/OrderChangeServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/RegisterServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/RegisterServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/SearchServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/SearchServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/ShopCarServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/ShopCarServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/StudentServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/StudentServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/ListForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/ListForm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/View.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/js/commonUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/js/commonUtils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/com/company/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/common/ApiParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/common/ApiParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/common/SQLHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/common/SQLHelper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/dao/FormFiledDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/dao/FormFiledDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/page/Page.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/page/Page.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/servlet/BaseServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/servlet/BaseServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/servlet/OrderChangeServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/servlet/OrderChangeServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/servlet/RegisterServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/servlet/RegisterServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/servlet/SearchServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/servlet/SearchServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/servlet/ShopCarServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/servlet/ShopCarServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/servlet/StudentServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/servlet/StudentServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/showtype/ListForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/showtype/ListForm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/viewtype/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/viewtype/View.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redmany.iml" beforeDir="false" afterPath="$PROJECT_DIR$/redmany.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/SQLHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/SQLHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao/FormFiledDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/FormFiledDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao/OaAttributeDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/OaAttributeDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/FormFileAttribute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/FormFileAttribute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl/FormFileAttributeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl/FormFileAttributeImpl.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,6 +94,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -96,7 +127,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Tomcat Server.tomcat">
     <configuration name="Tomcat 8.0.51" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.0.51" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="1.8">
       <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/redmany/" />
       <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
@@ -171,6 +202,83 @@
         </option>
       </method>
     </configuration>
+    <configuration name="tomcat" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.39" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/redmany/" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="redmany">
+          <settings>
+            <option name="CONTEXT_PATH" value="/redmany" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Unnamed_redmany_4" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="64466" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="redmany" />
+        </option>
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Tomcat Server.Tomcat 8.0.51" />
+      <item itemvalue="Tomcat Server.tomcat" />
+    </list>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -186,7 +294,7 @@
       <workItem from="1567989479371" duration="17622000" />
       <workItem from="1568075268592" duration="5151000" />
       <workItem from="1568179718133" duration="340000" />
-      <workItem from="1568180073351" duration="281000" />
+      <workItem from="1568180073351" duration="4307000" />
     </task>
     <task id="LOCAL-00001" summary="测试一下">
       <created>1568079387562</created>
@@ -195,7 +303,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568079387562</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="20190911测试">
+      <created>1568180402353</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1568180402354</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -219,7 +334,24 @@
     <option name="SHOW_UNVERSIONED_FILES_WHILE_COMMIT" value="false" />
     <MESSAGE value="测试一下" />
     <MESSAGE value="测试" />
-    <option name="LAST_COMMIT_MESSAGE" value="测试" />
+    <MESSAGE value="20190911测试" />
+    <option name="LAST_COMMIT_MESSAGE" value="20190911测试" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/ParentForm.java</url>
+          <line>224</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/ParentForm.java</url>
+          <line>217</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="masterDetails">
     <states>

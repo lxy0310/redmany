@@ -74,5 +74,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="redmanyLib" level="project" />
   </component>
 </module>

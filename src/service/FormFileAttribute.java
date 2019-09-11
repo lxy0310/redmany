@@ -1,5 +1,6 @@
 package service;
 
+
 import viewtype.View;
 
 /**
@@ -15,5 +16,5 @@ public interface FormFileAttribute {
      * @param platform  前端还是后台
      * @return  控件的相应的行内样式
      */
-    public String getAttributeStr(View view,String companyId,String showType,String platform);
+    public String getAttributeStr(View view,String companyId,String showType,String platform,String theme);
 }

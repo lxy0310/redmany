@@ -1,21 +1,28 @@
 package service.impl;
 
+import common.SQLHelper;
+
+import dao.OaAttributeDao;
 import service.FormFileAttribute;
 import common.utils.TextUtils;
 import model.OaAttribute;
 import viewtype.View;
 
 public class FormFileAttributeImpl implements FormFileAttribute {
+    public OaAttributeDao oaAttributeDao=null;
+    public  FormFileAttributeImpl(SQLHelper sqlHelper){
+            oaAttributeDao=new OaAttributeDao(sqlHelper);
 
+    }
     @Override
-    public String getAttributeStr(View view, String companyId,String showType, String platform) {
+    public String getAttributeStr(View view, String companyId,String showType, String platform,String theme) {
         OaAttribute oaAttribute=null;
         //1.判断是否是listForm
          if(TextUtils.equalsIgnoreCase("ListForm",showType)){
 
              //判断listAttributeId是否为null并且不等于""
              if(view.getListAttributeId()!=null && TextUtils.equalsIgnoreCase("",view.getListAttributeId().trim())){
-
+                 oaAttribute= oaAttributeDao.getOaAttributeById(companyId,Integer.parseInt(view.getListAttributeId()));
 
 
              }
@@ -24,19 +31,19 @@ public class FormFileAttributeImpl implements FormFileAttribute {
           //2.当OaAttribute在并未实例化，判断attributeId是否为空并且不等于""
           if(oaAttribute==null && view.getAttributeId()!=null && TextUtils.equalsIgnoreCase("",view.getAttributeId().trim())){
 
-
+              oaAttribute= oaAttributeDao.getOaAttributeById(companyId,Integer.parseInt(view.getAttributeId()));
           }
           //3.当OaAttribute在并未实例化，判断view的windowsAttribute或者wapAttribute是否为空并且不等于""
           if(oaAttribute==null &&
                   ((view.getWindowsAttribute()!=null && TextUtils.equalsIgnoreCase("",view.getWindowsAttribute().trim())) ||
                           (view.getWapAttribute()!=null && TextUtils.equalsIgnoreCase("",view.getWapAttribute().trim())))){
-
+              oaAttribute=new OaAttribute();
+              oaAttribute.setWapAttribute(view.getWapAttribute());
+              oaAttribute.setWindowsAttribute(view.getWapAttribute());
 
           }
           //4.判断OaAttribute是否实例化
-          if (oaAttribute==null){
-              oaAttribute=new OaAttribute();
-          }
+          if (oaAttribute==null) oaAttribute = new OaAttribute();
 
           String attributeStr=null;
           //5.判断是什么平台，0获取wapAttribute，1获取windowsAttribute
@@ -48,7 +55,9 @@ public class FormFileAttributeImpl implements FormFileAttribute {
               attributeStr=oaAttribute.getWindowsAttribute();
           }
           //6.判断attributeStr是否为空，为空根据固有模板获取相应的属性
+          if(attributeStr==null || TextUtils.equalsIgnoreCase(attributeStr.trim(),"")){
 
-        return null;
+          }
+        return attributeStr;
     }
 }
