@@ -75,9 +75,9 @@ public class Text extends ParentView {
                        img.height(30);
                    }
                }else { //文本
-                   Label label = span.label();
-                   label.addCssClass(getName());
-                   label.text(view.getTitle());
+                  // Label label = span.label();
+                 //  label.addCssClass(getName());
+                 //  label.text(view.getTitle());
                }
             }
             Input input =span.input();
@@ -109,21 +109,21 @@ public class Text extends ParentView {
                     System.out.println(num);
                 }
 
-                if (strs[1].contains("hintContent")){ //提示
-                    String  num=strs[1].substring(strs[1].lastIndexOf(":")+1);
-                    if (num!=null){
-                        System.out.println("num"+num);
-                        input.placeholder(num);
-                       // input.attr("placeholder",num);
-                    }
-                    System.out.println(num);
-                }else{ //默认提示
-                  String num=view.getTitle().toString();
-                  if (view.getTitle().contains(":")){ //如果有：去掉
-                      num=num.substring(0,num.length()-1);
-                  }
-                    input.placeholder("请输入"+num);
-                }
+//                if (strs[1].contains("hintContent")){ //提示
+//                    String  num=strs[1].substring(strs[1].lastIndexOf(":")+1);
+//                    if (num!=null){
+//                        System.out.println("num"+num);
+//                        input.placeholder(num);
+//                    }
+//                    System.out.println(num);
+//                }else{ //默认提示
+//                  String num=view.getTitle().toString();
+//                  if (view.getTitle().contains(":")){ //如果有：去掉
+//                      num=num.substring(0,num.length()-1);
+//                  }
+//                    input.placeholder("请输入"+num);
+//                }
+
                }
                 System.out.println();
             }
@@ -197,17 +197,7 @@ public class Text extends ParentView {
         if (css != null) {
             span.addCssClass(css);
         }
-        if("bank".equals(getName())){
-            Input input = span.input();
-            input.type("text").placeholder("请填写所属银行");
-        }
 
-        if("branch".equals(getName())){
-
-            Input input = span.input();
-            input.type("text").placeholder("请添加分支行");
-
-        }
 /*        if("phone".equals(getName())){
 
             Input input = span.input();

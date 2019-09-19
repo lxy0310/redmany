@@ -77,15 +77,29 @@ public class View {
      * 是否显示
      */
     private String showState;
-    /**
-     * 分组字段
-     */
-    private  String filedGroup;
 
+
+    private String filedGroup;
+    private String onlyOne;
 
     public View() {
     }
 
+    public String getFiledGroup() {
+        return filedGroup;
+    }
+
+    public void setFiledGroup(String filedGroup) {
+        this.filedGroup = filedGroup;
+    }
+
+    public String getOnlyOne() {
+        return onlyOne;
+    }
+
+    public void setOnlyOne(String onlyOne) {
+        this.onlyOne = onlyOne;
+    }
 
     public String getShowState() {
         return showState;
@@ -246,13 +260,6 @@ public class View {
         this.listAttributeId = listAttributeId;
     }
 
-    public String getFiledGroup() {
-        return filedGroup;
-    }
-
-    public void setFiledGroup(String filedGroup) {
-        this.filedGroup = filedGroup;
-    }
 
     @Override
     public String toString() {
@@ -276,7 +283,8 @@ public class View {
                 ", value='" + value + '\'' +
                 ", Database_field='" + Database_field + '\'' +
                 ", showState='" + showState + '\'' +
+                ", filedGroup='" + filedGroup + '\'' +
+                ", onlyOne='" + onlyOne + '\'' +
                 '}';
     }
-
 }

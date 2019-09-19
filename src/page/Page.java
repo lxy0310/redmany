@@ -42,6 +42,7 @@ public class Page implements ParentForm.ISQLReplacer {
 
     public static final String COMPANYID = APPConfig.COMPANYID;
 
+
     private String isPc="0";  //是否是Pc端,0-手机 1-PC，默认为0
     public static String platform = "0";//前后端 0-前端，1-后端，默认为0
     private String theme=COMPANYID; //主题。默认为COMPANYID
@@ -517,17 +518,20 @@ public class Page implements ParentForm.ISQLReplacer {
 
     public void writeHead(HtmlHead head) {
         head.meta("viewport", "width=device-width");
-        head.css("css/bootstrap.min.css");
+      //  head.css("css/bootstrap.min.css");
         head.css("css/bootstrap-theme.min.css");
         head.meta(new Meta().httpEquiv("Content-Type").content("text/html; charset=utf-8"));
         head.meta(new Meta().httpEquiv("Access-Control-Allow-Origin").content("*"));
         head.title(getTitle());
-        head.script().text("var gCompany_Id='"+Company_Id+"';var gUesrId=" + getUserId()+";var gplatform=" +";var gValues=new Array();\n" +
+//        head.script().text("var gCompany_Id='"+Company_Id+"';var gUesrId=" + getUserId()+";var gplatform=" +";var gValues=new Array();\n" +
+//                "gValues['isNeedLogin']=" + (mAccountHelper.isLogin() ? 0 : 1) + ";\n");//isNeedLogin
+        head.script().text("var gCompany_Id='"+Company_Id+"';var gUesrId=1" +";var gplatform=1"+";var gValues=new Array();\n" +
                 "gValues['isNeedLogin']=" + (mAccountHelper.isLogin() ? 0 : 1) + ";\n");//isNeedLogin
         head.script("js/page.js?v=" + APPConfig.VERSION);
         head.script("js/jquery.min.js");
         head.script("js/ShoppingCarPage.js");
-        head.script("js/cardInfo.js");
+    //    head.script("js/cardInfo.js");
+
         String name = getCopformName();
         head.css("css/" + name + ".css");
         head.css("css/common.css");
@@ -540,6 +544,8 @@ public class Page implements ParentForm.ISQLReplacer {
 
         head.css("layui/css/layui.css");
         head.script("layui/layui.js");
+
+        head.script("js/commonUtils.js");
         /*树形图*/
         head.css("css/demo.css");
         head.css("css/zTreeStyle.css");

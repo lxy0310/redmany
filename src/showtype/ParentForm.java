@@ -109,14 +109,15 @@ public abstract class ParentForm {
 
     public List<String> getFormFieldNames() {
         if (mViewNames == null) {
+            System.out.println(mFormData.getList_fields());
             mViewNames = DataHelper.toList(mFormData.getList_fields());
         }
         return mViewNames;
     }
 
-    public List<String> getFormFieldNames(Form mFormDate) {
+    public List<String> getFormFieldNames(String mFormDate) {
         if (mViewNames == null) {
-            mViewNames = DataHelper.toList(mFormDate.getList_fields());
+            mViewNames = DataHelper.toList(mFormDate);
         }
         return mViewNames;
     }
@@ -220,9 +221,10 @@ public abstract class ParentForm {
         //获取FormFiled表的数据集mViews
         if (getFormName().contains(",")){   //双列表
             String fFormCloumn = formName.split(",")[0];
-            mViews = sFormFiledDao.getFormContorl(getCompanyId(), fFormCloumn, null);
+            mViews = sFormFiledDao.getFormContorl(companyId, fFormCloumn, null);
+            mFormData = sFormDao.getForm(companyId, fFormCloumn);
         }else{
-            mViews = sFormFiledDao.getFormContorl(getCompanyId(), getFormName(), null);
+            mViews = sFormFiledDao.getFormContorl(companyId, getFormName(), null);
         }
         if (mViews != null) {
             //循环mViews获取相应的样式配置
@@ -235,6 +237,7 @@ public abstract class ParentForm {
 //                String windowsAttribute = v.getWindowsAttribute();
 
                 //如果有attributeId，则查询出这个OAAttribute
+
           /*      if (v.getAttributeId()!=null){
                     String wapAttributes =oaAttributeDao.getAttributeById(getCompanyId(),Integer.valueOf(v.getAttributeId().toString()));
                     if (wapAttributes!=null){
@@ -243,6 +246,7 @@ public abstract class ParentForm {
                     }else {
                         wapAttribute=v.getWapAttribute();
                     }
+
                 }else{
                     wapAttribute=v.getWapAttribute();
                 }*/
@@ -406,6 +410,8 @@ public abstract class ParentForm {
      */
     public ParentView makeType(View view) {
         ParentView parentView = CommandCenter.makeFormField(this, view, mPage.getDataProvider());
+
+        System.out.println("parentView"+parentView);
         if (parentView == null) {
             parentView = new NoData();
         }
