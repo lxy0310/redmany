@@ -13,8 +13,8 @@ public interface FormFileAttribute {
      * @param view   FormFiled的数据集
      * @param companyId  企业Id
      * @param showType   显示模板(类型),如ListForm
-     * @param platform  前端还是后台
+     * @param isPc  前端还是后台 0-前端 1-后台
      * @return  控件的相应的行内样式
      */
-    public String getAttributeStr(View view,String companyId,String showType,String platform,String theme);
+    public String getAttributeStr(View view,String companyId,String showType,String isPc,String theme);
 }

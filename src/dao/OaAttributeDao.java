@@ -2,6 +2,7 @@ package dao;
 
 
 import common.SQLHelper;
+import common.utils.TextUtils;
 import model.OaAttribute;
 
 import java.util.ArrayList;
@@ -53,5 +54,41 @@ public class OaAttributeDao  extends BaseDao {
 
    }
 
+    /**
+     * 获取主题样式
+     * @param CompanyId 企业Id
+     * @param theme  主题名
+     * @param showType 模板类型
+     * @param type  控件类型（FormFiled的Type）
+     * @param platform 平台类型 0-前端 1-后台
+     * @return 样式
+     */
+   public  String getAttributeByTheme(String CompanyId,String theme,String showType,String type,String isPc){
+
+       StringBuffer sql=new StringBuffer();
+       sql.append("SELECT ");
+       sql.append(TextUtils.equalsIgnoreCase(isPc,"1")? "windowsAttribute ":"wapAttribute ");
+       sql.append(" FROM [OaAttribute_b] WHERE description=");
+       String description="'"+theme+"_"+showType+"_"+ type+"'";
+       sql.append(description.toLowerCase());
+
+       String attribute= sqlHelper.ExecScalar(CompanyId,sql.toString(),null)!=null?(String)sqlHelper.ExecScalar(CompanyId,sql.toString(),null):null;
+       if(attribute!=null){
+           return attribute;
+       }
+       sql.delete(0,sql.length());
+
+       sql.append("SELECT ");
+       sql.append(TextUtils.equalsIgnoreCase(isPc,"1")? "windowsAttribute ":"wapAttribute ");
+       sql.append(" FROM [OaAttribute_b] WHERE description=");
+        description="'"+theme+"_"+ type+"'";
+       sql.append(description.toLowerCase());
+
+       attribute= sqlHelper.ExecScalar(CompanyId,sql.toString(),null)!=null?(String)sqlHelper.ExecScalar(CompanyId,sql.toString(),null):null;
+
+       return attribute;
+
+
+   }
 
 }

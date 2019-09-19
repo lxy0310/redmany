@@ -10,6 +10,8 @@ import dao.OaAttributeDao;
 import model.Form;
 import model.OaAttribute;
 import page.Page;
+import service.FormFileAttribute;
+import service.impl.FormFileAttributeImpl;
 import viewtype.View;
 import viewtype.DefaultDataProvider;
 import viewtype.IDataProvider;
@@ -59,7 +61,7 @@ public abstract class ParentForm {
     private static FormFiledDao sFormFiledDao;
     private static OaAttributeDao oaAttributeDao;
     private static FormDao sFormDao;
-
+    private  static FormFileAttribute formFileAttribute;
     protected SQLHelper sqlHelper;
 
     public ParentForm() {
@@ -198,19 +200,24 @@ public abstract class ParentForm {
                 }
             }
         }
+        if(formFileAttribute==null){
+            synchronized(FormFileAttributeImpl.class) {
+                formFileAttribute = new FormFileAttributeImpl(pSQLHelper);
 
+            }
+        }
     }
 
     public void loadData(SQLHelper pSQLHelper, ISQLReplacer pISQLReplacer) {
         initDao(pSQLHelper);
         String companyId = getCompanyId();
         String formName = getFormName();
-
+        //获取Form表的实体对象
         mFormData = sFormDao.getForm(companyId, formName);
 
 
 //        System.out.println(getFormName() + " form:" + mFormData);
-
+        //获取FormFiled表的数据集mViews
         if (getFormName().contains(",")){   //双列表
             String fFormCloumn = formName.split(",")[0];
             mViews = sFormFiledDao.getFormContorl(getCompanyId(), fFormCloumn, null);
@@ -218,6 +225,7 @@ public abstract class ParentForm {
             mViews = sFormFiledDao.getFormContorl(getCompanyId(), getFormName(), null);
         }
         if (mViews != null) {
+            //循环mViews获取相应的样式配置
             for (View v : mViews) {
 //                System.out.println("mViews-v-getTransferParams====>"+v.getTransferParams());
 //                String str = v.getAndroidAttribute();
@@ -227,7 +235,7 @@ public abstract class ParentForm {
 //                String windowsAttribute = v.getWindowsAttribute();
 
                 //如果有attributeId，则查询出这个OAAttribute
-                if (v.getAttributeId()!=null){
+          /*      if (v.getAttributeId()!=null){
                     String wapAttributes =oaAttributeDao.getAttributeById(getCompanyId(),Integer.valueOf(v.getAttributeId().toString()));
                     if (wapAttributes!=null){
                         wapAttribute=wapAttributes;
@@ -237,8 +245,10 @@ public abstract class ParentForm {
                     }
                 }else{
                     wapAttribute=v.getWapAttribute();
-                }
+                }*/
+                wapAttribute=formFileAttribute.getAttributeStr(v,getCompanyId(),mPage.getShowType(),mPage.getIsPc(),mPage.getTheme());
                 v.setAttributeStr(wapAttribute);
+                v.setWapAttribute(wapAttribute);
             }
             if (LOG) {
                 System.out.println(getClass().getSimpleName() + ":Views:" + mViews);
@@ -247,6 +257,7 @@ public abstract class ParentForm {
         if (LOG) {
             System.out.println(getFormName() + "/" + getViewType() + ",initData=" + mViews);
         }
+        //Form的实体对象不为空，则获取相应的数据
         if (mFormData != null) {
             String Get_data_sql = DataHelper.toString(mFormData.getGet_data_sql());
             if (Get_data_sql != null && Get_data_sql.length() > 0) {
