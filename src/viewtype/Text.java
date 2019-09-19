@@ -67,7 +67,6 @@ public class Text extends ParentView {
         // wapAttribute='style:padding-right:100px;pointer-events:none;', windowsAttribute='null',
         // iosAttribute='null', androidAttribute='null', transferParams='null', Name='UserName', Title='用户邮箱', ValidateExpreesion='null', ValidateErrorMessage='null'}
         if (getView()!=null){
-//            int code = 0;
             View view=getView();
             System.out.println(view);
             if (view.getTitle()!=null){ //title
@@ -81,9 +80,9 @@ public class Text extends ParentView {
                        img.height(30);
                    }
                }else { //文本
-                   Label label = span.label();
-                   label.addCssClass(getName());
-                   label.text(view.getTitle());
+                  // Label label = span.label();
+                 //  label.addCssClass(getName());
+                 //  label.text(view.getTitle());
                }
             }
             Input input =span.input();

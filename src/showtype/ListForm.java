@@ -1,6 +1,7 @@
 package showtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
+import com.sangupta.htmlgen.tags.body.embed.Img;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.table.TBody;
 import com.sangupta.htmlgen.tags.body.table.THead;
@@ -8,6 +9,7 @@ import com.sangupta.htmlgen.tags.body.table.Table;
 import com.sangupta.htmlgen.tags.body.table.TableRow;
 import com.sangupta.htmlgen.tags.body.text.Span;
 import com.sangupta.htmlgen.tags.head.Script;
+import common.CommonUtils;
 import common.SQLHelper;
 import common.utils.SQLFixer;
 import common.utils.TextUtils;
@@ -20,6 +22,7 @@ import model.Menu;
 import model.Operation;
 import model.Replacer;
 import page.CustomForm;
+import viewtype.Image;
 import viewtype.View;
 
 import java.util.ArrayList;
@@ -87,26 +90,28 @@ public class ListForm extends CustomForm {
         } else {
             System.out.println("getData()>>>>>>>>>>>>>>>>>>>>>>" + getDatas().toString());
         }
-
     }
 
     @Override
     protected void make(Div div) {
-        div.add(new Script("js/newForm.js"));
+       // div.add(new Script("js/commonUtils.js"));
         div.add(new Script("js/jquery-1.12.4.js"));
-        list(div);
+        //list(div);
+//        platform = "1";
         if (platform.equals("1")){//1为后台
             //没有分组
             if (group==0){
                 showBack(div);
             }else{
-
+                //showGroupBack(div);
             }
         }else{ // 前端
             list(div);
         }
 
     }
+
+
 
     /**
      * 后台没有分组
@@ -115,7 +120,7 @@ public class ListForm extends CustomForm {
      */
     public void showBack(Div div) {
         List<View> views = getViews();
-        Table table = div.table().addCssClass("layui-table");
+        Table table = div.table().addCssClass("table");
         THead thead = table.thead();
         TableRow rowTh = new TableRow();  //表头
         for (View view : views) {
@@ -132,7 +137,32 @@ public class ListForm extends CustomForm {
             TableRow row = new TableRow();
             System.out.println("Id === " + line.get("id"));
             System.out.println(mDatas.toString());
+
+//            for (View view : views) {
+//                System.out.println(view.getType().toLowerCase());
+//                if (view.getType().toLowerCase() == "text" || view.getType().toLowerCase().equals("text")){
+//                    if (line.get(view.getName())!=null){
+//                        row.td().text(line.get(view.getName()).toString());
+//                        System.out.println(line.get(view.getName()).toString());
+//                    }
+//                }else if (view.getType().toLowerCase() == "image" || view.getType().toLowerCase().equals("image")){
+//                    if (line.get(view.getName())!=null){
+//                        Img img = new Img();
+//                        img.src(CommonUtils.getFileData+line.get(view.getName()).toString());
+//                        row.td().img(img);
+//                    }
+//                }
+//            }
             for (View view : views) {
+                if (view.getType().toLowerCase().equals("text")){
+                    String attr = view.getAttributeStr();
+                    if (attr!=null){
+                        view.setAttributeStr(attr+"border:0px;");
+                    }else {
+                        view.setAttributeStr("style:border:0px;");
+                    }
+
+                }
                 html = makeViews(list, view, line, html);
             }
             if (!TextUtils.isEmpty(html)) {
@@ -146,8 +176,10 @@ public class ListForm extends CustomForm {
             }
             tBody.tr(row);
         }
-
     }
+
+
+
 
     /**
      * 前端没有分组
@@ -171,7 +203,6 @@ public class ListForm extends CustomForm {
                 if (onclick != null) {
                     item.onClick(onclick);
                 }
-
                 System.out.println("state:" + line.get("state"));
                 int state = (Integer) line.get("state");
 
@@ -186,7 +217,6 @@ public class ListForm extends CustomForm {
                 }
                 for (String v : list) {
                     item.text(v);
-//                    System.out.println(v);
                 }
             }
         }
@@ -211,10 +241,9 @@ public class ListForm extends CustomForm {
         } catch (Exception e) {
             throw new Exception("按分组时出现异常", e);
         }
-
         return resultMap;
-
     }
+
     public static void main(String[] args) {
 
 

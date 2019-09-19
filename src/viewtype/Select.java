@@ -21,7 +21,6 @@ public class Select extends ParentView {
     @Override
     protected HtmlBodyElement<?> create() {
         Span span = new Span();
-//        Div span = new Div();
         span.id(getName());
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
@@ -105,7 +104,6 @@ public class Select extends ParentView {
             if (css != null) {
                 select.addCssClass(css);
             }
-        }
         return span;
     }
 

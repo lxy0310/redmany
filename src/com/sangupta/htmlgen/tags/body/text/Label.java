@@ -1,5 +1,6 @@
 package com.sangupta.htmlgen.tags.body.text;
 
+import com.sangupta.htmlgen.core.HtmlAttribute;
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 
 public class Label extends HtmlBodyElement<Label> {
@@ -11,4 +12,6 @@ public class Label extends HtmlBodyElement<Label> {
         this();
         text(text);
     }
+
+
 }

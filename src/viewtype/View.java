@@ -55,12 +55,28 @@ public class View {
     }
 
     public String getFormName() { return FormName; }
-
+  
     public void setFormName(String FormName) {
         this.FormName = FormName;
     }
 
-    public String getOnlyOne() { return onlyOne; }
+    private String filedGroup;
+    private String onlyOne;
+
+    public View() {
+    }
+
+    public String getFiledGroup() {
+        return filedGroup;
+    }
+
+    public void setFiledGroup(String filedGroup) {
+        this.filedGroup = filedGroup;
+    }
+
+    public String getOnlyOne() {
+        return onlyOne;
+    }
 
     public void setOnlyOne(String onlyOne) {
         this.onlyOne = onlyOne;
@@ -221,6 +237,7 @@ public class View {
         this.listAttributeId = listAttributeId;
     }
 
+
     @Override
     public String toString() {
         return "View{" +
@@ -246,7 +263,7 @@ public class View {
                 ", onlyOne='" + onlyOne + '\'' +
                 ", FormName='" + FormName + '\'' +
                 ", data_replacer='" + data_replacer + '\'' +
+                ", filedGroup='" + filedGroup + '\'' +
                 '}';
     }
-
 }
