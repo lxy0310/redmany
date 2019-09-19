@@ -68,7 +68,9 @@ public abstract class ParentView {
     public void setDatas(Map<String, Object> datas) {
         mDatas = datas;
     }
-
+    public  Map<String, Object> getDatas(){
+        return  mDatas;
+    }
     public String getData(String key) {
         if (mDatas == null || mDatas.size() == 0) {
             return null;
@@ -221,7 +223,8 @@ public abstract class ParentView {
         mForm = form;
         mView = view;
         mName = view.getName();
-        mAttrs = parseAttribute(view.getWapAttribute());
+       // mAttrs = parseAttribute(view.getWapAttribute());
+        mAttrs = parseAttribute(view.getAttributeStr());
         mIndex = view.getIndex_number();
         mIDataProvider = dataProvider;
     }

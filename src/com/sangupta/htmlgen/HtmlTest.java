@@ -2,7 +2,7 @@ package com.sangupta.htmlgen;
 
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 
-public class HtmlTest {
+public class  HtmlTest {
 
     public static void main(String[] args) {
         Div div = new Div();

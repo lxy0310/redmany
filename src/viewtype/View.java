@@ -77,8 +77,10 @@ public class View {
      * 是否显示
      */
     private String showState;
-
-
+    /**
+     * 分组字段
+     */
+    private  String filedGroup;
 
 
     public View() {
@@ -242,6 +244,14 @@ public class View {
 
     public void setListAttributeId(String listAttributeId) {
         this.listAttributeId = listAttributeId;
+    }
+
+    public String getFiledGroup() {
+        return filedGroup;
+    }
+
+    public void setFiledGroup(String filedGroup) {
+        this.filedGroup = filedGroup;
     }
 
     @Override

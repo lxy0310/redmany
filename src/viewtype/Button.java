@@ -22,7 +22,8 @@ public class Button extends ParentView {
 
         String onclick = getDataProvider().getOnClick(getForm(), this, getView().getTarget(), getView().getTransferParams());
         if (onclick != null) {
-            String Id = getData("Id");
+
+           String Id = getData("Id");
             String id = getData("id");
             System.out.println("Id--------------"+Id+"id:----------------"+id);
             if(Id!=null){
@@ -51,14 +52,16 @@ public class Button extends ParentView {
             int userid = getForm().getPage().getUserId();
             String companyId = getForm().getCompanyId();
             String formName = getForm().getFormName();
-            String pId = getForm().getPage().getmParams("p.Id");
+            //String pId = getForm().getPage().getmParams("p.Id");
+            String pId = getForm().getPage().getInnerParams(getFormName(),"p.Id");
             btn.onClick("addShoppingcart('"+userid+"','"+companyId+"','"+formName+"','"+pId+"');");
         }else if(getView().getName().equals("buy")){
             int userid = getForm().getPage().getUserId();
             String companyId = getForm().getCompanyId();
             String formName = getForm().getFormName();
-            String pId = getForm().getPage().getmParams("p.Id");
-            btn.onClick("addShoppingcart('"+userid+"','"+companyId+"','"+formName+"','"+pId+"');");
+            //String pId = getForm().getPage().getmParams("p.Id");
+            String pId = getForm().getPage().getInnerParams(getFormName(),"p.Id");//20190916修改
+             btn.onClick("addShoppingcart('"+userid+"','"+companyId+"','"+formName+"','"+pId+"');");
         }
         if(text!=null) {
             btn.text(text);
