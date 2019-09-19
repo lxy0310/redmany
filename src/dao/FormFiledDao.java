@@ -171,7 +171,6 @@ public class FormFiledDao extends BaseDao {
 
     /**
      * 查询模板控件信息
-     *
      * @param Company_Id 企业id
      * @param formName   模板名称
      * @param showType   模板类型，是否是复合模板 1是 0否
@@ -180,23 +179,18 @@ public class FormFiledDao extends BaseDao {
     public List<View> getFormContorl(String Company_Id, String formName, String showType) {
         StringBuilder sb = new StringBuilder("");
         if (showType != null) {
-            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
+            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target,IsNull,FormFiled.filedGroup," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
-            sb.append(",FormFiled.listAttributeId ");
-            sb.append( ",FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams,FormFiled.filedGroup,FormFiled.onlyOne ");
+            sb.append(",FormFiled.listAttributeId,FormFiled.ValidateExpreesion,FormFiled.ValidateErrorMessage,FormFiled.onlyOne,FormFiled.FormName,FormFiled.data_replacer ");
             sb.append(" from FormFiled INNER JOIN OaCopModel_b ON OaCopModel_b.copFormName=FormFiled.FormName");
             sb.append(" AND OaCopModel_b.showType='" + showType + "'");
         } else {
-            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
+            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target,IsNull,FormFiled.filedGroup," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
-            sb.append(",FormFiled.listAttributeId ");
-
-            sb.append(",FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams,FormFiled.filedGroup,FormFiled.onlyOne ");
-
+            sb.append(",FormFiled.listAttributeId,FormFiled.ValidateExpreesion,FormFiled.ValidateErrorMessage,FormFiled.onlyOne,FormFiled.FormName,FormFiled.data_replacer ");
             sb.append(" from FormFiled ");
             sb.append(" where FormFiled.FormName='" + formName + "'");
         }
-//        System.out.println("sql:" + sb.toString());
         return sqlHelper.executeQueryList(Company_Id, sb.toString(), null, View.class);
     }
 
@@ -230,7 +224,6 @@ public class FormFiledDao extends BaseDao {
 
     /**
      * 获取控件属性
-     *
      * @param id 属性id
      * @return
      */
@@ -242,7 +235,6 @@ public class FormFiledDao extends BaseDao {
         String str = null;
         if (id != null && !"".equals(id))
             str = (String) sqlHelper.ExecScalar(Company_Id, sql, null);
-//        System.out.println("=========str===============" + str);
         return str;
     }
 

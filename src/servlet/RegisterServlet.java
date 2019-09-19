@@ -27,16 +27,31 @@ public class RegisterServlet extends BaseServlet {
     @Override
     protected void doHtml(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-
         String UserName = req.getParameter("username");
         boolean check = !TextUtils.isEmpty(req.getParameter("check"));
         String Company_Id = Page.COMPANYID;
+
+        boolean viewType = !TextUtils.isEmpty(req.getParameter("viewType"));
+        if(viewType){
+            String type = req.getParameter("viewType");
+            if("1".equals(type)){
+                String sql = req.getParameter("sql");
+                String value = req.getParameter("value");
+                SQLHelper sqlHelper = new SQLHelper(req);
+                List<Map<String, Object>> list = sqlHelper.executeQueryList(Company_Id, sql, new String[]{value});
+                if (list == null || list.size() == 0) {
+                    resp.getWriter().write("ok");
+                } else {
+                    resp.getWriter().write("fail");
+                }
+                return;
+            }
+        }
 
         if (check) {
             SQLHelper sqlHelper = new SQLHelper(req);
             List<Map<String, Object>> list = sqlHelper.executeQueryList(Company_Id, "Select * from [User] where UserName=?", new String[]{UserName});
             if (list == null || list.size() == 0) {
-
                 resp.getWriter().write("ok");
             } else {
                 resp.getWriter().write("fail");

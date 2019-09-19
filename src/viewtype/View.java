@@ -4,30 +4,15 @@ package viewtype;
  * Created by hasee on 2017/10/21.
  */
 public class View {
-
-    /**
-     * 控件序号，添加顺序
-     */
+    /*控件序号，添加顺序*/
     private Integer Index_number;
-
-    /**
-     * 控件类型
-     */
+    /*控件类型*/
     private String Type;
-
-    /**
-     * 控件事件
-     */
+    /*控件事件*/
     private String target;
-
-    /**
-     * 控件属性id
-     */
+    /*控件属性id*/
     private String attributeId;
-
-    /**
-     * 控件属性值
-     */
+    /*控件属性值*/
     private String attributeStr;
 
     private String wapAttribute;
@@ -37,47 +22,43 @@ public class View {
     private  String listAttributeId;
     private String transferParams;
 
-    /**
-     * 名字
-     */
+    /*名字*/
     private String Name;
-    /**
-     * title
-     */
+    /*title*/
     private String Title;
-
-    /**
-     *  正则表达式条件
-     */
+    /* 正则表达式条件*/
     private String ValidateExpreesion;
-
-    /**
-     * 正则表达式提示
-     */
+    /*正则表达式提示*/
     private String ValidateErrorMessage;
-    /**
-     * 是否为空  1不为空 0 可以为空
-     */
+    /**是否为空  1不为空 0 可以为空*/
     private String IsNull;
-    /**
-     *  是否要收集数据
-     */
+    /*是否要收集数据*/
     private String isDataItem;
-    /**
-     * 输入的值
-     */
+    /*输入的值*/
     private String value;
-
-    /**
-     *  保存数据字段名
-     */
+    /*保存数据字段名*/
     private String Database_field;
-
-    /**
-     * 是否显示
-     */
+    /*是否显示*/
     private String showState;
+    /**是否唯一  1是 0否*/
+    private String onlyOne;
+    private String FormName;
+    private String data_replacer;
 
+    public View() {
+    }
+
+    public String getData_replacer() { return data_replacer; }
+
+    public void setData_replacer(String data_replacer) {
+        this.data_replacer = data_replacer;
+    }
+
+    public String getFormName() { return FormName; }
+  
+    public void setFormName(String FormName) {
+        this.FormName = FormName;
+    }
 
     private String filedGroup;
     private String onlyOne;
@@ -101,13 +82,9 @@ public class View {
         this.onlyOne = onlyOne;
     }
 
-    public String getShowState() {
-        return showState;
-    }
+    public String getShowState() { return showState; }
 
-    public void setShowState(String showState) {
-        this.showState = showState;
-    }
+    public void setShowState(String showState) { this.showState = showState; }
 
     public String getDatabase_field() {
         return Database_field;
@@ -283,8 +260,10 @@ public class View {
                 ", value='" + value + '\'' +
                 ", Database_field='" + Database_field + '\'' +
                 ", showState='" + showState + '\'' +
-                ", filedGroup='" + filedGroup + '\'' +
                 ", onlyOne='" + onlyOne + '\'' +
+                ", FormName='" + FormName + '\'' +
+                ", data_replacer='" + data_replacer + '\'' +
+                ", filedGroup='" + filedGroup + '\'' +
                 '}';
     }
 }
