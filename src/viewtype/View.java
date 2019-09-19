@@ -78,11 +78,9 @@ public class View {
      */
     private String showState;
 
+
     private String filedGroup;
     private String onlyOne;
-
-
-
 
     public View() {
     }
@@ -261,6 +259,7 @@ public class View {
     public void setListAttributeId(String listAttributeId) {
         this.listAttributeId = listAttributeId;
     }
+
 
     @Override
     public String toString() {

@@ -5,7 +5,7 @@
       <artifact name="redmany" />
     </artifacts-to-build>
   </component>
-  <component name="ChangeListManager">
+  <component name="ChangeListMana
     <list default="true" id="d5c393ee-7944-4ae1-a4fd-24b2b187ceb4" name="Default Changelist" comment="测试一下">
       <change afterPath="$PROJECT_DIR$/.idea/webContexts.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/dao/BackLoginDao.java" afterDir="false" />
@@ -50,7 +50,11 @@
       <change afterPath="$PROJECT_DIR$/web/js/jquery.min.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/web/zTree.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+
+    <list default="true" id="d5c393ee-7944-4ae1-a4fd-24b2b187ceb4" name="Default Changelist" comment="20190919已更新传值">
+      <change afterPath="$PROJECT_DIR$/src/common/DateUtil.java" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xm
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/com/company/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/com/sangupta/htmlgen/tags/body/forms/Input.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/com/sangupta/htmlgen/tags/body/forms/Input.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/com/sangupta/htmlgen/tags/body/grouping/Div.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/com/sangupta/htmlgen/tags/body/grouping/Div.class" afterDir="false" />
@@ -58,12 +62,18 @@
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/com/sangupta/htmlgen/tags/body/text/Label.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/com/sangupta/htmlgen/tags/body/text/Label.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/APPConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/APPConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/ApiParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/ApiParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/ArrayUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/ArrayUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/DataUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/DataUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/PropsUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/PropsUtil.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/SQLHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/common/SQLHelper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/dao/CommonDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/dao/CommonDao.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/dao/FormDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/dao/FormDao.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/dao/FormFiledDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/dao/FormFiledDao.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/dao/OaAttributeDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/dao/OaAttributeDao.class" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/model/Operation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/model/Operation.class" afterDir="false" />
+
+
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/page/CustomForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/page/CustomForm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/page/Page.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/page/Page.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/BaseServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/BaseServlet.class" afterDir="false" />
@@ -74,11 +84,18 @@
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/StudentServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/servlet/StudentServlet.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/CustomForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/CustomForm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/ListForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/ListForm.class" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/ListModifyForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/ListModifyForm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/ParentForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/ParentForm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/test/test.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/test/test.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/Select.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/Select.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/Text.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/Text.class" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/ParentForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/showtype/ParentForm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/Button.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/Button.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/DefaultDataProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/DefaultDataProvider.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/ParentView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/ParentView.class" afterDir="false" />
+>
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/classes/viewtype/View.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/WEB-INF/web.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/redmany/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/redmany/css/common.css" afterDir="false" />
@@ -90,12 +107,18 @@
       <change beforePath="$PROJECT_DIR$/out/production/redmany/com/sangupta/htmlgen/tags/body/text/Label.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/com/sangupta/htmlgen/tags/body/text/Label.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/common/APPConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/common/APPConfig.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/common/ApiParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/common/ApiParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/common/ArrayUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/common/ArrayUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/common/CollectionUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/common/CollectionUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/common/DataUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/common/DataUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/common/PropsUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/common/PropsUtil.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/common/SQLHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/common/SQLHelper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/dao/CommonDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/dao/CommonDao.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/dao/FormDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/dao/FormDao.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/dao/FormFiledDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/dao/FormFiledDao.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/dao/OaAttributeDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/dao/OaAttributeDao.class" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/out/production/redmany/model/Operation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/model/Operation.class" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/out/production/redmany/page/CustomForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/page/CustomForm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/page/Page.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/page/Page.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/servlet/BaseServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/servlet/BaseServlet.class" afterDir="false" />
@@ -106,6 +129,7 @@
       <change beforePath="$PROJECT_DIR$/out/production/redmany/servlet/StudentServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/servlet/StudentServlet.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/showtype/CustomForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/showtype/CustomForm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/showtype/ListForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/showtype/ListForm.class" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/out/production/redmany/showtype/ListModifyForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/showtype/ListModifyForm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/showtype/ParentForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/showtype/ParentForm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/redmany/test/test.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/test/test.class" afterDir="false" />
@@ -135,6 +159,31 @@
       <change beforePath="$PROJECT_DIR$/web/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/WEB-INF/web.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/css/common.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/js/commonUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/js/commonUtils.js" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/showtype/ParentForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/showtype/ParentForm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/viewtype/Button.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/viewtype/Button.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/viewtype/DefaultDataProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/viewtype/DefaultDataProvider.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/viewtype/ParentView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/viewtype/ParentView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/redmany/viewtype/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/redmany/viewtype/View.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/sangupta/htmlgen/HtmlTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sangupta/htmlgen/HtmlTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/ArrayUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/ArrayUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/CollectionUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/CollectionUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/DataUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/DataUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/PropsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/PropsUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao/FormFiledDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/FormFiledDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao/OaAttributeDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/OaAttributeDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/page/CustomForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/page/CustomForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/page/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/page/Page.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/FormFileAttribute.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/FormFileAttribute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/impl/FormFileAttributeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/impl/FormFileAttributeImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/showtype/CustomForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/showtype/CustomForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/showtype/ParentForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/showtype/ParentForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/viewtype/Button.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/viewtype/Button.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/viewtype/DefaultDataProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/viewtype/DefaultDataProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/viewtype/ParentView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/viewtype/ParentView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/viewtype/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/viewtype/View.java" afterDir="false" />
+
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -404,7 +453,12 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+
     <property name="last_opened_file_path" value="$PROJECT_DIR$/web/WEB-INF/lib/commons-collections-3.2.jar!/" />
+
+    <property name="extract.method.default.visibility" value="private" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../shengronghui" />
+
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -416,7 +470,11 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -446,6 +504,7 @@
       </list>
     </option>
   </component>
+
   <component name="RunManager" selected="Tomcat Server.Tomcat 8.0.51">
     <configuration name="test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="test.test" />
@@ -456,14 +515,102 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.company.Main" />
+      <module name="redmany" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.company.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="Tomcat 8.0.51" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.0.51" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="1.8">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/redmany/" />
+      <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="redmany">
+          <settings>
+            <option name="CONTEXT_PATH" value="/redmany" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Tomcat_8_0_51_redmany" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="65049" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+
+    <configuration name="Tomcat 8.0.51" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.0.51" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="1.8">
       <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
       <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
       <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+
+    <configuration name="tomcat" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.39" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/redmany/" />
+
       <deployment>
         <artifact name="redmany">
           <settings>
@@ -535,12 +682,20 @@
       </method>
     </configuration>
     <list>
+
       <item itemvalue="Application.test" />
+
+      <item itemvalue="Application.Main" />
+
       <item itemvalue="Tomcat Server.Tomcat 8.0.51" />
     </list>
     <recent_temporary>
       <list>
+
         <item itemvalue="Application.test" />
+
+        <item itemvalue="Application.Main" />
+
       </list>
     </recent_temporary>
   </component>
@@ -556,6 +711,7 @@
       <updated>1567752469868</updated>
       <workItem from="1567752475790" duration="26469000" />
       <workItem from="1567989479371" duration="17622000" />
+
       <workItem from="1568075268592" duration="23341000" />
       <workItem from="1568122696390" duration="1150000" />
       <workItem from="1568162306241" duration="26490000" />
@@ -565,6 +721,16 @@
       <workItem from="1568680763473" duration="27466000" />
       <workItem from="1568766291888" duration="24937000" />
       <workItem from="1568853399595" duration="928000" />
+
+      <workItem from="1568075268592" duration="5151000" />
+      <workItem from="1568179718133" duration="340000" />
+      <workItem from="1568180073351" duration="15035000" />
+      <workItem from="1568253922547" duration="18746000" />
+      <workItem from="1568588287151" duration="25218000" />
+      <workItem from="1568682054878" duration="23248000" />
+      <workItem from="1568766794971" duration="19371000" />
+      <workItem from="1568851701817" duration="839000" />
+
     </task>
     <task id="LOCAL-00001" summary="测试一下">
       <created>1568079387562</created>
@@ -580,6 +746,7 @@
       <option name="project" value="LOCAL" />
       <updated>1568085325836</updated>
     </task>
+
     <task id="LOCAL-00003" summary="测试一下">
       <created>1568085595142</created>
       <option name="number" value="00003" />
@@ -595,6 +762,16 @@
       <updated>1568171838989</updated>
     </task>
     <option name="localTasksCounter" value="5" />
+
+    <task id="LOCAL-00003" summary="20190911">
+      <created>1568184415291</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1568184415291</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -669,12 +846,21 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="测试一下" />
+
     <option name="LAST_COMMIT_MESSAGE" value="测试一下" />
+
+    <MESSAGE value="测试" />
+    <MESSAGE value="20190911测试" />
+    <MESSAGE value="20190911" />
+    <MESSAGE value="20190919已更新传值" />
+    <option name="LAST_COMMIT_MESSAGE" value="20190919已更新传值" />
+
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
+
           <url>file://$PROJECT_DIR$/src/showtype/ListForm.java</url>
           <line>100</line>
           <properties />
@@ -739,6 +925,166 @@
           <line>25</line>
           <properties />
           <option name="timeStamp" value="73" />
+
+          <url>file://$PROJECT_DIR$/src/servlet/StudentServlet.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/ParentForm.java</url>
+          <line>215</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/ParentForm.java</url>
+          <line>220</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/ParentForm.java</url>
+          <line>285</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/ParentForm.java</url>
+          <line>260</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/ParentForm.java</url>
+          <line>267</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/page/Page.java</url>
+          <line>399</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/page/Page.java</url>
+          <line>383</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/ParentView.java</url>
+          <line>222</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/page/Page.java</url>
+          <line>603</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/ClassifyAdvertisingListForm.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/ClassifyAdvertisingListForm.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/Image.java</url>
+          <line>17</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/CustomForm.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/ParentView.java</url>
+          <line>91</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/DefaultDataProvider.java</url>
+          <line>196</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/DefaultDataProvider.java</url>
+          <line>324</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/Button.java</url>
+          <line>28</line>
+          <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/Button.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/Button.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/CustomForm.java</url>
+          <line>17</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/page/Page.java</url>
+          <line>272</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/page/Page.java</url>
+          <line>571</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/page/Page.java</url>
+          <line>576</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/Button.java</url>
+          <line>23</line>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/CustomForm.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/showtype/CustomForm.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/DefaultDataProvider.java</url>
+          <line>288</line>
+          <option name="timeStamp" value="71" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/DefaultDataProvider.java</url>
+          <line>327</line>
+          <option name="timeStamp" value="72" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/viewtype/DefaultDataProvider.java</url>
+          <line>226</line>
+          <option name="timeStamp" value="73" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/company/Main.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="79" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/web/js/page.js</url>
+          <line>4</line>
+          <option name="timeStamp" value="18" />
+
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

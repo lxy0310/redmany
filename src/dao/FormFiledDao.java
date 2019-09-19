@@ -190,7 +190,9 @@ public class FormFiledDao extends BaseDao {
             sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
             sb.append(",FormFiled.listAttributeId ");
+
             sb.append(",FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams,FormFiled.filedGroup,FormFiled.onlyOne ");
+
             sb.append(" from FormFiled ");
             sb.append(" where FormFiled.FormName='" + formName + "'");
         }
