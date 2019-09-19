@@ -78,12 +78,30 @@ public class View {
      */
     private String showState;
 
+    private String filedGroup;
+    private String onlyOne;
+
 
 
 
     public View() {
     }
 
+    public String getFiledGroup() {
+        return filedGroup;
+    }
+
+    public void setFiledGroup(String filedGroup) {
+        this.filedGroup = filedGroup;
+    }
+
+    public String getOnlyOne() {
+        return onlyOne;
+    }
+
+    public void setOnlyOne(String onlyOne) {
+        this.onlyOne = onlyOne;
+    }
 
     public String getShowState() {
         return showState;
@@ -266,7 +284,8 @@ public class View {
                 ", value='" + value + '\'' +
                 ", Database_field='" + Database_field + '\'' +
                 ", showState='" + showState + '\'' +
+                ", filedGroup='" + filedGroup + '\'' +
+                ", onlyOne='" + onlyOne + '\'' +
                 '}';
     }
-
 }

@@ -47,16 +47,16 @@ public class Select extends ParentView {
             String[] arr=text.split("\\#");
             List<String> list=new ArrayList<String>();
 
-            for (int i=0;i<arr.length;i++){
-                // list.add(arr[i]);
-                System.out.println("-------------");
-                System.out.println(arr[i].substring(0,arr[i].indexOf(':')));
-                System.out.println(arr[i].substring(arr[i].indexOf(':')+1));
-                String a=arr[i].substring(0,arr[i].indexOf(':'));
-                String b=arr[i].substring(arr[i].indexOf(':')+1);
-                System.out.println("a"+a+"------b"+b);
-                select.option(b,a);
-            }
+//            for (int i=0;i<arr.length;i++){
+//                // list.add(arr[i]);
+//                System.out.println("-------------");
+//                System.out.println(arr[i].substring(0,arr[i].indexOf(':')));
+//                System.out.println(arr[i].substring(arr[i].indexOf(':')+1));
+//                String a=arr[i].substring(0,arr[i].indexOf(':'));
+//                String b=arr[i].substring(arr[i].indexOf(':')+1);
+//                System.out.println("a"+a+"------b"+b);
+//                select.option(b,a);
+//            }
 
 
             return  div;

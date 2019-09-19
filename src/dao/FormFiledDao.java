@@ -17,6 +17,36 @@ public class FormFiledDao extends BaseDao {
         super(pSQLHelper);
     }
 
+
+    /**
+     *  获取formfeild表的Name数据,并排序
+     *  * @param CompanyId
+     * @param FormName
+     * @return
+     */
+    public String getFormFiledStr (String CompanyId, String FormName){
+
+       // String sql = "SELECT Name  FROM [FormFiled] WHERE FormName=? order by Index_number";
+       // String sql = "SELECT Name FROM [FormFiled] WHERE FormName=? order by case when filedGroup is null then 1 else 0 end ,filedGroup,cast(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)) as int),Index_number";
+       String sql ="SELECT * FROM FormFiled WHERE FormName=?  ORDER BY CONVERT(INT, IsNull(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)),'100')), Index_number";
+        String[] parameters = {FormName};
+        List<Map<String, Object>> datas = new ArrayList<>();
+        datas = sqlHelper.executeQueryList(CompanyId, sql, parameters);
+      //  List<String> names = new ArrayList<>();
+        String filedStr = null;
+        if (datas != null) {
+            for (Map<String, Object> line : datas) {
+                if (filedStr == null){
+                    filedStr = String.valueOf(line.get("Name")) ;
+                }else {
+                    filedStr = filedStr + "," +String.valueOf(line.get("Name"));
+                }
+            }
+        }
+        return filedStr;
+    }
+
+
     /**
      * 根据FormName查询返回结果集
      * @param CompanyId 企业Id
@@ -24,7 +54,7 @@ public class FormFiledDao extends BaseDao {
      * @return
      */
     public List<Map<String,Object>> getFormFeildList(String CompanyId, String FormName){
-        String sql = "SELECT * FROM [FormFiled] WHERE FormName=?";
+        String sql = "SELECT * FROM [FormFiled] WHERE FormName=? order by Index_number";
         String[] parameters = {FormName};
         List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>();
         datas = sqlHelper.executeQueryList(CompanyId,sql,parameters);
@@ -109,6 +139,8 @@ public class FormFiledDao extends BaseDao {
             formFiled.setListAttributeId(ObjIsNull(map.get("listAttributeId"), ""));
             formFiled.setShowState(ObjIsNull(map.get("showState"), ""));
             formFiled.setShowPage(ObjIsNull(map.get("showPage"), ""));
+            formFiled.setFiledGroup(ObjIsNull(map.get("filedGroup"), ""));
+            formFiled.setFiledGroup(ObjIsNull(map.get("onlyOne"), ""));
         }
         return formFiled;
     }
@@ -151,12 +183,14 @@ public class FormFiledDao extends BaseDao {
             sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
             sb.append(",FormFiled.listAttributeId ");
+            sb.append( ",FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams,FormFiled.filedGroup,FormFiled.onlyOne ");
             sb.append(" from FormFiled INNER JOIN OaCopModel_b ON OaCopModel_b.copFormName=FormFiled.FormName");
             sb.append(" AND OaCopModel_b.showType='" + showType + "'");
         } else {
             sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
             sb.append(",FormFiled.listAttributeId ");
+            sb.append(",FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams,FormFiled.filedGroup,FormFiled.onlyOne ");
             sb.append(" from FormFiled ");
             sb.append(" where FormFiled.FormName='" + formName + "'");
         }

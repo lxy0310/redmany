@@ -44,6 +44,17 @@ public class CustomForm extends ParentForm {
         return null;
     }
 
+//    protected String makeViews(List<String> list, View view, Map<String, Object> datas, String html) {
+//        if (view == null) return null;
+//        ParentView parentView = makeType(view);
+//        if (parentView != null) {
+//            parentView.setDatas(datas);
+//        }
+//        String childView = toHtml(parentView);
+//        String key = "##" + view.getName();
+//        return  null;
+//    }
+
     protected String addMakeViews(List<String> list, View view, Map<String, Object> datas, String html) {
         if (view == null) return null;
         ParentView parentView = makeTypes(view);

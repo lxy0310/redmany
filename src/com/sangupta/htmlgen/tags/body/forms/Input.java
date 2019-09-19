@@ -1,5 +1,6 @@
 package com.sangupta.htmlgen.tags.body.forms;
 
+import com.sangupta.htmlgen.core.HtmlAttribute;
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 
 public class Input extends HtmlBodyElement<Input> {
@@ -34,4 +35,22 @@ public class Input extends HtmlBodyElement<Input> {
     public Input required() {
         return super.attr("required ", null);
     }
+
+    //引用layui的一些标签所要用到的方法
+    public Input filter(String filter) {
+        addAttribute(new HtmlAttribute("lay-filter", filter));
+        return this;
+    }
+
+    public Input skin(String skin) {
+        addAttribute(new HtmlAttribute("lay-skin", skin));
+        return this;
+    }
+
+    public Input title(String title) {
+        addAttribute(new HtmlAttribute("title", title));
+        return this;
+    }
+
+
 }

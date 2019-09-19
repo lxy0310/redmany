@@ -8,6 +8,7 @@ public class Operation {
     private String OperationType;
     private String TemplatePage;
     private int state;
+    private String Batch;
 
     public int getId() {
         return Id;
@@ -57,6 +58,10 @@ public class Operation {
         this.state = state;
     }
 
+    public String getBatch() {
+        return Batch;
+    }
+
     @Override
     public String toString() {
         return "Operation{" +
@@ -66,6 +71,12 @@ public class Operation {
                 ", OperationType='" + OperationType + '\'' +
                 ", TemplatePage='" + TemplatePage + '\'' +
                 ", state=" + state +
+                ", Batch='" + Batch + '\'' +
                 '}';
     }
+
+    public void setBatch(String batch) {
+        Batch = batch;
+    }
+
 }
