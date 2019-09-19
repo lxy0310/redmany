@@ -139,7 +139,6 @@ public class FormFiledDao extends BaseDao {
 
     /**
      * 查询模板控件信息
-     *
      * @param Company_Id 企业id
      * @param formName   模板名称
      * @param showType   模板类型，是否是复合模板 1是 0否
@@ -148,19 +147,18 @@ public class FormFiledDao extends BaseDao {
     public List<View> getFormContorl(String Company_Id, String formName, String showType) {
         StringBuilder sb = new StringBuilder("");
         if (showType != null) {
-            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
+            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target,IsNull," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
-            sb.append(",FormFiled.listAttributeId ");
+            sb.append(",FormFiled.listAttributeId,ValidateExpreesion,ValidateErrorMessage,onlyOne,FormName,data_replacer ");
             sb.append(" from FormFiled INNER JOIN OaCopModel_b ON OaCopModel_b.copFormName=FormFiled.FormName");
             sb.append(" AND OaCopModel_b.showType='" + showType + "'");
         } else {
-            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
+            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target,IsNull," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
-            sb.append(",FormFiled.listAttributeId ");
+            sb.append(",FormFiled.listAttributeId,ValidateExpreesion,ValidateErrorMessage,onlyOne,FormName,data_replacer ");
             sb.append(" from FormFiled ");
             sb.append(" where FormFiled.FormName='" + formName + "'");
         }
-//        System.out.println("sql:" + sb.toString());
         return sqlHelper.executeQueryList(Company_Id, sb.toString(), null, View.class);
     }
 

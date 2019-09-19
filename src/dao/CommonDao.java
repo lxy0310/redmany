@@ -8,8 +8,4 @@ public class CommonDao extends BaseDao {
         super(pSQLHelper);
     }
 
-
-
-
-
 }

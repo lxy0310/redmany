@@ -5,12 +5,19 @@ import com.sangupta.htmlgen.tags.body.embed.Img;
 import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.text.Label;
 import com.sangupta.htmlgen.tags.body.text.Span;
+import com.sangupta.htmlgen.tags.head.Script;
 import common.ApiParser;
+import common.SQLHelper;
 import common.utils.HttpUtils;
 import common.utils.SafeString;
+import dao.FormDao;
+import dao.FormFiledDao;
+import model.Form;
 import model.ShopCarPageInfo;
+import page.Page;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -46,9 +53,7 @@ public class Text extends ParentView {
     protected HtmlBodyElement<?> create() {
         Span span = new Span();
         span.id(getName());
-       /* System.out.println(getName());//UserName
-        System.out.println(getPage());//SinglePage{copformName='BondModifyPersonDate', showType='freeForm'}
-        System.out.println(getFormName());//BondModifyPersonDate*/
+        span.add(new Script("js/commonUtils.js"));
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());//input值
@@ -62,6 +67,7 @@ public class Text extends ParentView {
         // wapAttribute='style:padding-right:100px;pointer-events:none;', windowsAttribute='null',
         // iosAttribute='null', androidAttribute='null', transferParams='null', Name='UserName', Title='用户邮箱', ValidateExpreesion='null', ValidateErrorMessage='null'}
         if (getView()!=null){
+//            int code = 0;
             View view=getView();
             System.out.println(view);
             if (view.getTitle()!=null){ //title
@@ -82,41 +88,72 @@ public class Text extends ParentView {
             }
             Input input =span.input();
             input.id(getName()+'0');
-           // input.addCssClass(getName());
             if (view.getDatabase_field()!=null) {   //Database_field
                 input.addCssClass(view.getDatabase_field().trim());
             }else{
                 input.addCssClass(getName().trim());
             }
             input.name(getName());
+            if (view.getIsNull()!=null){
+                String isNull=view.getIsNull();//是否为空(1不为空 0 可以为空)
+                if("1".equals(isNull)){
+                    input.attr("required","required");
+                }
+            }
+            String mesgName = "";
+            if(view.getTitle()!=null){
+                mesgName = view.getTitle().toString();
+                if (view.getTitle().contains(":")){ //如果有：去掉
+                    mesgName=mesgName.substring(0,mesgName.length()-1);
+                }
+            }
+            if (view.getValidateExpreesion()!=null){
+                String validateStr=view.getValidateExpreesion();//获取验证的正则表达式
+                String messageStr = "";
+                if(view.getValidateErrorMessage()!=null){
+                    messageStr=view.getValidateErrorMessage();
+                    messageStr="["+mesgName+"]"+messageStr;
+                }else{
+                    messageStr="["+mesgName+"]的格式有误";
+                }
+                input.attr("onblur","validate('"+getName()+"0',"+validateStr+",'"+messageStr+"')");
+            }
+            if (view.getOnlyOne()!=null){
+                String onlyOne=view.getOnlyOne();//是否唯一(1是，0否)
+                if("1".equals(onlyOne)){
+                    if (view.getFormName()!=null){
+                        String tableName = getForm().getFormData().getTable_name().trim();
+                        if(view.getName()!=null && tableName.length()>0){
+                            String fieldName = view.getName().trim();
+                            String sql = "select * from "+tableName+" where "+fieldName+" =?";
+                            input.attr("onchange","textOnlyOne('"+getName()+"0','"+sql+"','"+mesgName+"')");
+                        }
+                    }
+                }
+            }
             if (view.getWapAttribute()!=null){
-                /*Input input =span.input();
-                input.id(getName()+'0');
-                input.addCssClass(getName());*/
-
                 String str=view.getWapAttribute();//获取样式
                 String[] strs = str.split("\\[\\^\\]");
-              /* for(int i=0;i<strs.length;i++){
-                    System.out.println("值:"+i+strs[i]);
-                }*/
                if (strs!=null){
-                if (strs[0].contains("isEdit")){ //是否禁用
-                    String  num=strs[0].substring(strs[0].lastIndexOf(":")+1);
-                    // pointer-events:none; 禁用鼠标点击事件
-                    if (num.equals("0")){
-                        input.attr("readonly","readonly");
-                    }
-                    System.out.println(num);
-                }
-
+                   for(int i=0;i<strs.length;i++){
+                       if (strs[i].contains("isEdit")){//是否禁用
+                           String  num=strs[i].substring(strs[i].lastIndexOf(":")+i);
+                           if (num.equals("0")){
+                               input.attr("readonly","readonly");
+                           }
+                       }
+                       if (strs[i].contains("border")){//是否显示文本框的边框
+                           String  num=strs[i].substring(strs[i].lastIndexOf(":")+i);
+                           if (num.equals("none")){
+                               input.attr("style","border:none;");
+                           }
+                       }
+                   }
                 if (strs[1].contains("hintContent")){ //提示
                     String  num=strs[1].substring(strs[1].lastIndexOf(":")+1);
                     if (num!=null){
-                        System.out.println("num"+num);
                         input.placeholder(num);
-                       // input.attr("placeholder",num);
                     }
-                    System.out.println(num);
                 }else{ //默认提示
                   String num=view.getTitle().toString();
                   if (view.getTitle().contains(":")){ //如果有：去掉
@@ -125,7 +162,6 @@ public class Text extends ParentView {
                     input.placeholder("请输入"+num);
                 }
                }
-                System.out.println();
             }
             if (text!=null){
                 input.value(text);
@@ -133,61 +169,10 @@ public class Text extends ParentView {
             if (view.getShowState()!=null){
                 input.value("");
             }
-
-
         }
         if(onclick != null){
             span.onClick(onclick);
         }
-
-       /* if(text!=null){
-
-            if(textDesc!=null){
-                text=textDesc+":"+text;
-            }
-            Input input =span.input();
-            input.id(getName()+'0');
-            input.addCssClass(getName());
-
-            if(placeholder!=null){
-                input.placeholder(placeholder);
-            }
-
-            input.value(text);
-        }else if(text==null) {
-            if(textDesc!=null){
-                text=textDesc+":";
-            }
-            span.text(text);
-        }*/
-
-/*        if(text!=null){
-
-            if(textDesc!=null){
-                text=textDesc+":"+text;
-            }
-            span.text(text);
-        }else if(text==null) {
-            if(textDesc!=null){
-                text=textDesc+":";
-            }
-            span.text(text);
-        }*/
-
-   /*    if(isEdit!=null && isEdit.equals("1")){
-            if(txtName!=null){
-                Span name =span.span();
-                name.addCssClass("edit-"+getName());
-                name.text(txtName);
-            }
-            Input input =span.input();
-            input.id("keyword");
-            input.addCssClass(getName()+"-ipt");
-            if(placeholder!=null){
-                input.placeholder(placeholder);
-            }
-        }*/
-
         if (color != null) {
             span.style("color", color);
         }
@@ -197,38 +182,6 @@ public class Text extends ParentView {
         if (css != null) {
             span.addCssClass(css);
         }
-        if("bank".equals(getName())){
-            Input input = span.input();
-            input.type("text").placeholder("请填写所属银行");
-        }
-
-        if("branch".equals(getName())){
-
-            Input input = span.input();
-            input.type("text").placeholder("请添加分支行");
-
-        }
-/*        if("phone".equals(getName())){
-
-            Input input = span.input();
-            input.type("text").placeholder("请填写预留手机号");
-//            com.sangupta.htmlgen.tags.body.forms.Button btn = span.button("保存").style("background","blue");
-
-        }*/
-       /* span.add(new Script("js/jquery-1.4.2.js"));*/
-        // 拿到值
-      /*  span.add(new Script().text("\n"+
-                " $(document).ready(function(){\n" +
-                "$('input').bind('input propertychange', function() {\n"+
-                    "alert(\"bbb\");\\n"+
-                    "var input1 = $(\"#\"+getName()+\"0\").val();"+
-
-                "});"+
-                "$(\"#"+getName()+"0\").blur(function(){\n"+
-
-                "});\n"+
-                "});\n"
-        ));*/
         return span;
     }
 }

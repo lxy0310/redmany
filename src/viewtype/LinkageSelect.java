@@ -1,8 +1,6 @@
 package viewtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
-import com.sangupta.htmlgen.tags.body.forms.Input;
-import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.text.Label;
 import com.sangupta.htmlgen.tags.body.text.Span;
 import dao.CommonHelperDao;
@@ -12,16 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Select extends ParentView {
+public class LinkageSelect extends ParentView {
     @Override
     public String getType() {
-        return "Select";
+        return "LinkageSelect";
     }
 
     @Override
     protected HtmlBodyElement<?> create() {
         Span span = new Span();
-//        Div span = new Div();
         span.id(getName());
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
@@ -106,6 +103,30 @@ public class Select extends ParentView {
                 select.addCssClass(css);
             }
         }
+//        if(text !=null){
+//            Div div = new Div();
+//            /* div.text("卡类型");*/
+//            //com.sangupta.htmlgen.tags.body.sections.Select select1 = new com.sangupta.htmlgen.tags.body.sections.Select();
+//            //select1 = div.select();
+//            /*      select1.option("请选择","0");*/
+//            String[] arr=text.split("\\#");
+//            List<String> list=new ArrayList<String>();
+//            for (int i=0;i<arr.length;i++){
+//                String a=arr[i].substring(0,arr[i].indexOf(':'));
+//                String b=arr[i].substring(arr[i].indexOf(':')+1);
+//                select.option(b,a);
+//            }
+//            return  div;
+//        }
+//        if("cardType".equals(getName())){
+//            Div div = new Div();
+//            div.text("卡类型");
+//            com.sangupta.htmlgen.tags.body.sections.Select select1 = new com.sangupta.htmlgen.tags.body.sections.Select();
+//            select1 = div.select();
+//            select1.option("信用卡","信用卡");
+//            select1.option("储蓄卡","储蓄卡");
+//            return  div;
+//        }
         return span;
     }
 
