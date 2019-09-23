@@ -289,4 +289,3 @@ function textOnlyOne(id,sql,mesg) {
     }
 }
 
-

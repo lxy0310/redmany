@@ -61,7 +61,12 @@ public class PropsUtil {
           }
         return UUID.randomUUID().toString().replace("-","") + "." + fileName.substring(fileName.lastIndexOf(".") + 1);
      }
-
+    /**
+     * 文件上传
+     * @param fileItem 文件元素
+     * @param savePath 文件保存路径
+     * @return 成功返回上传的文件名
+     */
 
      public static  String updateOneFile(FileItem fileItem,String savePath){
          //判断是否是文件表单字段
@@ -71,6 +76,25 @@ public class PropsUtil {
               //获取新的文件名
               String uuidName=renameToUUID(fileName);
 
+
+
+
+               //
+           /*   if(savePath!=null){
+              File file=new File( savePath);
+              if(!file.exists() && file.isDirectory()){
+
+                  file.mkdirs();
+              }
+
+              }*/
+              try {
+                  fileItem.write(new File(savePath,uuidName));
+                  return uuidName;
+              } catch (Exception e) {
+                  e.printStackTrace();
+                  return  null;
+              }
 
           }
           return  null;
