@@ -133,6 +133,8 @@ public class Text extends ParentView {
             if (view.getWapAttribute()!=null){
                 String str=view.getWapAttribute();//获取样式
                 String[] strs = str.split("\\[\\^\\]");
+                boolean hasHintContent=false;
+                String hintContenth=null;
                if (strs!=null){
                    for(int i=0;i<strs.length;i++){
                        if (strs[i].contains("isEdit")){//是否禁用
@@ -147,11 +149,15 @@ public class Text extends ParentView {
                                input.attr("style","border:none;");
                            }
                        }
+                       if( strs[i].contains("hintContent")){
+                           hasHintContent=true;
+                           hintContenth=strs[i].substring(strs[i].lastIndexOf(":")+1);
+                       }
                    }
-                if (strs[1].contains("hintContent")){ //提示
-                    String  num=strs[1].substring(strs[1].lastIndexOf(":")+1);
-                    if (num!=null){
-                        input.placeholder(num);
+                if ( hasHintContent){ //提示
+                   // String  num=strs[1].substring(strs[1].lastIndexOf(":")+1);
+                    if (hintContenth!=null){
+                        input.placeholder( hintContenth);
                     }
                 }else{ //默认提示
                   String num=view.getTitle().toString();
