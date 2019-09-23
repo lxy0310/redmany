@@ -44,8 +44,48 @@ public class View {
     private String onlyOne;
     private String FormName;
     private String data_replacer;
+    private String isTitle="0"; //是否传标题   默认长标题0 ，不长1
 
     public View() {
+    }
+
+    public String getIsTitle() {
+        return isTitle;
+    }
+
+    public void setIsTitle(String isTitle) {
+        this.isTitle = isTitle;
+    }
+
+    @Override
+    public String toString() {
+        return "View{" +
+                "Index_number=" + Index_number +
+                ", Type='" + Type + '\'' +
+                ", target='" + target + '\'' +
+                ", attributeId='" + attributeId + '\'' +
+                ", attributeStr='" + attributeStr + '\'' +
+                ", wapAttribute='" + wapAttribute + '\'' +
+                ", iosAttribute='" + iosAttribute + '\'' +
+                ", androidAttribute='" + androidAttribute + '\'' +
+                ", windowsAttribute='" + windowsAttribute + '\'' +
+                ", listAttributeId='" + listAttributeId + '\'' +
+                ", transferParams='" + transferParams + '\'' +
+                ", Name='" + Name + '\'' +
+                ", Title='" + Title + '\'' +
+                ", ValidateExpreesion='" + ValidateExpreesion + '\'' +
+                ", ValidateErrorMessage='" + ValidateErrorMessage + '\'' +
+                ", IsNull='" + IsNull + '\'' +
+                ", isDataItem='" + isDataItem + '\'' +
+                ", value='" + value + '\'' +
+                ", Database_field='" + Database_field + '\'' +
+                ", showState='" + showState + '\'' +
+                ", onlyOne='" + onlyOne + '\'' +
+                ", FormName='" + FormName + '\'' +
+                ", data_replacer='" + data_replacer + '\'' +
+                ", isTitle='" + isTitle + '\'' +
+                ", filedGroup='" + filedGroup + '\'' +
+                '}';
     }
 
     public String getData_replacer() { return data_replacer; }
@@ -234,32 +274,4 @@ public class View {
     }
 
 
-    @Override
-    public String toString() {
-        return "View{" +
-                "Index_number=" + Index_number +
-                ", Type='" + Type + '\'' +
-                ", target='" + target + '\'' +
-                ", attributeId='" + attributeId + '\'' +
-                ", attributeStr='" + attributeStr + '\'' +
-                ", wapAttribute='" + wapAttribute + '\'' +
-                ", iosAttribute='" + iosAttribute + '\'' +
-                ", androidAttribute='" + androidAttribute + '\'' +
-                ", windowsAttribute='" + windowsAttribute + '\'' +
-                ", transferParams='" + transferParams + '\'' +
-                ", Name='" + Name + '\'' +
-                ", Title='" + Title + '\'' +
-                ", ValidateExpreesion='" + ValidateExpreesion + '\'' +
-                ", ValidateErrorMessage='" + ValidateErrorMessage + '\'' +
-                ", IsNull='" + IsNull + '\'' +
-                ", isDataItem='" + isDataItem + '\'' +
-                ", value='" + value + '\'' +
-                ", Database_field='" + Database_field + '\'' +
-                ", showState='" + showState + '\'' +
-                ", onlyOne='" + onlyOne + '\'' +
-                ", FormName='" + FormName + '\'' +
-                ", data_replacer='" + data_replacer + '\'' +
-                ", filedGroup='" + filedGroup + '\'' +
-                '}';
-    }
 }

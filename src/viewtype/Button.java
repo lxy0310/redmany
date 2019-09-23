@@ -16,6 +16,7 @@ public class Button extends ParentView {
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
         String color = getDataProvider().getTextColor(this, getForm());
+        btn.text("登录");
         /**
          * p.id={Id}$flag=0      flag=1或者0或者2(标签，1为立即购买，0为加入购物车，2为修改)
          * */

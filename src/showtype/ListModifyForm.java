@@ -9,7 +9,6 @@ import com.sangupta.htmlgen.tags.body.table.TBody;
 import com.sangupta.htmlgen.tags.body.table.THead;
 import com.sangupta.htmlgen.tags.body.table.Table;
 import com.sangupta.htmlgen.tags.body.table.TableRow;
-import com.sangupta.htmlgen.tags.body.text.Label;
 import com.sangupta.htmlgen.tags.body.text.Span;
 import com.sangupta.htmlgen.tags.head.Script;
 import common.SQLHelper;
@@ -38,7 +37,6 @@ public class ListModifyForm extends CustomForm {
     private FormFiledDao filedDao;
     private String isShow;  //  不为空,可以修改,   1   替换页面,   2 上下页面
     private List<Map<String, Object>> FormStateOpertionList;
-    private List<Map<String, Object>> getFormUpdateFileldList;
     private String Parameter;
     private List<Map<String, Object>> formStateOperation;
     private int group;  //判断是否有分组
@@ -81,8 +79,7 @@ public class ListModifyForm extends CustomForm {
                 //    }
             }
         }
-
-        if (platform.equals("2")) {
+        if (platform.equals("0")) {
             sql = sql + " where u.Id=" + getPage().getUserId();
         }
 
@@ -96,7 +93,8 @@ public class ListModifyForm extends CustomForm {
 
         div.add(new Script("js/newForm.js"));
         div.add(new Script("js/jquery-1.12.4.js"));
-        if (platform.equals("1")) {//1为后台
+        System.out.println(platform);
+        if (platform.equals("1") || platform == "1" ) {//1为后台
             //没有分组
             if (group == 0) {
                 showBack(div);
@@ -109,7 +107,6 @@ public class ListModifyForm extends CustomForm {
 
     }
 
-
     public void showBack(Div div) {
 
         List<View> views = getViews();
@@ -119,7 +116,6 @@ public class ListModifyForm extends CustomForm {
         Button add = btncontainer.button().addCssClass("layui-btn layui-btn-sm layui-btn-normal").text("添加");
         Button del = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text("删除").onClick("del('" + getFormName() + "')");;
         //生成批量操作按钮
-
 
         Table table = div.table().addCssClass("table");
         THead thead = table.thead();
@@ -136,6 +132,17 @@ public class ListModifyForm extends CustomForm {
 
         for (View view : views) {
             rowTh.td(view.getTitle());
+            if (view.getType().toLowerCase().equals("text")) {
+                String attr = view.getAttributeStr();
+                if (attr!=null){
+                    view.setAttributeStr(attr + "border:none[^]");
+                    view.setWapAttribute(attr + "border:none[^]");
+                }else {
+                    view.setWapAttribute( "border:none[^]");
+                    view.setAttributeStr( "border:none[^]");
+                }
+                continue;
+            }
         }
         // if (isShow != null) {
         rowTh.td("操作");
@@ -153,14 +160,10 @@ public class ListModifyForm extends CustomForm {
             check.value(line.get("Id").toString());
 
             for (View view : views) {
-                if (view.getType().toLowerCase().equals("text")) {
-                    String attr = view.getAttributeStr();
-                    if (attr != null) {
-                        view.setAttributeStr(attr + "border:0px;");
-                    } else {
-                        view.setAttributeStr("style:border:0px;");
-                    }
-                }
+//                if (view.getType().toLowerCase().equals("text")) {
+//                    String attr = view.getAttributeStr();
+//                    view.setAttributeStr(attr + "border:none[^]");
+//                }
                 html = makeViews(list, view, line, html);
             }
             if (!TextUtils.isEmpty(html)) {
@@ -169,8 +172,6 @@ public class ListModifyForm extends CustomForm {
             for (String v : list) {
                 row.td(v);
             }
-            // if (isShow!=null){
-
             Integer Tablestate = (Integer) line.get("state");
             System.out.println(Tablestate);
 

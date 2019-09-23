@@ -6,6 +6,7 @@ import page.Page;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 public class AccountHelper {
 
@@ -110,4 +111,45 @@ public class AccountHelper {
         }
         return true;
     }
+
+
+    public boolean onLogin(Map<String, Object> uesrInfo, String pwd, boolean reme) {
+//638&yonghu2&test11111111111111111111111111111111111111111&112&dfr_test1
+
+        try {
+            int userId = uesrInfo.get("Id")==null? null: Integer.parseInt(uesrInfo.get("Id").toString());
+            String account = uesrInfo.get("UserName")==null ? null:uesrInfo.get("UserName").toString();
+            String name = uesrInfo.get("RealName")==null ? null:uesrInfo.get("RealName").toString();
+            int roleId =uesrInfo.get("RoleId")==null?null: Integer.parseInt(uesrInfo.get("RoleId").toString());
+            String xmpp =uesrInfo.get("Xmpp")==null?null :uesrInfo.get("Xmpp").toString();
+            String DeptId = uesrInfo.get("DeptId")==null?null:uesrInfo.get("DeptId").toString();
+            String Ip = null;
+            CookieHelper.saveCookie(resp, Page.Settings.USERID, "" + userId, false);
+            if (reme) {
+
+                CookieHelper.saveCookie(resp, Page.Settings.ACCOUNT, SafeString.encode(account), false);
+                CookieHelper.saveCookie(resp, Page.Settings.USER_NAME, name, false);
+                CookieHelper.saveCookie(resp, Page.Settings.ROLEID, "" + roleId, false);
+                CookieHelper.saveCookie(resp, Page.Settings.XMPP, xmpp, false);
+                CookieHelper.saveCookie(resp, Page.Settings.PWD, SafeString.encode(pwd), false);
+                CookieHelper.saveCookie(resp, Page.Settings.DeptId, DeptId, false);
+                CookieHelper.saveCookie(resp, Page.Settings.IP, Ip, false);
+            }
+            HttpSession session = req.getSession();
+            session.setAttribute(Page.Settings.USERID, userId);
+            session.setAttribute(Page.Settings.ACCOUNT, SafeString.encode(account));
+            session.setAttribute(Page.Settings.USER_NAME, name);
+            session.setAttribute(Page.Settings.ROLEID, roleId);
+            session.setAttribute(Page.Settings.XMPP, xmpp);
+            session.setAttribute(Page.Settings.PWD, SafeString.encode(pwd));
+            session.setAttribute(Page.Settings.DeptId,DeptId);
+            session.setAttribute(Page.Settings.IP,Ip);
+            System.out.println("密码"+ SafeString.encode(pwd));
+        } catch (Throwable e) {
+            return false;
+        }
+        return true;
+    }
+
+
 }

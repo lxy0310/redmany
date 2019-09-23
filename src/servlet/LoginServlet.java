@@ -1,11 +1,12 @@
 package servlet;
 
-import common.AccountHelper;
-import common.ApiParser;
-import common.SQLHelper;
+import com.alibaba.fastjson.JSON;
+import com.sun.org.apache.xpath.internal.objects.XNull;
+import common.*;
 import common.utils.CookieHelper;
 import common.utils.SafeString;
 import common.utils.TextUtils;
+import dao.UserDao;
 import page.Page;
 
 import javax.servlet.ServletException;
@@ -13,19 +14,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
 
 public class LoginServlet extends BaseServlet {
 
     @Override
     protected void doHtml(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("utf-8");
+        PrintWriter out=resp.getWriter();
+        //判断是否是登出
         if ("1".equalsIgnoreCase(req.getParameter("out"))) {
             //读取最后的链接
             AccountHelper accountHelper = new AccountHelper(req, resp);
             accountHelper.logout();
-            resp.sendRedirect(Page.getLoginPage());
+            String loginGoto=req.getParameter("url");
+            if(loginGoto!=null){
+                resp.sendRedirect(loginGoto);
+            }else{
+                resp.sendRedirect(Page.getLoginPage());
+            }
+
            // resp.sendRedirect("queryStudentServlet");
             return;
         }
+        //判断是否是自动登录
         String autologing = req.getParameter("autologin");
         if (autologing != null && autologing.length() > 0) {
             //自动登录
@@ -56,7 +72,8 @@ public class LoginServlet extends BaseServlet {
                 } else {
                     resp.sendRedirect("queryStudentServlet");
                 }
-            } else {
+            }
+            else {
                 //手动登录
                 System.err.println("targetUrl=" + targetUrl);
                 //关闭浏览就过时
@@ -70,14 +87,52 @@ public class LoginServlet extends BaseServlet {
 //            resp.sendRedirect(Page.getLoginPage());
 //            return;
         }
+        //获取输入的账号名
         String name = req.getParameter("username");
         if (name == null) {
             name = req.getParameter("userName");
         }
+        //获取输入的密码
         String pwd = req.getParameter("password");
         if (pwd == null) {
             pwd = req.getParameter("passWord");
         }
+        //新的登录逻辑（ajax版本）
+        UserDao userDao=new UserDao(new SQLHelper(req));
+        List<Map<String, Object>> userInfo=userDao.login(APPConfig.COMPANYID,name);
+        String loginMsg=null;
+        if (userInfo!=null && userInfo.size()>0){
+            Map<String,Object> user=userInfo.get(0);
+            //对比密码
+          String userPassword=  user.get("UserPassword").toString();
+            String md5Password=null;
+            try {
+               md5Password= MD5Util.passWordMd5(pwd);
+               if(userPassword.equals(md5Password)){
+                    loginMsg="success";
+               }else{
+                   loginMsg="账号或者密码错误";
+               }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+
+        }else{
+            //用户不存在
+            loginMsg="账号不存在";
+
+        }
+        if(loginMsg!=null){
+            AccountHelper accountHelper = new AccountHelper(req, resp);
+            accountHelper.onLogin(userInfo.get(0),pwd,false);
+            String loginResult= JSON.toJSONString(loginMsg);
+            out.println(loginResult);
+
+            return;
+        }
+
+
+        //旧的登录实现逻辑,走rob平台的登录
         if ("phone".equals(req.getParameter("type"))) {
             //手机号登录
         } else {
@@ -87,7 +142,8 @@ public class LoginServlet extends BaseServlet {
             if (result.startsWith("fail")) {
                 //302到登录页面 queryStudentServlet?copformName=loginPage&showType=listForm
                 resp.sendRedirect(Page.getLoginPage());
-            } else {
+            }
+            else {
                 //登录ok
                 //320到首页 queryStudentServlet
                 //读取最后的链接

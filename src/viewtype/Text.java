@@ -128,6 +128,8 @@ public class Text extends ParentView {
             if (view.getWapAttribute()!=null){
                 String str=view.getWapAttribute();//获取样式
                 String[] strs = str.split("\\[\\^\\]");
+                boolean hasHintContent=false;
+                String hintContenth=null;
                if (strs!=null){
                    String hintContent ="";
                    for(int i=0;i<strs.length;i++){
@@ -163,6 +165,7 @@ public class Text extends ParentView {
                   }
                     input.placeholder("请输入"+num);
                 }
+
                }
             }
             if (text!=null){

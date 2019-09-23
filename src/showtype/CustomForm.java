@@ -48,7 +48,6 @@ public class CustomForm extends ParentForm {
                     childView=childView.replace("{"+filed+"}", parentView.getDatas().get(filed).toString());
                 }
             }
-
         }else if(parentView !=null && parentView.getForm() !=null && parentView.getForm().getDatas()!=null && parentView.getForm().getDatas().size()>0 && parentView.getForm().getDatas().get(0)!=null && parentView.getForm().getDatas().get(0).size()>0){
            for (String filed:
                    parentView.getForm().getDatas().get(0).keySet()) {
@@ -58,7 +57,6 @@ public class CustomForm extends ParentForm {
            }
 
         }
-
         list.add(childView);
         return null;
     }
