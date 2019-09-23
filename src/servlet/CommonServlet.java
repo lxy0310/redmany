@@ -52,7 +52,7 @@ public class CommonServlet extends BaseServlet {
             }
             out.print(results);
 
-        }else if (method.equals("updateListBtn")){  //列表操作
+        }else if (method.equals("batchList")){  //列表操作
             String listId1=request.getParameter("listId");
             Integer listId=Integer.valueOf(listId1);
             String formName=request.getParameter("FormName");
@@ -63,12 +63,6 @@ public class CommonServlet extends BaseServlet {
             int count=commonDao.updateBtnList(Company_Id,listId,afterState,tableName);
             out.print(count);
 
-        }else if (method.equals("delListForm")){ //删除
-            String hidFormName=request.getParameter("hidFormName");
-            String id=request.getParameter("id");
-            String TableName=formDao.getTableNameByFormName(Company_Id,hidFormName);
-            Integer result=commonDao.delDate(Company_Id,TableName,id);
-            out.print(result);
         }else if (method.equals("delBatch")){ //批量删除
             String hidFormName=request.getParameter("hidFormName");
             String id=request.getParameter("id");

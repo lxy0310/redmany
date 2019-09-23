@@ -148,18 +148,6 @@ public class Text extends ParentView {
                            }
                        }
                    }
-                if (strs[1].contains("hintContent")){ //提示
-                    String  num=strs[1].substring(strs[1].lastIndexOf(":")+1);
-                    if (num!=null){
-                        input.placeholder(num);
-                    }
-                }else{ //默认提示
-                  String num=view.getTitle().toString();
-                  if (view.getTitle().contains(":")){ //如果有：去掉
-                      num=num.substring(0,num.length()-1);
-                  }
-                    input.placeholder("请输入"+num);
-                }
                }
             }
             if (text!=null){

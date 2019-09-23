@@ -166,6 +166,7 @@ public class Page implements ParentForm.ISQLReplacer {
      * @param showType
      */
     public void init(StudentServlet pServlet, String copformName, String showType, String title) {
+
         mPageServlet = pServlet;
         mDefTitle = title;
         HttpServletRequest req = pServlet.getRequest();

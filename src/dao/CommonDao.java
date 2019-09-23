@@ -38,8 +38,8 @@ public class CommonDao extends BaseDao {
      * @return
      */
     public int updateBtnList(String Company_Id,int listId,int afterState,String tableName ){
-        String sql="update "+tableName+" set State=? where Id=?";
-        String[] parameters={String.valueOf(afterState),String.valueOf(listId)};
+        String sql="update "+tableName+" set State=? where Id="+listId;
+        String[] parameters={String.valueOf(afterState)};
         return sqlHelper.ExecuteNonQuery(Company_Id,sql,parameters);
     }
 

@@ -5,14 +5,12 @@ import com.sangupta.htmlgen.tags.body.table.TBody;
 import com.sangupta.htmlgen.tags.body.table.Table;
 import com.sangupta.htmlgen.tags.body.table.TableDataCell;
 import com.sangupta.htmlgen.tags.body.table.TableRow;
-import common.CollectionUtil;
-import common.DataUtil;
-import common.DateUtil;
-import common.SQLHelper;
+import common.*;
 import dao.FormFiledDao;
 import viewtype.View;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +19,9 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args)  {
-        FormFiledDao ffd=new FormFiledDao(new SQLHelper(true));
-      List<View> tes= ffd.getFormContorl("AntMall","Order_management",null);
-        Map<String,List<View>> test= CollectionUtil.getMap(tes,View.class,"filedGroup",String.class);
+
+        System.out.println(PropsUtil.renameToUUID("123.sa"));
+
 
 /*        Div div = new Div();
         Table table = div.table();

@@ -10,7 +10,6 @@ import com.sangupta.htmlgen.tags.body.text.Span;
 import com.sangupta.htmlgen.tags.head.Script;
 import common.SQLHelper;
 import common.utils.TextUtils;
-import dao.BackMarDao;
 import dao.CommonDao;
 import dao.FormDao;
 import dao.MenuDao;
@@ -57,7 +56,7 @@ public class MDlistForm extends CustomForm {
         }
         FFormColumnName = formName.split(",")[0]; //主表
         System.out.println("FFormColumnName:"+FFormColumnName);
-        FFormList = formDao.getFormList(getCompanyId(), FFormColumnName);
+        FFormList = formDao.getFormList(getCompanyId(), FFormColumnName);//获取主表form表信息
         System.out.println("FFormList:" + FFormList.toString());
         if (FFormList != null) {
             for (Map<String, Object> line : FFormList) {
@@ -66,7 +65,7 @@ public class MDlistForm extends CustomForm {
                 ListFeilds = line.get("List_fields").toString(); //获取主表显示字段
             }
         }
-        getFormUpdateFileldList = formDao.getFormList(getCompanyId(), FFormColumnName);
+        getFormUpdateFileldList = formDao.getFormList(getCompanyId(), FFormColumnName);  //
         System.out.println("getFormUpdateFileldList:>>>>" + getFormUpdateFileldList.toString());
         String setList = getPage().getUrlParameter("map");
         System.out.println("setList===" + setList);
