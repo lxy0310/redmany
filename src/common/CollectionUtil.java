@@ -34,7 +34,7 @@ public class CollectionUtil {
 
                        //（1）.获取相应的getter方法
 
-                       Method method=T.getMethod( "get"+fieldName.substring(0,1).toUpperCase()+fieldName.substring(1));
+                       Method method=T.getMethod(getGetter(fieldName) );
 
                        //(2) .调用方法
                        N key= (N) method.invoke(t);
@@ -70,6 +70,44 @@ public class CollectionUtil {
     }
 
     public static String getGetter(String fieldName){
-      return  null;
+      return  "get"+fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
     }
+
+    /**
+     * 获取map中第一个key值
+     *
+     * @param map 数据源
+     * @return
+     */
+    public static String getKeyOrNull(Map<String, Object> map) {
+        String obj = null;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            obj = entry.getKey();
+            if (obj != null) {
+                break;
+            }
+        }
+        return  obj;
+    }
+
+
+    /**
+     * 获取map中第一个数据值
+     *
+     * @param map 数据源
+     * @return
+     */
+    public static Object getFirstOrNull(Map<String, Object> map) {
+        Object obj = null;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            obj = entry.getValue();
+            if (obj != null) {
+                break;
+            }
+        }
+        return  obj;
+    }
+
+
+
 }

@@ -154,6 +154,7 @@ public class Text extends ParentView {
                            hintContenth=strs[i].substring(strs[i].lastIndexOf(":")+1);
                        }
                    }
+
                 if ( hasHintContent){ //提示
                    // String  num=strs[1].substring(strs[1].lastIndexOf(":")+1);
                     if (hintContenth!=null){
@@ -166,6 +167,7 @@ public class Text extends ParentView {
                   }
                     input.placeholder("请输入"+num);
                 }
+
                }
             }
             if (text!=null){
