@@ -102,7 +102,6 @@ public class View {
 
     private String filedGroup;
 
-
     public String getFiledGroup() {
         return filedGroup;
     }

@@ -20,6 +20,7 @@ public class Checkbox extends ParentView {
 
     @Override
     protected HtmlBodyElement<?> create() {
+        boolean isShow = isShow(getForm().getPage().getShowType());
         Span span = new Span();
         span.id(getName());
         String styles = getDataProvider().getStyles(this, getForm());
@@ -34,7 +35,8 @@ public class Checkbox extends ParentView {
             if(view.getData_replacer()!=null){
                 String replacerStr = view.getData_replacer();
                 CommonHelperDao dao = new CommonHelperDao();
-                Replacer replacer = dao.getReplacerByName(replacerStr);
+                String sql = "Select * from Replacer where Replacername='"+replacerStr+"'";
+                Replacer replacer = dao.getReplacerBySql(sql);
                 if(replacer!=null){
                     Txtsource =  replacer.getTxtsource();
                     Datasql =  replacer.getDatasql();
@@ -42,7 +44,6 @@ public class Checkbox extends ParentView {
             }
             if (view.getTitle()!=null){
                 Label label = span.label();
-                label.addCssClass(getName());
                 label.text(view.getTitle());
             }
             if (Txtsource!=null && Txtsource.length()>0){
@@ -52,12 +53,19 @@ public class Checkbox extends ParentView {
                     String a=arr[i].substring(0,arr[i].indexOf(':'));
                     String b=arr[i].substring(arr[i].indexOf(':')+1);
                     Label label = span.label();
+                    label.text(b);
                     Input input =label.input();
                     input.id(getName()+i);
+                    input.addCssClass(getName()+i);
                     input.name(getName());
                     input.type("checkbox");
                     input.value(a);
-                    label.text(b);
+                    if (text!=null && a.equals(text)){//默认选中
+                        input.attr("checked","checked");
+                    }
+                    if(isShow){
+                        input.attr("disabled","true");//查看时不可选
+                    }
                 }
             }else{
                 if (Datasql!=null && Datasql.length()>0){
@@ -69,12 +77,19 @@ public class Checkbox extends ParentView {
                             Integer value = (Integer) map.get("value");
                             String name = (String) map.get("name");
                             Label label = span.label();
+                            label.text(name);
                             Input input =label.input();
                             input.id(getName()+i);
+                            input.addCssClass(getName()+i);
                             input.name(getName());
                             input.type("checkbox");
                             input.value(value.toString());
-                            label.text(name);
+                            if (text!=null && value.toString().equals(text)){//默认选中
+                                input.attr("checked","checked");
+                            }
+                            if(isShow){
+                                input.attr("disabled","true");//查看时不可选
+                            }
                         }
                     }
                 }
