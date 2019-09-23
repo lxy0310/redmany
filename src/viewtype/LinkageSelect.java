@@ -75,7 +75,8 @@ public class LinkageSelect extends ParentView {
                     if(list!=null && list.size()>0){
                         for(int i=0;i<list.size();i++){
                             Map map = list.get(i);
-                            Integer value = (Integer) map.get("value");
+                            Object valueObj = map.get("value");
+                            String value = valueObj.toString();
                             String name = (String) map.get("name");
                             select.option(name,value.toString());
                         }

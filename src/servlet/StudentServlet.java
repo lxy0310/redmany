@@ -55,7 +55,8 @@ public class StudentServlet extends BaseServlet {
             //首页
             gotoHomePage(req, resp);
         //    gotoHomePage();
-        } else if("1".equals(req.getParameter("addshop"))){ //打开购物弹窗
+        }
+        else if("1".equals(req.getParameter("addshop"))){ //打开购物弹窗
             String userid = req.getParameter("userid");
             String companyId = req.getParameter("companyId");
             String formName = "Product_spec_Sku";
