@@ -7,18 +7,10 @@ var layer,$,form,upload;
 layui.use(['layer','element','form','upload'],function(){
     layer=layui.layer,
         element = layui.element,
-        //$=layui.jquery;
         upload = layui.upload,
-        // laypage = layui.laypage;
         form=layui.form;
 
-
-
     $(".saveBtn").click(function() {
-        // layer.msg('hello');
-        // var addForms=$("#addForm").serialize();
-        //addForms = decodeURIComponent(add,true);
-        //alert(addForms);
         var dataList=$(".saveData").val();
         var dataJson=eval('('+dataList +')');
 
@@ -275,7 +267,7 @@ function textOnlyOne(id,sql,mesg) {
     if (thisValue != null || thisValue != '') {
         $.ajax({
             type: 'GET',
-            url: 'register?viewType=1&sql='+ sql+'&value='+thisValue,
+            url: 'view?viewType=1&sql='+ sql+'&value='+thisValue,
             success: function(data) {
                 if("ok"==data){
                 }else{
@@ -289,4 +281,40 @@ function textOnlyOne(id,sql,mesg) {
     }
 }
 
-
+//联动下拉框
+function linkageSelectChange(fid,cid){
+    var first = document.getElementById(fid);
+    var second = document.getElementById(cid);
+    second.options.length = 0; // 清除second下拉框的所有内容
+    second.options.add(new Option("==请选择==",""));
+    if($('#'+cid).next().val()){
+        var secondCid = cid+"_hidden";
+        var third = $("#"+secondCid).val()+"0";
+        document.getElementById(third).options.length = 0;
+        document.getElementById(third).options.add(new Option("==请选择==",""));
+        if($('#'+third).next().val()){
+            var thirdCid = third+"_hidden";
+            var four = $("#"+thirdCid).val()+"0";
+            document.getElementById(four).options.length = 0;
+            document.getElementById(four).options.add(new Option("==请选择==",""));
+        }
+    }
+    if(first.value != null){
+        cid = cid.substr(0,cid.length-1);
+        var result;
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url: 'view',
+            data:{viewType:2, value:first.value, cid:cid},
+            success: function(data){
+                result = eval(data);
+                for(var x in result ){
+                    var name = result[x].name;
+                    var value = result[x].value;
+                    second.options.add(new Option(name, value));
+                }
+            },error:function(xhr){alert(xhr.responseText)}
+        });
+    }
+}

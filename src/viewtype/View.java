@@ -61,10 +61,6 @@ public class View {
     }
 
     private String filedGroup;
-    private String onlyOne;
-
-    public View() {
-    }
 
     public String getFiledGroup() {
         return filedGroup;

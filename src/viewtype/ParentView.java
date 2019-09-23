@@ -214,12 +214,10 @@ public abstract class ParentView {
             return mView;
         }
         return mView;
-
     }
 
     //type='textNoTitle' formName='jkdView' name='line'
     public final void initView(ParentForm form, View view, IDataProvider dataProvider) {
-
         mForm = form;
         mView = view;
         mName = view.getName();
@@ -229,5 +227,25 @@ public abstract class ParentView {
         mIDataProvider = dataProvider;
     }
 
+    //控件默认样式
+    public String getStyle(String type) {
+        String sytle = "";
+        if("span".equals(type)){
+            sytle = "width:250px;height:25px;font-size: 14px;";
+        }else if("select".equals(type)){
+            sytle = "width:250px;height:25px;";
+        }
+        return sytle;
+    }
+
+    //当前form是否为显示
+    public boolean isShow(String showType) {
+        if("listForm".equals(showType) || "MDlistForm".equals(showType)){
+            return true;
+        }else if("newForm".equals(showType) || "MDnewForm".equals(showType) || "listModifyForm".equals(showType) || "MDlistModifyForm".equals(showType)){
+            return false;
+        }
+        return false;
+    }
 
 }

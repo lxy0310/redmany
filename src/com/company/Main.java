@@ -21,9 +21,6 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args)  {
-        FormFiledDao ffd=new FormFiledDao(new SQLHelper(true));
-      List<View> tes= ffd.getFormContorl("AntMall","Order_management",null);
-        Map<String,List<View>> test= CollectionUtil.getMap(tes,View.class,"filedGroup",String.class);
 
 /*        Div div = new Div();
         Table table = div.table();

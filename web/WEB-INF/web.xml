@@ -75,8 +75,11 @@
        <servlet-class>servlet.BackMarServelt</servlet-class>
        <load-on-startup>1</load-on-startup>
    </servlet>
-    
-    
+    <servlet>
+        <servlet-name>ViewServlet</servlet-name>
+        <servlet-class>servlet.ViewServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     
     <servlet-mapping>
         <servlet-name>CommonServlet</servlet-name>
@@ -143,16 +146,10 @@
         <url-pattern>/popup</url-pattern>
     </servlet-mapping>
 
-
-
-
-
-
-
-
-
-
-
+    <servlet-mapping>
+        <servlet-name>ViewServlet</servlet-name>
+        <url-pattern>/view</url-pattern>
+    </servlet-mapping>
 
 
 </web-app>

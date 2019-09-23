@@ -28,7 +28,6 @@ public class CustomForm extends ParentForm {
         return mFormData != null ? mFormData.getHtml_template() : null;
     }
 
-
     protected String makeViews(List<String> list, View view, Map<String, Object> datas, String html) {
         if (view == null) return null;
         ParentView parentView = makeType(view);
@@ -46,16 +45,14 @@ public class CustomForm extends ParentForm {
             for (String filed:
                     parentView.getDatas().keySet()) {
                 if(childView.indexOf("{"+filed+"}")>=0){
-
                     childView=childView.replace("{"+filed+"}", parentView.getDatas().get(filed).toString());
                 }
             }
 
-        }else if(parentView !=null && parentView.getForm() !=null && parentView.getForm().getDatas()!=null && parentView.getForm().getDatas().get(0)!=null&& parentView.getForm().getDatas().get(0).size()>0){
+        }else if(parentView !=null && parentView.getForm() !=null && parentView.getForm().getDatas()!=null && parentView.getForm().getDatas().size()>0 && parentView.getForm().getDatas().get(0)!=null && parentView.getForm().getDatas().get(0).size()>0){
            for (String filed:
                    parentView.getForm().getDatas().get(0).keySet()) {
                if(childView.indexOf("{"+filed+"}")>=0){
-
                    childView=childView.replace("{"+filed+"}",  parentView.getForm().getDatas().get(0).get(filed).toString());
                }
            }
