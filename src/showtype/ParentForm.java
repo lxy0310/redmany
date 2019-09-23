@@ -287,6 +287,7 @@ public abstract class ParentForm {
 //                        sql = sql.replace("and type=1", "");
 //                    }
 //                }
+
                 loadData(sql);
                 if (LOG) {
                     System.out.println("" + getClass().getSimpleName() + ":sql=" + sql + ":数据=" + mDatas);
