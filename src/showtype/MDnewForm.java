@@ -173,8 +173,7 @@ public class MDnewForm extends CustomForm {
     }
 
     private void  STable(Div div){
-        String ListFeilds = null;
-
+       // String ListFeilds = getFormFieldNames();
 
         List<View> views = getViewLists(ListFeilds);
         Table table = div.table().addCssClass("layui-table");

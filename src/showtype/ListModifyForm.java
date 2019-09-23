@@ -114,7 +114,7 @@ public class ListModifyForm extends CustomForm {
         Div temp = head.div().addCssClass("layui-table-tool-temp");
         Div btncontainer = temp.div().addCssClass("layui-btn-container");
         Button add = btncontainer.button().addCssClass("layui-btn layui-btn-sm layui-btn-normal").text("添加");
-        Button del = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text("删除").onClick("del('" + getFormName() + "')");;
+       // Button del = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text("删除").onClick("del('" + getFormName() + "')");;
         //生成批量操作按钮
 
         Table table = div.table().addCssClass("table");

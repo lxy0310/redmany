@@ -36,6 +36,7 @@ public class LinkageSelect extends ParentView {
                 label.text(view.getTitle());
             }
             com.sangupta.htmlgen.tags.body.sections.Select  select= span.select();
+            select.ignore("lay-ignore");
             if (view.getWapAttribute()!=null){
                 String str=view.getWapAttribute();//获取下拉框样式
                 String[] strs = str.split("\\[\\^\\]");
