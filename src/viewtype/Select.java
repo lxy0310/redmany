@@ -21,7 +21,6 @@ public class Select extends ParentView {
     @Override
     protected HtmlBodyElement<?> create() {
         Span span = new Span();
-        span.id(getName());
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
@@ -38,6 +37,7 @@ public class Select extends ParentView {
                 label.text(view.getTitle());
             }
             com.sangupta.htmlgen.tags.body.sections.Select select = span.select();
+            select.id(getName());
             if (view.getWapAttribute() != null) {
                 String str = view.getWapAttribute();//获取下拉框样式
                 String[] strs = str.split("\\[\\^\\]");
@@ -55,7 +55,8 @@ public class Select extends ParentView {
             if (view.getData_replacer() != null) {
                 String replacerStr = view.getData_replacer();
                 CommonHelperDao dao = new CommonHelperDao();
-                Replacer replacer = dao.getReplacerByName(replacerStr);
+                String sql = "Select * from Replacer where Replacername='"+replacerStr+"'";
+                Replacer replacer = dao.getReplacerBySql(sql);
                 if (replacer != null) {
                     Txtsource = replacer.getTxtsource();
                     Datasql = replacer.getDatasql();
@@ -77,7 +78,8 @@ public class Select extends ParentView {
                     if (list != null && list.size() > 0) {
                         for (int i = 0; i < list.size(); i++) {
                             Map map = list.get(i);
-                            Integer value = (Integer) map.get("value");
+                            Object valueObj = map.get("value");
+                            String value = valueObj.toString();
                             String name = (String) map.get("name");
                             select.option(name, value.toString());
                         }
@@ -109,4 +111,3 @@ public class Select extends ParentView {
         }
 
     }
-

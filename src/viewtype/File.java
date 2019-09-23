@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Radio extends ParentView {
+public class File extends ParentView {
     @Override
     public String getType() {
-        return "Radio";
+        return "File";
     }
 
     @Override
@@ -52,19 +52,13 @@ public class Radio extends ParentView {
                     String a=arr[i].substring(0,arr[i].indexOf(':'));
                     String b=arr[i].substring(arr[i].indexOf(':')+1);
                     Label label = span.label();
-                    label.text(b);
                     Input input =label.input();
                     input.id(getName()+i);
                     input.addCssClass(getName()+i);
                     input.name(getName());
-                    input.type("Radio");
+                    input.type("File");
                     input.value(a);
-                    if (text!=null && a.equals(text)){//默认选中
-                        input.attr("checked","checked");
-                    }
-                    if(isShow){
-                        input.attr("disabled","true");//查看时不可选
-                    }
+                    label.text(b);
                 }
             }else{
                 if (Datasql!=null && Datasql.length()>0){
@@ -76,19 +70,13 @@ public class Radio extends ParentView {
                             Integer value = (Integer) map.get("value");
                             String name = (String) map.get("name");
                             Label label = span.label();
-                            label.text(name);
                             Input input =label.input();
                             input.id(getName()+i);
                             input.addCssClass(getName()+i);
                             input.name(getName());
-                            input.type("Radio");
+                            input.type("File");
                             input.value(value.toString());
-                            if (text!=null && value.toString().equals(text)){//默认选中
-                                input.attr("checked","checked");
-                            }
-                            if(isShow){
-                                input.attr("disabled","true");//查看时不可选
-                            }
+                            label.text(name);
                         }
                     }
                 }

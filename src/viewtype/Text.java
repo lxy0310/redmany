@@ -28,7 +28,6 @@ public class Text extends ParentView {
     public String getType() {
         return "Text";
     }
-   // private List<ShopCarInfo> mShopCarItemInfos = new ArrayList<>();
 
     public static List<ShopCarPageInfo> getShopCarItemInfos(int userId) {
         String url = ApiParser.getShopCarUrl(userId, null);
@@ -43,17 +42,15 @@ public class Text extends ParentView {
     String enUrl;
 
     protected void loadData(String sql) {
-//        super.loadData(sql);
-     //   mShopCarItemInfos = getShopCarItemInfos(getPage().getAccountHelper().getUserId());
         enUrl = SafeString.escape(SafeString.encode(getPage().getUrl()));
 
     }
 
     @Override
     protected HtmlBodyElement<?> create() {
+        boolean isShow = isShow(getForm().getPage().getShowType());
         Span span = new Span();
         span.id(getName());
-        span.add(new Script("js/commonUtils.js"));
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());//input值
@@ -63,11 +60,9 @@ public class Text extends ParentView {
         String placeholder =getDataProvider().getHintContent(this,getForm());//提示
         String color = getDataProvider().getTextColor(this, getForm());
         String onclick = getDataProvider().getOnClick(getForm(),this, getView().getTarget(), getView().getTransferParams());
-        //View{Index_number=0, Type='text', target='setReadonly()', attributeId='null', attributeStr='style:padding-right:100px;pointer-events:none;',
-        // wapAttribute='style:padding-right:100px;pointer-events:none;', windowsAttribute='null',
-        // iosAttribute='null', androidAttribute='null', transferParams='null', Name='UserName', Title='用户邮箱', ValidateExpreesion='null', ValidateErrorMessage='null'}
         if (getView()!=null){
             View view=getView();
+            String textStyle = "";
             System.out.println(view);
             if (view.getTitle()!=null){ //title
                if (view.getTitle().contains(".")){ //图片
@@ -80,13 +75,13 @@ public class Text extends ParentView {
                        img.height(30);
                    }
                }else { //文本
-                  // Label label = span.label();
-                 //  label.addCssClass(getName());
-                 //  label.text(view.getTitle());
+                   Label label = span.label();
+                   label.text(view.getTitle());
                }
             }
             Input input =span.input();
             input.id(getName()+'0');
+            input.addCssClass(getName());
             if (view.getDatabase_field()!=null) {   //Database_field
                 input.addCssClass(view.getDatabase_field().trim());
             }else{
@@ -136,7 +131,15 @@ public class Text extends ParentView {
                 boolean hasHintContent=false;
                 String hintContenth=null;
                if (strs!=null){
+                   String hintContent ="";
                    for(int i=0;i<strs.length;i++){
+                       if (strs[i].contains("style")){
+                           int index = strs[i].indexOf(":");
+                           if (index > 0) {
+                               textStyle = strs[i].substring(index + 1);
+                               input.styles(textStyle);
+                           }
+                       }
                        if (strs[i].contains("isEdit")){//是否禁用
                            String  num=strs[i].substring(strs[i].lastIndexOf(":")+i);
                            if (num.equals("0")){
@@ -149,17 +152,12 @@ public class Text extends ParentView {
                                input.attr("style","border:none;");
                            }
                        }
-                       if( strs[i].contains("hintContent")){
-                           hasHintContent=true;
-                           hintContenth=strs[i].substring(strs[i].lastIndexOf(":")+1);
+                       if (strs[i].contains("hintContent")){
+                           hintContent = strs[i].substring(strs[i].lastIndexOf(":")+i);
                        }
                    }
-
-                if ( hasHintContent){ //提示
-                   // String  num=strs[1].substring(strs[1].lastIndexOf(":")+1);
-                    if (hintContenth!=null){
-                        input.placeholder( hintContenth);
-                    }
+                if (hintContent !=null && hintContent.length()>0){ //提示
+                     input.placeholder(hintContent);
                 }else{ //默认提示
                   String num=view.getTitle().toString();
                   if (view.getTitle().contains(":")){ //如果有：去掉
@@ -172,6 +170,9 @@ public class Text extends ParentView {
             }
             if (text!=null){
                 input.value(text);
+            }
+            if(isShow){
+                input.attr("readonly","readonly");
             }
             if (view.getShowState()!=null){
                 input.value("");
