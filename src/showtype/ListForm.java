@@ -156,6 +156,8 @@ public class ListForm extends CustomForm {
             for (View view : views) {
                 if (view.getType().toLowerCase().equals("text")){
                     String attr = view.getAttributeStr();
+                    view.setTitle("1");
+
                     if (attr!=null){
                         view.setAttributeStr(attr+"border:0px;");
                     }else {

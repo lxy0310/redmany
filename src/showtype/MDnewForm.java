@@ -37,6 +37,7 @@ public class MDnewForm extends CustomForm {
     private FormFiledDao filedDao;
     private String FFormTitle; //主表标题
     private String FFormParamId;//主表Id
+    private List<Map<String, Object>>  SFormDate;//从表数据
 
 
     protected void initDao(SQLHelper pSQLHelper) {
@@ -84,10 +85,12 @@ public class MDnewForm extends CustomForm {
             }
             sFormData.put(key,sform);
         }
-        String str1 = CollectionUtil.getKeyOrNull(sFormData);
+        String str1 = CollectionUtil.getKeyOrNull(sFormData); //从表第一个
         System.out.println(str1);
-        model.Form form1 = (model.Form) CollectionUtil.getFirstOrNull(sFormData);
+        model.Form form1 = (model.Form) CollectionUtil.getFirstOrNull(sFormData); //从表第一个
         System.out.println(form1);
+        //获取从表的数据
+        SFormDate = formDao.getFormList(getCompanyId(), FFormColumnName);
         super.loadData(sql);
     }
 
@@ -170,8 +173,17 @@ public class MDnewForm extends CustomForm {
     }
 
     private void  STable(Div div){
+        String ListFeilds = null;
 
 
+        List<View> views = getViewLists(ListFeilds);
+        Table table = div.table().addCssClass("layui-table");
+        THead thead = table.thead();
+        TableRow rowTh = new TableRow();  //表头
+        for (View view : views) {
+            rowTh.td(view.getTitle());
+        }
+        rowTh.td("操作");
     }
 
 
