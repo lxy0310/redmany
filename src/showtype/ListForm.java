@@ -120,7 +120,7 @@ public class ListForm extends CustomForm {
      */
     public void showBack(Div div) {
         List<View> views = getViews();
-        Table table = div.table().addCssClass("table");
+        Table table = div.table().addCssClass("layui-table");
         THead thead = table.thead();
         TableRow rowTh = new TableRow();  //表头
         for (View view : views) {
@@ -156,15 +156,13 @@ public class ListForm extends CustomForm {
             for (View view : views) {
                 if (view.getType().toLowerCase().equals("text")){
                     String attr = view.getAttributeStr();
-                    view.setTitle("1");
-
                     if (attr!=null){
                         view.setAttributeStr(attr+"border:0px;");
                     }else {
                         view.setAttributeStr("style:border:0px;");
                     }
-
                 }
+                view.setIsTitle("1");
                 html = makeViews(list, view, line, html);
             }
             if (!TextUtils.isEmpty(html)) {

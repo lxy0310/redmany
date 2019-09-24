@@ -112,6 +112,7 @@ public class MDlistForm extends CustomForm {
             System.out.println("Id === " + line.get("id"));
             System.out.println(mDatas.toString());
             for (View view : views) {
+                view.setIsTitle("1");
                 html = makeViews(list, view, line, html);
             }
             if (!TextUtils.isEmpty(html)) {
