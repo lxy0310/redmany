@@ -44,7 +44,7 @@ public class Page implements ParentForm.ISQLReplacer {
 
 
     private String isPc="0";  //是否是Pc端,0-手机 1-PC，默认为0
-    public static String platform = "0";//前后端 0-前端，1-后端，默认为0
+    public static String platform = "1";//前后端 0-前端，1-后端，默认为0
     private String theme=COMPANYID; //主题。默认为COMPANYID
 
     public static String getLoginPage() {

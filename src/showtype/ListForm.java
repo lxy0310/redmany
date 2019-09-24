@@ -120,14 +120,11 @@ public class ListForm extends CustomForm {
      */
     public void showBack(Div div) {
         List<View> views = getViews();
-        Table table = div.table().addCssClass("table");
+        Table table = div.table().addCssClass("layui-table");
         THead thead = table.thead();
         TableRow rowTh = new TableRow();  //表头
         for (View view : views) {
             rowTh.td(view.getTitle());
-        }
-        if (isShow != null) {
-            rowTh.td("操作");
         }
         thead.tr(rowTh);
         TBody tBody = table.tbody();
@@ -139,17 +136,18 @@ public class ListForm extends CustomForm {
             System.out.println(mDatas.toString());
 
             for (View view : views) {
-                if (view.getType().toLowerCase().equals("text")){
-                    String attr = view.getAttributeStr();
-                    view.setTitle("1");
+                view.setIsTitle("1");
 
-                    if (attr!=null){
-                        view.setAttributeStr(attr+"border:0px;");
-                    }else {
-                        view.setAttributeStr("style:border:0px;");
-                    }
-
-                }
+//                if (view.getType().toLowerCase().equals("text")){ //text控件框框
+//                    String attr = view.getAttributeStr();
+//                    if (attr!=null){
+//                        view.setAttributeStr(attr+"border:none[^]");
+//                        view.setWapAttribute(attr+"border:none[^]");
+//                    }else {
+//                        view.setAttributeStr("border:none[^]");
+//                        view.setWapAttribute("border:none[^]");
+//                    }
+//                }
                 html = makeViews(list, view, line, html);
             }
             if (!TextUtils.isEmpty(html)) {

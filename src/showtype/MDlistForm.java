@@ -112,6 +112,7 @@ public class MDlistForm extends CustomForm {
             System.out.println("Id === " + line.get("id"));
             System.out.println(mDatas.toString());
             for (View view : views) {
+                view.setIsTitle("1");
                 html = makeViews(list, view, line, html);
             }
             if (!TextUtils.isEmpty(html)) {
@@ -138,7 +139,6 @@ public class MDlistForm extends CustomForm {
                             a1.text(btnList.get("OperationName").toString());
                             a1.herf("javascript:void(0);").onClick("delListForm("+line.get("Id")+",'"+getFormName()+"');");
                         }else if ("_add".equals(btnList.get("OperationType").toString())){  //添加
-
                             a1.text(btnList.get("OperationName").toString());
                             a1.herf("queryStudentServlet?copformName="+getFormName()+"&showType=newForm&optype=2&ParamId="+line.get("Id"));
                         }else if ("_select".equals(btnList.get("OperationType").toString())){ //跳转到自定义页面
@@ -147,7 +147,6 @@ public class MDlistForm extends CustomForm {
                             a1.herf(TemplatePage+"?FormName="+getFormName()+"&id="+line.get("Id")+"&NeedState="+Tablestate);
                         }
                         else{
-
                             a1.text(btnList.get("OperationName").toString());
                             a1.herf("javascript:void(0);").onClick("updateListBtn("+line.get("Id")+",'"+getFormName()+"','"+btnList.get("AfterProcessState")+"'"+");");
 

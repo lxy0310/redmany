@@ -47,16 +47,7 @@ public class NewForm extends FreeForm {
 
     protected void loadData(String sql) {
         System.out.println(sql);
-        if (paramId!=null){
-            if (sql.toLowerCase().contains("where")){
-                //截取
-                String before = StringUtils.substringBefore(sql, "where");
-                String after = StringUtils.substringAfter(sql, "where");
-                sql = before + " where Id="+paramId  +" and "+after;
-            }else {
-                sql=sql+" where Id="+paramId;
-            }
-        }
+        sqlGetID(sql,paramId);  //拼接参数ID
         System.err.println(sql);
         List<Map<String, Object>> formFeildList=filedDao.getFormFeildList(getCompanyId(),formName);
         //判断是否有分组

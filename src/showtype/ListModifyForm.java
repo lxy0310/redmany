@@ -17,6 +17,7 @@ import dao.CommonDao;
 import dao.FormFiledDao;
 import dao.MenuDao;
 import model.Menu;
+import org.apache.commons.lang.StringUtils;
 import viewtype.View;
 
 import java.util.ArrayList;
@@ -40,17 +41,30 @@ public class ListModifyForm extends CustomForm {
     private String Parameter;
     private List<Map<String, Object>> formStateOperation;
     private int group;  //判断是否有分组
+    private FormUtil formUtil;
+    private String paramId; //参数 ID
 
     protected void initDao(SQLHelper pSQLHelper) {
         menuDao = new MenuDao(pSQLHelper);
         commonDao = new CommonDao(pSQLHelper);
         filedDao = new FormFiledDao(pSQLHelper);
+        formUtil = new FormUtil();
 //        backMarDao=new BackMarDao(pSQLHelper);
     }
 
     @Override
     protected void loadData(String sql) {
-
+        paramId=getPage().getParameter("ParamId"); //获取参数
+        if (paramId!=null){
+            if (sql.toLowerCase().contains("where")){
+                //截取
+                String before = StringUtils.substringBefore(sql, "where");
+                String after = StringUtils.substringAfter(sql, "where");
+                sql = before + " where Id="+paramId  +" and "+after;
+            }else {
+                sql=sql+" where Id="+paramId;
+            }
+        }
         Menus = menuDao.getMenu(getCompanyId(), getFormName());
         if (Menus != null) {
 
@@ -97,6 +111,8 @@ public class ListModifyForm extends CustomForm {
         if (platform.equals("1") || platform == "1" ) {//1为后台
             //没有分组
             if (group == 0) {
+                /*List<View> views = getViews();
+                formUtil.showListBack(div,views,mDatas);*/
                 showBack(div);
             } else {
                 //showGroupBack(div);
@@ -117,9 +133,10 @@ public class ListModifyForm extends CustomForm {
        // Button del = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text("删除").onClick("del('" + getFormName() + "')");;
         //生成批量操作按钮
 
-        Table table = div.table().addCssClass("table");
+        Table table = div.table().addCssClass("layui-table");
         THead thead = table.thead();
         TableRow rowTh = new TableRow();  //表头
+        rowTh.fixed("right");
 
         Div sel = rowTh.td().div().addCssClass("layui-input-inline");
         sel.styles("white-space: nowrap;");
@@ -128,9 +145,8 @@ public class ListModifyForm extends CustomForm {
         checkbox.id("box");
         checkbox.type("checkbox");
         checkbox.onClick("my()");
-        //<label for="语文"></label>
 
-        for (View view : views) {
+       /* for (View view : views) {
             rowTh.td(view.getTitle());
             if (view.getType().toLowerCase().equals("text")) {
                 String attr = view.getAttributeStr();
@@ -143,10 +159,8 @@ public class ListModifyForm extends CustomForm {
                 }
                 continue;
             }
-        }
-        // if (isShow != null) {
+        }*/
         rowTh.td("操作");
-        //  }
         thead.tr(rowTh);
         TBody tBody = table.tbody();
         Map<String,Object> batch = new HashMap<>();//承载批量按钮
@@ -160,10 +174,7 @@ public class ListModifyForm extends CustomForm {
             check.value(line.get("Id").toString());
 
             for (View view : views) {
-//                if (view.getType().toLowerCase().equals("text")) {
-//                    String attr = view.getAttributeStr();
-//                    view.setAttributeStr(attr + "border:none[^]");
-//                }
+                view.setIsTitle("1");
                 html = makeViews(list, view, line, html);
             }
             if (!TextUtils.isEmpty(html)) {
@@ -180,7 +191,6 @@ public class ListModifyForm extends CustomForm {
                 if (FormStateOpertionList != null) {
                     Span span = row.td().span().styles("white-space: nowrap;");
                     for (Map<String, Object> btnList : FormStateOpertionList) {
-                        //    Span span = span1.span();
                         Integer FormState = (Integer) btnList.get("FormState");
 
                         if (Tablestate.equals(FormState) || Tablestate == FormState) {
@@ -222,16 +232,6 @@ public class ListModifyForm extends CustomForm {
             tBody.tr(row);
         }
         //去重
-        /*List<String> newList = new ArrayList<String>();
-        for (String str : batch) {
-            if (!newList.contains(str)) {
-                newList.add(str);
-            }
-        }
-        System.out.println(newList.toString());
-        for (String str : newList) {
-            Button del1 = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text(str).onClick("batchList(" + getFormName() + ")");
-        }*/
         for (String key : batch.keySet()) {
             Button batchOperation = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text(key);//.onClick("batchList(" + getFormName() + ")")
             String str = batch.get(key).toString();

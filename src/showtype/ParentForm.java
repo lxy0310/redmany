@@ -9,6 +9,7 @@ import dao.FormFiledDao;
 import dao.OaAttributeDao;
 import model.Form;
 import model.OaAttribute;
+import org.apache.commons.lang.StringUtils;
 import page.Page;
 import service.FormFileAttribute;
 import service.impl.FormFileAttributeImpl;
@@ -368,6 +369,26 @@ public abstract class ParentForm {
             }
         }
         return attrs;
+    }
+
+    /**
+     *
+     * @param paramId
+     * @param sql
+     * @return
+     */
+    public String sqlGetID(String paramId,String sql){
+        if (paramId!=null){
+            if (sql.toLowerCase().contains("where")){
+                //截取
+                String before = StringUtils.substringBefore(sql, "where");
+                String after = StringUtils.substringAfter(sql, "where");
+                sql = before + " where Id="+paramId  +" and "+after;
+            }else {
+                sql=sql+" where Id="+paramId;
+            }
+        }
+        return sql;
     }
 
 
