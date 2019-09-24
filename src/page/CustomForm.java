@@ -49,7 +49,11 @@ public class CustomForm extends ParentForm {
             }
 
 
+        }else if(parentView !=null && parentView.getForm() !=null && parentView.getForm().getDatas()!=null && parentView.getForm().getDatas().size()>0 && parentView.getForm().getDatas().get(0)!=null&& parentView.getForm().getDatas().get(0).size()>0){
+
+
         }else if(parentView !=null && parentView.getForm() !=null && parentView.getForm().getDatas()!=null && parentView.getForm().getDatas().size()>0  && parentView.getForm().getDatas().get(0)!=null && parentView.getForm().getDatas().get(0).size()>0){
+
             for (String filed:
                     parentView.getForm().getDatas().get(0).keySet()) {
                 if(childView.indexOf("{"+filed+"}")>=0){

@@ -126,9 +126,6 @@ public class ListForm extends CustomForm {
         for (View view : views) {
             rowTh.td(view.getTitle());
         }
-        if (isShow != null) {
-            rowTh.td("操作");
-        }
         thead.tr(rowTh);
         TBody tBody = table.tbody();
         for (Map<String, Object> line : mDatas) {
@@ -138,30 +135,7 @@ public class ListForm extends CustomForm {
             System.out.println("Id === " + line.get("id"));
             System.out.println(mDatas.toString());
 
-//            for (View view : views) {
-//                System.out.println(view.getType().toLowerCase());
-//                if (view.getType().toLowerCase() == "text" || view.getType().toLowerCase().equals("text")){
-//                    if (line.get(view.getName())!=null){
-//                        row.td().text(line.get(view.getName()).toString());
-//                        System.out.println(line.get(view.getName()).toString());
-//                    }
-//                }else if (view.getType().toLowerCase() == "image" || view.getType().toLowerCase().equals("image")){
-//                    if (line.get(view.getName())!=null){
-//                        Img img = new Img();
-//                        img.src(CommonUtils.getFileData+line.get(view.getName()).toString());
-//                        row.td().img(img);
-//                    }
-//                }
-//            }
             for (View view : views) {
-                if (view.getType().toLowerCase().equals("text")){
-                    String attr = view.getAttributeStr();
-                    if (attr!=null){
-                        view.setAttributeStr(attr+"border:0px;");
-                    }else {
-                        view.setAttributeStr("style:border:0px;");
-                    }
-                }
                 view.setIsTitle("1");
                 html = makeViews(list, view, line, html);
             }
@@ -244,8 +218,4 @@ public class ListForm extends CustomForm {
         return resultMap;
     }
 
-    public static void main(String[] args) {
-
-
-    }
 }

@@ -1444,21 +1444,24 @@ div:first-child
 .newFormLeft>span>label{
     color: red;
 }
-/*      */
-/*复选框*/
-input.cbox {
-    -webkit-appearance: none;
-    width: 16px!important;
-    height: 16px!important;
-    display: inline-block;
-    margin: -3px 5px 0 0!important;
-    cursor: pointer;
-    vertical-align: middle;
-    background: url(../images/checkbox.svg) no-repeat;
+
+/* table 样式*/
+
+table tbody {
+    display: block;
+    overflow-y: scroll;
 }
-input.cbox:checked {
-    background: url(../images/checkbox-checked.svg) no-repeat;
+
+table thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
+
+table thead {
+    width: calc(100% - 1em)
+}
+
 
 
 @media only screen and (min-width: 768px){

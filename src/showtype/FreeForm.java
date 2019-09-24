@@ -1,5 +1,6 @@
 package showtype;
 
+import com.sangupta.htmlgen.tags.body.forms.Form;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import common.utils.TextUtils;
 import viewtype.View;
@@ -38,6 +39,7 @@ public class FreeForm extends CustomForm {
 
     @Override
     protected void make(Div div) {
+        Form form = div.form();
         List<View> views = getViews();
         String html = getHtmlTemplate();
         List<String> list = new ArrayList<>();
