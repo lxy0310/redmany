@@ -199,6 +199,7 @@ public class MDnewForm extends CustomForm {
         IFrame iFrame =sdiv.iframe("queryStudentServlet?copformName="+sformName+ "&showType=ListModifyForm&transferParams="+assoFields+"="+ParamId);
         iFrame.attr("width","100%");
         iFrame.height(500);
+        System.out.println();
     }
 
 }
