@@ -20,7 +20,8 @@ public class Select extends ParentView {
 
     @Override
     protected HtmlBodyElement<?> create() {
-        Span span = new Span();
+        Div div = new Div();
+        div.id(getName());
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
@@ -31,13 +32,55 @@ public class Select extends ParentView {
             String selectStyle = "";
             String Txtsource = "";
             String Datasql = "";
-            if (view.getTitle() != null) {
-                Label label = span.label();
+            if (view.getData_replacer() != null) {
+                String replacerStr = view.getData_replacer();
+                CommonHelperDao dao = new CommonHelperDao();
+                String sql = "Select * from Replacer where Replacername='"+replacerStr+"'";
+                Replacer replacer = dao.getReplacerBySql(sql);
+                if (replacer != null) {
+                    Txtsource = replacer.getTxtsource();
+                    Datasql = replacer.getDatasql();
+                }
+            }
+            if(view.getIsTitle()!=null && "1".equals(view.getIsTitle())) {//不长title
+                if(text!=null){
+                    if (Txtsource!=null && Txtsource.length()>0){
+                        String[] arr=Txtsource.split("\\#");
+                        for (int i=0;i<arr.length;i++){
+                            String a=arr[i].substring(0,arr[i].indexOf(':'));
+                            String b=arr[i].substring(arr[i].indexOf(':')+1);
+                            if(a.equals(text)){
+                                div.text(b);
+                                return div;
+                            }
+                        }
+                    }else if (Datasql!=null && Datasql.length()>0){
+                        CommonHelperDao dao = new CommonHelperDao();
+                        List<Map<String, Object>> list = dao.getDataBySql(Datasql);
+                        if(list!=null && list.size()>0){
+                            for(int i=0;i<list.size();i++){
+                                Map map = list.get(i);
+                                Object valueObj = map.get("value");
+                                String value = valueObj.toString();
+                                String name = (String) map.get("name");
+                                if(text.equals(value)){
+                                    div.text(name);
+                                    return div;
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    div.text("");
+                }
+                return div;
+            }else{
+                Label label = div.label();
                 label.addCssClass(getName());
                 label.text(view.getTitle());
             }
-            com.sangupta.htmlgen.tags.body.sections.Select select = span.select();
-            select.id(getName());
+            com.sangupta.htmlgen.tags.body.sections.Select select = div.select();
+            select.id(getName()+"0");
             if (view.getWapAttribute() != null) {
                 String str = view.getWapAttribute();//获取下拉框样式
                 String[] strs = str.split("\\[\\^\\]");
@@ -52,20 +95,9 @@ public class Select extends ParentView {
                     }
                 }
             }
-            if (view.getData_replacer() != null) {
-                String replacerStr = view.getData_replacer();
-                CommonHelperDao dao = new CommonHelperDao();
-                String sql = "Select * from Replacer where Replacername='"+replacerStr+"'";
-                Replacer replacer = dao.getReplacerBySql(sql);
-                if (replacer != null) {
-                    Txtsource = replacer.getTxtsource();
-                    Datasql = replacer.getDatasql();
-                }
-            }
             select.option("==请选择==", "");
             if (Txtsource != null && Txtsource.length() > 0) {
                 String[] arr = Txtsource.split("\\#");
-                List<String> list = new ArrayList<String>();
                 for (int i = 0; i < arr.length; i++) {
                     String a = arr[i].substring(0, arr[i].indexOf(':'));
                     String b = arr[i].substring(arr[i].indexOf(':') + 1);
@@ -81,7 +113,7 @@ public class Select extends ParentView {
                             Object valueObj = map.get("value");
                             String value = valueObj.toString();
                             String name = (String) map.get("name");
-                            select.option(name, value.toString());
+                            select.option(name, value);
                         }
                     }
                 }
@@ -107,7 +139,7 @@ public class Select extends ParentView {
                 select.addCssClass(css);
             }
         }
-            return span;
+            return div;
         }
 
     }

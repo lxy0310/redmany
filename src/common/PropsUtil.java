@@ -21,22 +21,14 @@ public class PropsUtil {
      * @return  true-是相应文件 false-不是相应文件
      */
       public static boolean CheckFileSuffixes(String fileName, List<String> suffixes){
-
           if(fileName!=null && fileName.lastIndexOf(".")>0){
               String fileSuffix=fileName.substring(fileName.lastIndexOf(".")+1);
-
-
-              for (String suffix:
-                   suffixes) {
-
+              for (String suffix: suffixes) {
                    if(suffix!=null && fileSuffix.equalsIgnoreCase(suffix)){
-
                        return true;
                    }
               }
           }
-
-
           return  false;
       }
 
@@ -45,9 +37,9 @@ public class PropsUtil {
      * @param imageName 图片名
      * @return true-是图片 false-不是图片
      */
-      public  static boolean CheckImageSuffixes(String imageName){
-              List<String> suffixes= Arrays.asList("png","jpg","jpeg","gif","bmp");
-              return  CheckFileSuffixes(imageName,suffixes);
+      public static boolean CheckImageSuffixes(String imageName){
+          List<String> suffixes= Arrays.asList("png","jpg","jpeg","gif","bmp");
+          return  CheckFileSuffixes(imageName,suffixes);
       }
 
       /**
@@ -67,7 +59,6 @@ public class PropsUtil {
      * @param savePath 文件保存路径
      * @return 成功返回上传的文件名
      */
-
      public static  String updateOneFile(FileItem fileItem,String savePath){
          //判断是否是文件表单字段
           if (fileItem!=null && !fileItem.isFormField()){
@@ -75,18 +66,11 @@ public class PropsUtil {
               String fileName=fileItem.getName();
               //获取新的文件名
               String uuidName=renameToUUID(fileName);
-
-
-
-
-               //
            /*   if(savePath!=null){
               File file=new File( savePath);
               if(!file.exists() && file.isDirectory()){
-
                   file.mkdirs();
               }
-
               }*/
               try {
                   fileItem.write(new File(savePath,uuidName));
@@ -95,10 +79,8 @@ public class PropsUtil {
                   e.printStackTrace();
                   return  null;
               }
-
           }
           return  null;
-
      }
 
 }

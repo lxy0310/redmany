@@ -3,6 +3,7 @@ package viewtype;
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.body.embed.Img;
 import com.sangupta.htmlgen.tags.body.forms.Input;
+import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.text.Label;
 import com.sangupta.htmlgen.tags.body.text.Span;
 import com.sangupta.htmlgen.tags.head.Script;
@@ -49,8 +50,8 @@ public class Text extends ParentView {
     @Override
     protected HtmlBodyElement<?> create() {
         boolean isShow = isShow(getForm().getPage().getShowType());
-        Span span = new Span();
-        span.id(getName());
+        Div div = new Div();
+        div.id(getName());
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());//input值
@@ -63,23 +64,14 @@ public class Text extends ParentView {
         if (getView()!=null){
             View view=getView();
             String textStyle = "";
-            System.out.println(view);
-            if (view.getTitle()!=null){ //title
-               if (view.getTitle().contains(".")){ //图片
-                   String titles=view.getTitle().substring(view.getTitle().indexOf(".")+1);
-                   if (titles.equals("png") || titles.equals("jpg") || titles.equals("gif")){
-                       Img img=span.img(IMAGE_PRE+titles);
-                       img.addCssClass(getName());
-                       img.src(IMAGE_PRE+view.getTitle());
-                       img.width(30);
-                       img.height(30);
-                   }
-               }else { //文本
-                   Label label = span.label();
-                   label.text(view.getTitle());
-               }
+            if(view.getIsTitle()!=null && "1".equals(view.getIsTitle())) {//不长title
+                div.text(text==null?"":text);
+                return div;
+            }else{
+                Label label = div.label();
+                label.text(view.getTitle()==null?"":view.getTitle());
             }
-            Input input =span.input();
+            Input input = div.input();
             input.id(getName()+'0');
             input.addCssClass(getName());
             if (view.getDatabase_field()!=null) {   //Database_field
@@ -179,17 +171,17 @@ public class Text extends ParentView {
             }
         }
         if(onclick != null){
-            span.onClick(onclick);
+            div.onClick(onclick);
         }
         if (color != null) {
-            span.style("color", color);
+            div.style("color", color);
         }
         if (styles != null) {
-            span.styles(styles);
+            div.styles(styles);
         }
         if (css != null) {
-            span.addCssClass(css);
+            div.addCssClass(css);
         }
-        return span;
+        return div;
     }
 }

@@ -318,3 +318,102 @@ function linkageSelectChange(fid,cid){
         });
     }
 }
+
+//图片回显
+function upload(obj){
+    alert("afas");
+    // var f = obj.files;
+    // var str = "";
+    // for(var i=0;i<f.length;i++){
+    //     var reader = new FileReader();
+    //     reader.readAsDataURL(f[i]);
+    //     reader.onload = function(e){
+    //         str+='<img src="'+e.target.result+'"/>';
+    //         document.getElementById("huixian").innerHTML = str;
+    //     }
+    // }
+}
+
+function changImg(e){
+    alert("asf");
+    // for (var i = 0; i < e.target.files.length; i++) {
+    //     var file = e.target.files.item(i);
+    //     if (!(/^image\/.*$/i.test(file.type))) {
+    //         continue; //不是图片 就跳出这一次循环  
+    //     }
+    //     //实例化FileReader API  
+    //     var freader = new FileReader();
+    //     freader.readAsDataURL(file);
+    //     freader.onload = function(e) {
+    //         $("#myImg").attr("src",e.target.result);
+    //     };
+    // }
+}
+
+$(document).ready(function(){
+    //为外面的盒子绑定一个点击事件
+    $("#uploadImgBtn").click(function(){
+        // alert("asf是否");
+        /*
+        1、先获取input标签
+        2、给input标签绑定change事件
+        3、把图片回显
+         */
+//            1、先回去input标签
+        var $input = $("#file");
+//            2、给input标签绑定change事件
+        $input.on("change" , function(){
+            alert("asasf3");
+            //补充说明：因为我们给input标签设置multiple属性，因此一次可以上传多个文件
+            //获取选择图片的个数
+            var files = this.files;
+            var length = files.length;
+            console.log("选择了"+length+"张图片");
+            //3、回显
+            $.each(files,function(key,value){
+                //每次都只会遍历一个图片数据
+                var div = document.createElement("div"),
+                    img = document.createElement("img");
+                div.className = "pic";
+
+                var fr = new FileReader();
+                fr.onload = function(){
+                    img.src=this.result;
+                    div.appendChild(img);
+                    document.body.appendChild(div);
+                }
+                fr.readAsDataURL(value);
+            })
+        })
+    })
+})
+
+function uploadImg(){
+    // alert("rury");
+    var $input = $("#file");
+    $input.on("change" , function(){
+        // alert("asasf3");
+        //补充说明：因为我们给input标签设置multiple属性，因此一次可以上传多个文件
+        //获取选择图片的个数
+        var files = this.files;
+        var length = files.length;
+        console.log("选择了"+length+"张图片");
+        //3、回显
+        $.each(files,function(key,value){
+            //每次都只会遍历一个图片数据
+            var img = document.createElement("img");
+            var div = document.getElementById("huixian");
+            div.className = "pic";
+            var fr = new FileReader();
+            fr.onload = function(){
+                img.width = 50;
+                img.height = 50;
+                img.src=this.result;
+                div.appendChild(img);
+            }
+            fr.readAsDataURL(value);
+        })
+    })
+}
+
+

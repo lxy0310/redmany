@@ -2,6 +2,7 @@ package viewtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.body.forms.Input;
+import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.sections.Option;
 import com.sangupta.htmlgen.tags.body.text.Label;
 import com.sangupta.htmlgen.tags.body.text.Span;
@@ -30,8 +31,9 @@ public class LinkageSelect extends ParentView {
                 LinkageSelects.put(views.get(i).getData_replacer(), views.get(i).getName());
             }
         }
-        Span span = new Span();
-        span.id(getName());
+        Div div = new Div();
+//        div.attr("class","layui-input-inline");
+        div.id(getName());
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
@@ -41,11 +43,60 @@ public class LinkageSelect extends ParentView {
             View view=getView();
             Replacer myReplacer = new Replacer();
             String selectStyle = "";
-            if (view.getTitle()!=null){
-                Label label = span.label();
+            if(view.getData_replacer()!=null){
+                String replacerStr = view.getData_replacer();
+                CommonHelperDao dao = new CommonHelperDao();
+                String sql = "Select * from Replacer where Replacername='"+replacerStr+"'";
+                Replacer replacer = dao.getReplacerBySql(sql);
+                if(replacer!=null){
+                    myReplacer.setID(replacer.getID());
+                    myReplacer.setTxtsource(replacer.getTxtsource());
+                    myReplacer.setDatasql(replacer.getDatasql());
+                    myReplacer.setChild_Replacer(replacer.getChild_Replacer());
+                    myReplacer.setChild_Control(replacer.getChild_Control());
+                    myReplacer.setDatasql_Two_Level(replacer.getDatasql_Two_Level());
+                }
+            }
+            if(view.getIsTitle()!=null && "1".equals(view.getIsTitle())) {//不长title
+                if(text!=null){
+                    if (myReplacer.getTxtsource() != null && myReplacer.getTxtsource().length() > 0) {
+                        String[] arr = myReplacer.getTxtsource().split("\\#");
+                        for (int i = 0; i < arr.length; i++) {
+                            String a = arr[i].substring(0, arr[i].indexOf(':'));
+                            String b = arr[i].substring(arr[i].indexOf(':') + 1);
+                            if(a.equals(text)){
+                                div.text(b);
+                                return div;
+                            }
+                        }
+                    }else if (myReplacer.getDatasql() != null && myReplacer.getDatasql().length() > 0) {
+                        CommonHelperDao dao = new CommonHelperDao();
+                        List<Map<String, Object>> list = dao.getDataBySql(myReplacer.getDatasql());
+                        if(list!=null && list.size()>0){
+                            for(int i=0;i<list.size();i++){
+                                Map map = list.get(i);
+                                Object valueObj = map.get("value");
+                                String value = valueObj.toString();
+                                String name = (String) map.get("name");
+                                if(text.equals(value)){
+                                    div.text(name);
+                                    return div;
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    div.text("");
+                }
+                return div;
+            }else{
+                Label label = div.label();
+//                label.attr("class","layui-form-label");
                 label.text(view.getTitle());
             }
-            com.sangupta.htmlgen.tags.body.sections.Select  select= span.select();
+
+            com.sangupta.htmlgen.tags.body.sections.Select  select= div.select();
+//            select.attr("lay-ignore","lay-ignore");
             select.id(getName()+"0");
             select.addCssClass(getName());
             if (view.getAttributeStr()!=null){
@@ -60,20 +111,6 @@ public class LinkageSelect extends ParentView {
                             }
                         }
                     }
-                }
-            }
-            if(view.getData_replacer()!=null){
-                String replacerStr = view.getData_replacer();
-                CommonHelperDao dao = new CommonHelperDao();
-                String sql = "Select * from Replacer where Replacername='"+replacerStr+"'";
-                Replacer replacer = dao.getReplacerBySql(sql);
-                if(replacer!=null){
-                    myReplacer.setID(replacer.getID());
-                    myReplacer.setTxtsource(replacer.getTxtsource());
-                    myReplacer.setDatasql(replacer.getDatasql());
-                    myReplacer.setChild_Replacer(replacer.getChild_Replacer());
-                    myReplacer.setChild_Control(replacer.getChild_Control());
-                    myReplacer.setDatasql_Two_Level(replacer.getDatasql_Two_Level());
                 }
             }
             select.option("==请选择==","");
@@ -154,7 +191,7 @@ public class LinkageSelect extends ParentView {
                                 String childId = LinkageSelects.get(childRname).toString();//子级控件id
                                 childIds = childIds + childId +",";
                                 session.setAttribute(childId+"_sql",childRsql);
-                                Input input = span.input();//定义隐藏域保存子级信息
+                                Input input = div.input();//定义隐藏域保存子级信息
                                 input.type("hidden");
                                 input.id(getName()+"0_hidden");
                                 input.attr("value",childId);
@@ -183,16 +220,16 @@ public class LinkageSelect extends ParentView {
                 select.styles(styles);
             }else if(selectStyle!=null && selectStyle.length()>0){
                 select.styles(selectStyle);
-                span.styles(selectStyle);
+                div.styles(selectStyle);
             }else{
                 select.styles(getStyle("select"));
-                span.styles(getStyle("span"));
+                div.styles(getStyle("span"));
             }
             if (css != null) {
                 select.addCssClass(css);
             }
         }
-        return span;
+        return div;
     }
 
 }
