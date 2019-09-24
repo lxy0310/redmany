@@ -137,17 +137,6 @@ public class ListForm extends CustomForm {
 
             for (View view : views) {
                 view.setIsTitle("1");
-
-//                if (view.getType().toLowerCase().equals("text")){ //text控件框框
-//                    String attr = view.getAttributeStr();
-//                    if (attr!=null){
-//                        view.setAttributeStr(attr+"border:none[^]");
-//                        view.setWapAttribute(attr+"border:none[^]");
-//                    }else {
-//                        view.setAttributeStr("border:none[^]");
-//                        view.setWapAttribute("border:none[^]");
-//                    }
-//                }
                 html = makeViews(list, view, line, html);
             }
             if (!TextUtils.isEmpty(html)) {
