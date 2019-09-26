@@ -82,7 +82,6 @@ public class NewForm extends FreeForm {
             }
         }else{  //分组
             Map<String, List<View>> resultMap = new LinkedHashMap<>();
-
             try {
                 for (View filed : views) {
                     if (resultMap.containsKey(filed.getFiledGroup())) {//map中异常批次已存在，将该数据存放到同一个key（key存放的是异常批次）的map中
@@ -99,8 +98,6 @@ public class NewForm extends FreeForm {
             }
             System.out.println(resultMap.toString());
             group(resultMap,saveForm,optype,html,"panel");//tab
-
-
         }
         Div btnDiv=saveForm.div();//.styles("margin-left: -21%")
         Button saveBtn=btnDiv.button();  //保存
@@ -203,10 +200,10 @@ public class NewForm extends FreeForm {
                     Div body1 = card1.div().addCssClass("layui-card-body");
                     for (View v : resultMap.get(key)) {
                         Div div2 = body1.div().addCssClass("layui-form-item");
-                        Label label = div2.label();
-                        label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();
+//                        Label label = div2.label();
+//                        label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();
                         html = makeView(v, null, html);
-                        Div div3 = div2.div().addCssClass("layui-input-inline");
+                        Div div3 = div2.div().addCssClass("layui-input-block");
                         div3.text(html);
                     }
                 } else { //分组
@@ -224,10 +221,10 @@ public class NewForm extends FreeForm {
                     Map<String, String> listShow = new HashMap<>();
                     for (View v : resultMap.get(key)) {
                         Div div2 = body.div().addCssClass("layui-form-item");
-                        Label label = div2.label();
-                        label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();
+                        /*Label label = div2.label();
+                        label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();*/
                         html = makeView(v, null, html);
-                        Div div3 = div2.div().addCssClass("layui-input-inline");
+                        Div div3 = div2.div().addCssClass("layui-input-block");
                         div3.text(html);
                     }
                 }

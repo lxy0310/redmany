@@ -389,14 +389,22 @@ public abstract class ParentForm {
      * @return
      */
     public String sqlGetID(String paramId,String sql){
+        sql = sql.toLowerCase();
         if (paramId!=null){
-            if (sql.toLowerCase().contains("where")){
+            if (sql.contains("where")){
                 //截取
                 String before = StringUtils.substringBefore(sql, "where");
                 String after = StringUtils.substringAfter(sql, "where");
                 sql = before + " where Id="+paramId  +" and "+after;
             }else {
-                sql=sql+" where Id="+paramId;
+                if(sql.contains("order by")){
+                    String after = sql.substring(sql.indexOf("order by"),sql.length());
+                    String before = StringUtils.substringBefore(sql, "order by");
+                    sql = before +" where Id="+paramId +after;
+                }else {
+                    sql=sql+" where Id="+paramId;
+                }
+
             }
         }
         return sql;

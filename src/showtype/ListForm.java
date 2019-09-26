@@ -52,6 +52,7 @@ public class ListForm extends CustomForm {
     public HtmlBodyElement<?> createViews() {
         Div div = new Div();
         div.id(formName);
+
         make(div);
         //添加分页菜单栏
 
