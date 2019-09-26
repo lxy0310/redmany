@@ -46,7 +46,10 @@ public class Page implements ParentForm.ISQLReplacer {
     private String isPc="0";  //是否是Pc端,0-手机 1-PC，默认为0
     public static String platform = "1";//前后端 0-前端，1-后端，默认为0
     private String theme=COMPANYID; //主题。默认为COMPANYID
-
+    private int pageIndex=1; //当前页码
+    private int pageSize=5;//每页条数
+    private int pageCount=1;//总页数
+    private  int dataCount=0;//总条数
     public static String getLoginPage() {
         return getHomeUrl("OaLoginHM", "LoginForm");
     }
@@ -122,6 +125,42 @@ public class Page implements ParentForm.ISQLReplacer {
     }
 
 
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public int getDataCount() {
+        return dataCount;
+    }
+
+    public void setDataCount(int dataCount) {
+        this.dataCount = dataCount;
+        if(dataCount%pageSize==0){
+            setPageCount(dataCount/pageSize);
+        }else{
+            setPageCount(dataCount/pageSize+1);
+        }
+    }
 
     /**
      * 首页链接
@@ -180,6 +219,8 @@ public class Page implements ParentForm.ISQLReplacer {
         this.mHttpServletRequest = req;
         this.mHttpServletResponse = res;
         this.mIP = BaseServlet.getRemortIP(req);
+        this.pageIndex=req.getParameter("pageIndex")==null?this.pageIndex:Integer.parseInt(req.getParameter("pageIndex"));
+        this.pageSize=req.getParameter("pageSize")==null?this.pageSize:Integer.parseInt(req.getParameter("pageSize"));
         urlStrings.clear();
         String url = mHttpServletRequest.getQueryString();
         if (url != null) {

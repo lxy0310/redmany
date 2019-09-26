@@ -134,9 +134,9 @@ function gotoPage(target, transferParams) {
     }
 
    //刷新事件
-    if(target.indexOf('refresh:') >= 0){
+  /*  if(target.indexOf('refresh:') >= 0){
         location.reload();
-    }
+    }*/
 
     if (target.indexOf('submit:') >= 0 && target.indexOf('[^]') > 0) {
         //{Id}在生成的页面的java，替换好
@@ -955,4 +955,15 @@ function regMessage() {
     }else {
         $("#label-code").text("请输入用户名");
     }
+}
+
+
+//分页跳转
+function pageJump(formName,showType,pageIndex) {
+    var url="queryStudentServlet?copformName="+formName+"&showType="+showType+"&pageIndex="+pageIndex;
+
+    if(pageIndex=='goText'){
+        url="queryStudentServlet?copformName="+formName+"&showType="+showType+"&pageIndex="+$("#goText").val();
+    }
+    goto(url);
 }

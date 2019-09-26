@@ -4,6 +4,7 @@ import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.sections.Option;
+import com.sangupta.htmlgen.tags.body.sections.Select;
 import com.sangupta.htmlgen.tags.body.text.Label;
 import com.sangupta.htmlgen.tags.body.text.Span;
 import dao.CommonHelperDao;
@@ -33,7 +34,22 @@ public class LinkageSelect extends ParentView {
         }
         Div div = new Div();
 //        div.attr("class","layui-input-inline");
+//        div.attr("class","layui-select-title");
+//        div.attr("class","layui-unselect layui-form-select");
+//        div.attr("class","layui-anim layui-anim-upbit");
         div.id(getName());
+
+//        Div div1 = div.div();
+//        div1.attr("class","layui-select-title");
+//        Input input1 = div1.input();
+//        input1.type("text");
+//        input1.attr("placeholder","==请选择==");
+//        input1.attr("value","");
+
+//        div.d
+
+
+
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
@@ -90,13 +106,13 @@ public class LinkageSelect extends ParentView {
                 }
                 return div;
             }else{
-                Label label = div.label();
-//                label.attr("class","layui-form-label");
-                label.text(view.getTitle());
+//                Label label = div.label();
+//                label.text(view.getTitle());
             }
 
             com.sangupta.htmlgen.tags.body.sections.Select  select= div.select();
-//            select.attr("lay-ignore","lay-ignore");
+            select.attr("lay-ignore","lay-ignore");
+            select.attr("class","layui-select");
             select.id(getName()+"0");
             select.addCssClass(getName());
             if (view.getAttributeStr()!=null){
