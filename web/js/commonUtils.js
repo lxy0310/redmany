@@ -84,25 +84,6 @@ layui.use(['layer','element','form','upload'],function(){
 function tableUpdate(formname,Id) {
     location.href = "queryStudentServlet?copformName="+formname+"&showType=newForm&optype=2&ParamId="+Id;
 }
-//移入显示
-function overShow(after1){
-    // alert(after1);
-
-    var str = '<div id="tableShow" style="z-index: 999;border: 1px solid salmon">'+after1+'</div>';
-    // layer.open({
-    //     type: 1,
-    //     title: false,
-    //     closeBtn: 0,
-    //     area: '516px',
-    //     skin: 'layui-layer-nobg', //没有背景色
-    //     shadeClose: true,
-    //     content: $('#tong')
-    // });
-    this.append(overShow);
-}
-function outHide() {
-    
-}
 
 //全选
 function my(){

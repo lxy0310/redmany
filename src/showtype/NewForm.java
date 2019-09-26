@@ -47,7 +47,7 @@ public class NewForm extends FreeForm {
 
     protected void loadData(String sql) {
         System.out.println(sql);
-        sqlGetID(paramId,sql);  //拼接参数ID
+        sql = sqlGetID(paramId,sql);  //拼接参数ID
         System.err.println(sql);
         List<Map<String, Object>> formFeildList=filedDao.getFormFeildList(getCompanyId(),formName);
         //判断是否有分组
@@ -259,9 +259,10 @@ public class NewForm extends FreeForm {
 ////                    div1.text(v);
 ////                }
                 for(String key : map.keySet()){
+
                     Div div = saveForm.div().addCssClass("layui-form-item");
 //                    Label label = div.label().addCssClass("layui-form-label").styles("width:500px;");
-                    Div div1 = div.div().addCssClass("layui-input-block").styles("width: 700px;padding-top: 7px;margin-left: 30px;");
+                    Div div1 = div.div().addCssClass("layui-input-block");//.styles("width: 700px;padding-top: 7px;margin-left: 30px;");
 //                    label.text(key);
                     String value = map.get(key).toString();
                     div1.text(value);
