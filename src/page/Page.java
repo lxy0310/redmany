@@ -550,8 +550,6 @@ public class Page implements ParentForm.ISQLReplacer {
             }
         }
         try {
-
-
             out.println(html.toString());
         } catch (Exception e) {
             e.printStackTrace();

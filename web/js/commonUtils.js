@@ -45,10 +45,10 @@ layui.use(['layer','element','form','upload'],function(){
         });
     });
 
-    $('.site-demo-active').on('click', function(){
-        var othis = $(this), type = othis.data('type');
-        active[type] ? active[type].call(this, othis) : '';
-    });
+    // $('.site-demo-active').on('click', function(){
+    //     var othis = $(this), type = othis.data('type');
+    //     active[type] ? active[type].call(this, othis) : '';
+    // });
 
 
 
@@ -79,17 +79,30 @@ layui.use(['layer','element','form','upload'],function(){
     element.on('tab(test1)', function(elem){
         location.hash = 'test1='+ $(this).attr('lay-id');
     });
-
-    //全选
-    // form.on('checkbox(allChoose)', function(data){
-    //     var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
-    //     child.each(function(index, item){
-    //         item.checked = data.elem.checked;
-    //     });
-    //     form.render('checkbox');
-
-    //layer.msg('Hello World');
 });
+//点击td跳转到修改页面
+function tableUpdate(formname,Id) {
+    location.href = "queryStudentServlet?copformName="+formname+"&showType=newForm&optype=2&ParamId="+Id;
+}
+//移入显示
+function overShow(after1){
+    // alert(after1);
+
+    var str = '<div id="tableShow" style="z-index: 999;border: 1px solid salmon">'+after1+'</div>';
+    // layer.open({
+    //     type: 1,
+    //     title: false,
+    //     closeBtn: 0,
+    //     area: '516px',
+    //     skin: 'layui-layer-nobg', //没有背景色
+    //     shadeClose: true,
+    //     content: $('#tong')
+    // });
+    this.append(overShow);
+}
+function outHide() {
+    
+}
 
 //全选
 function my(){

@@ -34,7 +34,7 @@ public class Text extends ParentView {
         String url = ApiParser.getShopCarUrl(userId, null);
         String rs = HttpUtils.get(url);
         if (rs != null) {
-            System.err.println(rs);
+          //  System.err.println(rs);
             return ApiParser.parseList(rs, ShopCarPageInfo.class);
         }
         return new ArrayList<>();
@@ -52,6 +52,7 @@ public class Text extends ParentView {
         boolean isShow = isShow(getForm().getPage().getShowType());
         Div div = new Div();
         div.id(getName());
+        div.addCssClass("tableOverflow");
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());//input值

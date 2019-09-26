@@ -260,12 +260,12 @@ public class NewForm extends FreeForm {
 ////                }
                 for(String key : map.keySet()){
                     Div div = saveForm.div().addCssClass("layui-form-item");
-                    Label label = div.label().addCssClass("layui-form-label").styles("width:500px;");
+//                    Label label = div.label().addCssClass("layui-form-label").styles("width:500px;");
                     Div div1 = div.div().addCssClass("layui-input-block").styles("width: 700px;padding-top: 7px;margin-left: 30px;");
-                    label.text(key);
+//                    label.text(key);
                     String value = map.get(key).toString();
                     div1.text(value);
-                    System.out.println(key+"  "+value);
+//                    System.out.println(key+"  "+value);
                 }
             }
         }
