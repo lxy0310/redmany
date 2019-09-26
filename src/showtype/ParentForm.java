@@ -3,6 +3,7 @@ package showtype;
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 import commandCenter.CommandCenter;
 import common.SQLHelper;
+import common.SQLUtil;
 import common.utils.DataHelper;
 import dao.FormDao;
 import dao.FormFiledDao;
@@ -287,7 +288,16 @@ public abstract class ParentForm {
 //                        sql = sql.replace("and type=1", "");
 //                    }
 //                }
+                 //获取总的条数
+               Integer dataCount=(Integer) getPage().getSQLHelper().ExecScalar(companyId,SQLUtil.getCountSql(sql),null);
+             //   List<Map<String, Object>> test=    getPage().getSQLHelper().executeQueryList(companyId,sql,null);
+                if(dataCount!=null&& dataCount>0){
 
+                   getPage().setDataCount(dataCount);
+                }
+
+                //获取到分页后的url
+                   sql= SQLUtil.getPagingSQL(sql,mPage.getPageSize(),mPage.getPageIndex(),getFormData().getReplaceName());
                 loadData(sql);
                 if (LOG) {
                     System.out.println("" + getClass().getSimpleName() + ":sql=" + sql + ":数据=" + mDatas);
