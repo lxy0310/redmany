@@ -319,101 +319,151 @@ function linkageSelectChange(fid,cid){
     }
 }
 
-//图片回显
-function upload(obj){
-    alert("afas");
-    // var f = obj.files;
-    // var str = "";
-    // for(var i=0;i<f.length;i++){
-    //     var reader = new FileReader();
-    //     reader.readAsDataURL(f[i]);
-    //     reader.onload = function(e){
-    //         str+='<img src="'+e.target.result+'"/>';
-    //         document.getElementById("huixian").innerHTML = str;
-    //     }
-    // }
-}
-
-function changImg(e){
-    alert("asf");
-    // for (var i = 0; i < e.target.files.length; i++) {
-    //     var file = e.target.files.item(i);
-    //     if (!(/^image\/.*$/i.test(file.type))) {
-    //         continue; //不是图片 就跳出这一次循环  
-    //     }
-    //     //实例化FileReader API  
-    //     var freader = new FileReader();
-    //     freader.readAsDataURL(file);
-    //     freader.onload = function(e) {
-    //         $("#myImg").attr("src",e.target.result);
-    //     };
-    // }
-}
-
-$(document).ready(function(){
-    //为外面的盒子绑定一个点击事件
-    $("#uploadImgBtn").click(function(){
-        // alert("asf是否");
-        /*
-        1、先获取input标签
-        2、给input标签绑定change事件
-        3、把图片回显
-         */
-//            1、先回去input标签
-        var $input = $("#file");
-//            2、给input标签绑定change事件
-        $input.on("change" , function(){
-            alert("asasf3");
-            //补充说明：因为我们给input标签设置multiple属性，因此一次可以上传多个文件
-            //获取选择图片的个数
-            var files = this.files;
-            var length = files.length;
-            console.log("选择了"+length+"张图片");
-            //3、回显
-            $.each(files,function(key,value){
-                //每次都只会遍历一个图片数据
-                var div = document.createElement("div"),
-                    img = document.createElement("img");
-                div.className = "pic";
-
-                var fr = new FileReader();
-                fr.onload = function(){
-                    img.src=this.result;
-                    div.appendChild(img);
-                    document.body.appendChild(div);
-                }
-                fr.readAsDataURL(value);
-            })
-        })
+//多图的回显
+function uploadMultiImg(e,id,isOne){
+    var files = e.files;
+    var length = files.length;
+    var div = document.getElementById(id+"_div");
+    if(isOne){//单张图片时清空
+        $('#'+id+"_div").empty();
+    }
+    $.each(files,function(key,value){
+        //回显：每次都只会遍历一个图片数据
+        var img = document.createElement("img");
+        // var hxImg = document.createElement("img");
+        var a = document.createElement("a");
+        div.style="display:inline-block; position:relative;";
+        var fr = new FileReader();
+        fr.onload = function(){
+            img.width = 50;
+            img.height = 50;
+            img.src=this.result;
+            div.appendChild(img);
+            a.href="javascript:void(0);";
+            a.id=id+"a";
+            div.appendChild(a);
+            var hxImg = '<Img src="/redmany/images/delete.jpg" style="position: absolute; height: 15px;width: 15px;top: 0px; right: 0px;" onclick="delFile(\''+id+'\',\'image\')"></Img>';
+            $("#"+id+"a").append(hxImg);
+        }
+        fr.readAsDataURL(value);
     })
-})
+}
 
-function uploadImg(){
-    // alert("rury");
-    var $input = $("#file");
-    $input.on("change" , function(){
-        // alert("asasf3");
-        //补充说明：因为我们给input标签设置multiple属性，因此一次可以上传多个文件
-        //获取选择图片的个数
-        var files = this.files;
-        var length = files.length;
-        console.log("选择了"+length+"张图片");
-        //3、回显
-        $.each(files,function(key,value){
-            //每次都只会遍历一个图片数据
-            var img = document.createElement("img");
-            var div = document.getElementById("huixian");
-            div.className = "pic";
-            var fr = new FileReader();
-            fr.onload = function(){
-                img.width = 50;
-                img.height = 50;
-                img.src=this.result;
-                div.appendChild(img);
+//单张、多张图片的回显（新的）
+function uploadImg(e,id,isOne){
+    var files = e.files;
+    var length = files.length;
+    var div = document.getElementById(id+"_div");
+    if(isOne){//单张图片时清空
+        $('#'+id+"_div").empty();
+    }
+    $.each(files,function(key,value){
+        //回显：每次都只会遍历一个图片数据
+        var img = document.createElement("img");
+        // var hxImg = document.createElement("img");
+        var a = document.createElement("a");
+        div.style="display:inline-block; position:relative;";
+        var fr = new FileReader();
+        fr.onload = function(){
+            img.width = 50;
+            img.height = 50;
+            img.src=this.result;
+            div.appendChild(img);
+            a.href="javascript:void(0);";
+            a.id=id+"a";
+            div.appendChild(a);
+            var hxImg = '<Img src="/redmany/images/delete.jpg" style="position: absolute; height: 15px;width: 15px;top: 0px; right: 0px;" onclick="delFile(\''+id+'\',\'image\')"></Img>';
+            $("#"+id+"a").append(hxImg);
+        }
+        fr.readAsDataURL(value);
+    })
+}
+
+//单张、多张图片的回显（旧的）
+function uploadImgOld(e,id,isOne){
+    var files = e.files;
+    var length = files.length;
+    var div = document.getElementById(id+"_div");
+    if(isOne){//单张图片时清空
+        $('#'+id+"_div").empty();
+    }
+    $.each(files,function(key,value){
+        //回显：每次都只会遍历一个图片数据
+        var img = document.createElement("img");
+        var hxImg = document.createElement("img");
+        hxImg.id=id+"_del";
+        var a = document.createElement("a");
+        div.style="display:inline-block; position:relative;";
+        var fr = new FileReader();
+        fr.onload = function(){
+            img.width = 50;
+            img.height = 50;
+            img.src=this.result;
+            div.appendChild(img);
+            a.href="javascript:void(0);";
+            div.appendChild(a);
+            hxImg.src="/redmany/images/delete.jpg";
+            hxImg.style="position: absolute; height: 15px;width: 15px;top: 0px; right: 0px;";
+            // hxImg.onclick="delFile('image')";
+            hxImg.addEventListener("click",delFile,false);
+            if(isOne) {//单张图片时清空
+                // $("#"+id+"_del").onclick="delFile('image')";
+                // hxImg.click(function(){
+                    // delFile('image');
+                    // var flag = window.confirm("您确定要删除该文件吗?");
+                    // if (flag) {
+                    //     $("#"+id+"_div").empty();
+                    // }
+                // });
             }
-            fr.readAsDataURL(value);
-        })
+            a.appendChild(hxImg);
+        }
+        fr.readAsDataURL(value);
     })
 }
 
+//图片、多图、视频的文件删除
+function delFile(fileId,type){
+    var flag = window.confirm("您确定要删除该文件吗?");
+    if (flag) {
+        if(type=="image"){
+            $("#"+fileId+"_div").empty();
+            var image = document.getElementById(fileId+"0");
+            image.value="";//清空已选中的文件流
+        }
+        if(type=="multiImage"){
+            $("#"+fileId+"_div").empty();
+        }
+    }
+}
 
+function del(imgId,delImgId,type){
+    var flag = window.confirm("您确定要删除该文件吗?");
+    if (flag) {
+        if(type=="picture" || type=="video"){
+            var img =document.getElementById(imgId);
+            img.setAttribute('src',''); // 修改img标签src属性值
+            document.getElementById(imgId).style.display="none";
+            document.getElementById(delImgId).style.display="none";
+            var obj = document.getElementById(type);
+            obj.outerHTML=obj.outerHTML;
+        }
+        if(type=="adImg" || type=="describe"){
+            var i = delImgId;
+            var file_name="";
+            if(type=="describe"){
+                file_name = $("#describePicture")[0].files[i].name;
+            }else{
+                file_name = $("#adImg")[0].files[i].name;
+            }
+            var del_names=document.getElementById("del_"+type).value;
+            if(del_names==""){
+                document.getElementById("del_"+type).value=file_name;
+            }else{
+                document.getElementById("del_"+type).value=del_names+","+file_name;
+            }
+            $('#'+imgId).remove();
+            $(".imgDiv").find(".delete").hide();
+        }
+    }
+}
