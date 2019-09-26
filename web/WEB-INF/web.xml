@@ -150,6 +150,12 @@
         <servlet-name>ViewServlet</servlet-name>
         <url-pattern>/view</url-pattern>
     </servlet-mapping>
-
-
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
+        <url-pattern>*.png</url-pattern>
+        <url-pattern>*.gif</url-pattern>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
 </web-app>

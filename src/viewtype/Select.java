@@ -22,6 +22,7 @@ public class Select extends ParentView {
     protected HtmlBodyElement<?> create() {
         Div div = new Div();
         div.id(getName());
+//        div.attr("class","layui-input-block");
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
@@ -76,10 +77,12 @@ public class Select extends ParentView {
                 return div;
             }else{
                 Label label = div.label();
+//                label.attr("class","layui-form-label");
                 label.addCssClass(getName());
                 label.text(view.getTitle());
             }
             com.sangupta.htmlgen.tags.body.sections.Select select = div.select();
+            select.attr("lay-filter","aihao");
             select.id(getName()+"0");
             if (view.getWapAttribute() != null) {
                 String str = view.getWapAttribute();//获取下拉框样式

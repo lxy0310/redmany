@@ -47,7 +47,7 @@ public class NewForm extends FreeForm {
 
     protected void loadData(String sql) {
         System.out.println(sql);
-        sqlGetID(sql,paramId);  //拼接参数ID
+        sqlGetID(paramId,sql);  //拼接参数ID
         System.err.println(sql);
         List<Map<String, Object>> formFeildList=filedDao.getFormFeildList(getCompanyId(),formName);
         //判断是否有分组
