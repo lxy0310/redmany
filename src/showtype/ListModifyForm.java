@@ -52,16 +52,8 @@ public class ListModifyForm extends CustomForm {
     @Override
     protected void loadData(String sql) {
         paramId=getPage().getParameter("ParamId"); //获取参数
-        if (paramId!=null){
-            if (sql.toLowerCase().contains("where")){
-                //截取
-                String before = StringUtils.substringBefore(sql, "where");
-                String after = StringUtils.substringAfter(sql, "where");
-                sql = before + " where Id="+paramId  +" and "+after;
-            }else {
-                sql=sql+" where Id="+paramId;
-            }
-        }
+        sql = sqlGetID(paramId,sql);
+
         Menus = menuDao.getMenu(getCompanyId(), getFormName());
         if (Menus != null) {
 
