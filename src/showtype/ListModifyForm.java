@@ -179,21 +179,16 @@ public class ListModifyForm extends CustomForm {
 
             for (String v : list) {
                 TableDataCell td = row.td();
-                td.text(v);//.addCssClass("tableTdOverflow");
-                //String str = v.replaceAll("\"","'");
+                td.text(v);
                 String before = StringUtils.substringBefore(v,"</div>");
                 String after1 = StringUtils.substringAfter(before,">");
-
-                String str = after1.trim();
-//                Div show = td.div().id("tdShow");
-//                show.text(after1);
-                td.attr("onmouseover","overShow('"+str+"');");
-                td.attr("onmouseout","outHide('"+str+"');");
-               // a1.herf("queryStudentServlet?copformName=" + getFormName() + "&showType=newForm&optype=2&ParamId=" + line.get("Id"));
+                //字段内容长度过长，鼠标移入显示
+                if (after1.length()>20){
+                    td.attr("title",after1);
+                }
                 td.onClick("tableUpdate('"+getFormName()+ "',"+line.get("Id")+");");
             }
             Integer Tablestate = (Integer) line.get("state");
-
             if (Tablestate != null) {
                 FormStateOpertionList = commonDao.getFormListOperationShow(getCompanyId(), 1, getFormName(), Tablestate);
                 if (FormStateOpertionList != null) {

@@ -149,9 +149,9 @@ button{
 .shop-table tr{
     display: flex;
 }
-#number {
-    text-align: right;
-}
+/*#number {*/
+/*    text-align: right;*/
+/*}*/
 /*附近医馆*/
 .Medical_More_YG-item {
     position: relative;
@@ -1164,16 +1164,16 @@ div:first-child
     background-color: #F3F3F3;
 }
 
-.number{
-    display: inline-block;
-    width: 55px;
-    height: 35px;
-    line-height: 35px;
-    background-color: #F3F3F3;
-    text-align: center;
-    margin-left: 1px;
-    margin-right: 1px;
-}
+/*.number{*/
+/*    display: inline-block;*/
+/*    width: 55px;*/
+/*    height: 35px;*/
+/*    line-height: 35px;*/
+/*    background-color: #F3F3F3;*/
+/*    text-align: center;*/
+/*    margin-left: 1px;*/
+/*    margin-right: 1px;*/
+/*}*/
 /*+号*/
 .number-add{
     display: inline-block;
@@ -1470,7 +1470,7 @@ table thead {
 }
 
 .tableOverflow{
-    /*white-space: nowrap;*/
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
