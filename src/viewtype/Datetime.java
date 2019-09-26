@@ -19,6 +19,15 @@ public class Datetime extends ParentView {
         String txtName =getDataProvider().getTextName(this,getForm());
         String isEdit =getDataProvider().getTextEdit(this,getForm());
         String color = getDataProvider().getTextColor(this, getForm());
+        if (getView() != null) {
+            View view = getView();
+            if (view.getIsTitle() != null && "1".equals(view.getIsTitle())) {//不长title
+                span.text(text == null ? "" : text);
+                return span;
+            } else {
+                span.text(view.getTitle() == null ? "" : view.getTitle());
+            }
+        }
         if(txtName!=null){
             Span name =span.span();
             name.addCssClass("edit-"+getName());
@@ -39,6 +48,8 @@ public class Datetime extends ParentView {
         if (css != null) {
             span.addCssClass(css);
         }
+
+
 
         return span;
     }

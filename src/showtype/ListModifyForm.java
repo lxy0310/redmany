@@ -5,10 +5,7 @@ import com.sangupta.htmlgen.tags.body.forms.Button;
 import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.sections.A;
-import com.sangupta.htmlgen.tags.body.table.TBody;
-import com.sangupta.htmlgen.tags.body.table.THead;
-import com.sangupta.htmlgen.tags.body.table.Table;
-import com.sangupta.htmlgen.tags.body.table.TableRow;
+import com.sangupta.htmlgen.tags.body.table.*;
 import com.sangupta.htmlgen.tags.body.text.Span;
 import com.sangupta.htmlgen.tags.head.Script;
 import common.SQLHelper;
@@ -104,9 +101,10 @@ public class ListModifyForm extends CustomForm {
 
     @Override
     protected void make(Div div) {
+        div.add(new Script("js/jquery.js"));
+        div.add(new Script("js/colResizable-1.6.min.js"));
+        div.add(new Script("js/colResizable-1.6.js"));
 
-        div.add(new Script("js/newForm.js"));
-        div.add(new Script("js/jquery-1.12.4.js"));
         System.out.println(platform);
         if (platform.equals("1") || platform == "1" ) {//1为后台
             //没有分组
@@ -126,48 +124,45 @@ public class ListModifyForm extends CustomForm {
     public void showBack(Div div) {
 
         List<View> views = getViews();
+
         Div head = div.div().addCssClass("layui-table-tool");
         Div temp = head.div().addCssClass("layui-table-tool-temp");
         Div btncontainer = temp.div().addCssClass("layui-btn-container");
-        Button add = btncontainer.button().addCssClass("layui-btn layui-btn-sm layui-btn-normal").text("添加");
+
+        //Button add = btncontainer.button().addCssClass("layui-btn layui-btn-sm layui-btn-normal").text("添加");
        // Button del = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text("删除").onClick("del('" + getFormName() + "')");;
         //生成批量操作按钮
 
+        //表头
         Table table = div.table().addCssClass("layui-table");
+//        table.attr("lay-skin","line");
+        table.styles("margin:0px auto;");
         THead thead = table.thead();
         TableRow rowTh = new TableRow();  //表头
-        rowTh.fixed("right");
+
 
         Div sel = rowTh.td().div().addCssClass("layui-input-inline");
-        sel.styles("white-space: nowrap;");
+       // sel.styles("white-space: nowrap;");
         Span selAll = sel.span().id("as").text("全选");
         Input checkbox = sel.input();
         checkbox.id("box");
         checkbox.type("checkbox");
         checkbox.onClick("my()");
 
-       /* for (View view : views) {
+        for (View view : views) {
             rowTh.td(view.getTitle());
-            if (view.getType().toLowerCase().equals("text")) {
-                String attr = view.getAttributeStr();
-                if (attr!=null){
-                    view.setAttributeStr(attr + "border:none[^]");
-                    view.setWapAttribute(attr + "border:none[^]");
-                }else {
-                    view.setWapAttribute( "border:none[^]");
-                    view.setAttributeStr( "border:none[^]");
-                }
-                continue;
-            }
-        }*/
+        }
+
         rowTh.td("操作");
         thead.tr(rowTh);
+        //内容
+
         TBody tBody = table.tbody();
         Map<String,Object> batch = new HashMap<>();//承载批量按钮
         for (Map<String, Object> line : mDatas) {
             String html = getHtmlTemplate();
             List<String> list = new ArrayList<String>();
-            TableRow row = new TableRow();
+            TableRow row = tBody.tr();
 
             Input check = row.td().input().type("checkbox");
             check.name("box1");
@@ -175,21 +170,35 @@ public class ListModifyForm extends CustomForm {
 
             for (View view : views) {
                 view.setIsTitle("1");
+
                 html = makeViews(list, view, line, html);
             }
             if (!TextUtils.isEmpty(html)) {
                 row.td(html);
             }
+
             for (String v : list) {
-                row.td(v);
+                TableDataCell td = row.td();
+                td.text(v);//.addCssClass("tableTdOverflow");
+                //String str = v.replaceAll("\"","'");
+                String before = StringUtils.substringBefore(v,"</div>");
+                String after1 = StringUtils.substringAfter(before,">");
+
+                String str = after1.trim();
+//                Div show = td.div().id("tdShow");
+//                show.text(after1);
+                td.attr("onmouseover","overShow('"+str+"');");
+                td.attr("onmouseout","outHide('"+str+"');");
+               // a1.herf("queryStudentServlet?copformName=" + getFormName() + "&showType=newForm&optype=2&ParamId=" + line.get("Id"));
+                td.onClick("tableUpdate('"+getFormName()+ "',"+line.get("Id")+");");
             }
             Integer Tablestate = (Integer) line.get("state");
-            System.out.println(Tablestate);
 
             if (Tablestate != null) {
                 FormStateOpertionList = commonDao.getFormListOperationShow(getCompanyId(), 1, getFormName(), Tablestate);
                 if (FormStateOpertionList != null) {
-                    Span span = row.td().span().styles("white-space: nowrap;");
+                    TableDataCell td = row.td();
+                    Span span = td.span().styles("white-space: nowrap;");
                     for (Map<String, Object> btnList : FormStateOpertionList) {
                         Integer FormState = (Integer) btnList.get("FormState");
 
@@ -229,7 +238,7 @@ public class ListModifyForm extends CustomForm {
                 }
             }
             // }
-            tBody.tr(row);
+            //tBody.tr(row);
         }
         //去重
         for (String key : batch.keySet()) {

@@ -126,6 +126,9 @@ public class ListForm extends CustomForm {
         for (View view : views) {
             rowTh.td(view.getTitle());
         }
+        if (isShow != null) {
+            rowTh.td("操作");
+        }
         thead.tr(rowTh);
         TBody tBody = table.tbody();
         for (Map<String, Object> line : mDatas) {
