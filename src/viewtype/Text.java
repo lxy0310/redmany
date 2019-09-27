@@ -162,7 +162,13 @@ public class Text extends ParentView {
                }
             }
             if (text!=null){
-                input.value(text);
+                System.out.println(view.getIsValue());
+                if(view.getIsValue()!=null && "1".equals(view.getIsValue())){ //没有value
+
+                }else {
+                    input.value(text);
+                }
+
             }
             if(isShow){
                 input.attr("readonly","readonly");

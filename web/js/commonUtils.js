@@ -1,6 +1,7 @@
 var SumbitUrl = "http://oa.redmany.com:50011/submitData.aspx?";
 var userLogin="http://oa.redmany.com:50011/userRegister.aspx?";
 
+
 var layer,$,form,upload;
 //一般直接写在一个js文件中
 
@@ -80,6 +81,56 @@ layui.use(['layer','element','form','upload'],function(){
         location.hash = 'test1='+ $(this).attr('lay-id');
     });
 });
+
+//搜索
+function search(formName,showType) {
+    layer.open({
+        skin: 'layui-layer-molv', //样式类名
+        title:'搜索',
+        type: 2,
+        area: ['700px', '450px'],
+        content: 'queryStudentServlet?copformName='+formName+'&showType=SearchForm',
+        btn:['查询','取消'],
+        success: function(layero,index){
+            var body = layer.getChildFrame('body', index);
+            alert(body)
+            var iframe = window['layui-layer-iframe' + index];
+            //layero.find('.layui-layer-btn').css('text-align', 'center'); //改变位置按钮居中，left左
+        },
+        yes: function(index, layero){
+            var res = window["layui-layer-iframe" + index].callbackdata();
+            alert(res)
+            //var searchUrl = 'queryStudentServlet?copformName='+formName+'&showType='+showType+"searchCondition="+JSON.stringify(d);
+           // alert(searchUrl);
+           /* var params = serializeForm('searchForm');
+            alert(params);
+            alert($("#searchForm").serialize());
+            $.ajax({
+                url:searchUrl,
+               // data:{"method":"addForm","addForm":JSON.stringify(d),"FormName":FormName,"paramId":paramId},
+                success:function(data){
+                   /!* if (data>0){
+                        layer.msg("操作成功！",{icon:6});
+                        window.parent.location.reload();
+                    }else {
+                        layer.msg("操作失败！",{icon:5});
+                        location.reload();
+                    }*!/
+                },
+                error:function(data){
+                    layer.msg('服务器异常！',{icon:5});
+                }
+            });*/
+            //按钮【按钮一】的回调
+        },btn2: function(index, layero){
+            //按钮【按钮二】的回调
+
+            //return false 开启该代码可禁止点击该按钮关闭
+        }
+
+    });
+}
+
 //点击td跳转到修改页面
 function tableUpdate(formname,Id) {
     location.href = "queryStudentServlet?copformName="+formname+"&showType=newForm&optype=2&ParamId="+Id;

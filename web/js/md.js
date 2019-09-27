@@ -50,60 +50,58 @@ layui.use(['layer','element','form','upload'],function() {
         location.hash = 'sform='+ $(this).attr('lay-id');
     });
 
+
+    $(".saveBtn").click(function() {
+        var dataList=$(".saveData").val();
+        var dataJson=eval('('+dataList +')');
+
+        var d = {};
+        //循环获取input的值
+        var t=$('form').serializeArray();
+        $.each(t, function() {
+            d[this.name] = this.value;
+        });
+        //alert(JSON.stringify(d));
+        //queryStudentServlet?copformName=Order_management,Order_management_info,Order_info_id&showType=MDnewForm
+        //获取参数
+        var paramId = $(".paramId").val();
+        //alert(paramId);
+        var FormName = $(".formName").val();
+        alert(FormName);
+        $.ajax({
+            url:"common",
+            data:{"method":"addForm","mdAddForm":JSON.stringify(d),"FormName":FormName,"paramId":paramId},
+            //async:false,
+            success:function(data){
+                if (data>0){
+                    layer.msg("操作成功！",{icon:6});
+                    alert(data);
+                    $("#mdID").value(data);
+                    location.href = "";
+                    // window.parent.location.reload();
+                }else {
+                    layer.msg("操作失败！",{icon:5});
+                    location.reload();
+                }
+            },
+            error:function(data){
+                layer.msg('服务器异常！',{icon:5});
+            }
+        });
+    });
+
+
 });
 
-function iframe(src) {
-    if(ie && version < 9) {
-        var iframe = document.createElement('<iframe src=""></iframe>');
-        return iframe;
-    } else {
-        var iframe = document.createElement('iframe');
-        iframe.setAttribute('src','');
-        return iframe;
-    }
-}
-// function f(title,content) {
-//
-// }
-function addMDform(url) {
-    //var s = iframe(url);
-// alert(url);
-//alert(s);
-    alert(url);
 
-    layer.tab({
+
+
+function addMDform(url) {
+    layer.open({
         type: 2,
         area: ['700px', '450px'],
         fixed: false, //不固定
         maxmin: true,
-        content: [{
-            title: 'TAB1',
-            content: url
-        }, {
-            title: 'TAB2',
-            content: '<div><h3>我是标题</h3></div>'
-        },]
+        content: url
     });
-
-   /* layer.tab({
-        area: ['600px', '300px'],
-        tab: [{
-            title: 'TAB1',
-            content: v1
-        }, {
-            title: 'TAB2',
-            content: '<div><h3>我是标题</h3></div>'
-        }, {
-            title: 'TAB3',
-            content: '内容3'
-        }],
-        btnAlign: 'c',
-        area: ['1000px', '700px'],
-        btn:['提交','取消'],
-        yes:function(index,layero){
-
-            layer.msg("aaaa");
-        }
-
-    });*/
 }
