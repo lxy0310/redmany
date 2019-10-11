@@ -41,57 +41,6 @@ button{
     width: 33%;
     padding: 10px 0;
 }
-/*推荐名医*/
-#Medical_MainMenu{
-    margin-bottom: 50px;
-}
-.Medical_MainMenu-item{
-    border-bottom: 1px solid #f0f0f0;
-    padding: 10px 3%;
-}
-.Medical_MainMenu-item:last-child{
-    border-bottom:none;
-}
-#Medical_selectTopBar{
-    width: 100%;
-    height: 52px;
-    line-height: 52px;
-}
-#Medical_select_tz,#Medical_select_his{
-    width: 100%;
-    height: 42px;
-    line-height: 30px;
-    padding: 6px;
-    color: #888;
-}
-.Medical_select_tzMenu-item,.Medical_officeList-item{
-    font-size: 0px;
-}
-#Medical_Function,#Medical_NearTopBar,#Medical_VisitTop,#Medical_UsefulExpressionsTopBar,#Medical_Mywallet{
-    font-size: 0px;
-}
-#Medical_Headline{
-    position: relative;
-    margin: 6px 0;
-}
-/*附近医馆等标题*/
-#Medical_Title2,#Medical_Title3,#Medical_Title1{
-    width: 100%;
-    padding: 2%;
-}
-#Medical_ygList{
-    width: 100%;
-    font-size: 0;
-}
-.Medical_ygList-item{
-    display: inline-block;
-    width: 50%;
-    font-size: 14px;
-    padding: 1% 3%;
-}
-#Medical_mygoods,#Medical_mykeep{
-    width: 100%;
-}
 /*我的银行卡*/
 #Ant_BankCard_topbar{
     width: 100%;
@@ -152,21 +101,6 @@ button{
 /*#number {*/
 /*    text-align: right;*/
 /*}*/
-/*附近医馆*/
-.Medical_More_YG-item {
-    position: relative;
-    width: 100%;
-    height: 110px;
-    padding: 6px 12px;
-    border-bottom: 1px solid #f0f0f0;
-}
-.Medical_More_YG-item:after,.news-content:after{
-    display: block;
-    content: '.';
-    height: 0;
-    visibility: hidden;
-    clear: both;
-}
 /*用户中心*/
 #simpleIDInfo_09{
     width: 100%;
@@ -185,54 +119,7 @@ button{
 .homePage-item #name {
      margin-bottom: 0;
 }
-/*智能导诊*/
-.guide-wrapper{
-    font-size: 0;
-    width: 100%;
-    height: 46px;
-    line-height: 46px;
-}
-.top-title{
-    width: 100%;
-    height: 52px;
-    line-height: 52px;
-    text-align: center;
-    border-bottom: 1px solid #f0f0f0;
-}
-/*按科室*/
-#Medical_HospitalGuide_office{
-    width: 100%;
-    font-size: 0;
-}
-.Medical_HospitalGuide_office-item {
-    display: inline-block;
-    width: 25%;
-    font-size: 14px;
-    text-align: center;
-    padding: 6px 0;
-}
-/*推荐名医*/
-.Medical_getDoctorData-item {
-    position: relative;
-    width: 100%;
-    padding: 8px 16px;
-    border-bottom: 1px solid #f0f0f0;
-}
-/*医生管理*/
-.Medical_DoctorManager-item {
-    width: 100%;
-    height: 56px;
-    line-height: 56px;
-    padding: 0 10px;
-    border-bottom: 1px solid #f0f0f0;
-}
-/*出诊管理*/
-.Medical_VisitList-item{
-    position: relative;
-    font-size: 0px;
-    padding-top: 8px;
-    border-bottom: 1px solid #f0f0f0;
-}
+
 /*我的评价*/
 .Medical_hospital_praise-item {
     width: 100%;
@@ -272,50 +159,11 @@ button{
     padding: 8px 0 8px 16px;
     border-bottom: 1px solid #f0f0f0;
 }
-/*医院详情*/
-#Medical_HospitalMessage{
-    position: relative;
-    font-size: 0px;
-    width: 100%;
-    height: 165px;
-    text-align: center;
-}
-/*医院详情-挂号医生*/
-.Medical_hospital_main-item {
-    position: relative;
-    width: 100%;
-    padding: 8px 0 6px 14px;
-    border-bottom: 1px solid #f0f0f0;
-}
-.Medical_hospital_doctor-item {
-    position: relative;
-    width: 100%;
-    padding: 6px 10px 6px 18px;
-    border-bottom: 1px solid #f0f0f0;
-}
-/*医药商城*/
-#Medical_GoodsPage_adimg{
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-}
 
 /*.swiper-wrapper img {*/
     /*width: 100%;*/
     /*height: 200px;*/
 /*}*/
-
-.Medical_GoodsPage_menu-item{
-    display: inline-block;
-    float: left;
-    text-align: center;
-    width: 25%;
-    overflow: hidden;
-} 
-#Medical_GoodsPage_menu img{
-    width: 60%;
-    margin: 20px 10px 5px;
-}
 
 .edt-ipt{
     width: 100%;
@@ -327,68 +175,6 @@ button{
     outline: none;
 }
 
-/*医院简介*/
-#Medical_hospital_details{
-    color: white;
-    border-top: 1px solid transparent;
-    text-align: center;
-    height:165px;
-
-}
-#Medical_introOther>img:last-child{
-    width: 100%;
-    padding: 10px 25px;
-}
-#imgList .imgcls {
-    width: 32%;
-}
-
-#zzImg .imgcls {
-    width: 49%;
-}
-
-/*药方详情*/
-#Medical_Drug_details{
-    padding: 25px;
-}
-.Medical_Drug_list-item{
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-/*添加药方*/
-#Medical_MyPrescription_add{
-    padding: 25px;
-}
-#Medical_MyPrescription_add .edit-Name {
-    margin-right: 10px;
-    font-weight: bold;
-    font-size: 16px;
-}
-#Medical_MyPrescription_add .Name-ipt {
-    border: none;
-    border-bottom: 1px solid #888;
-    width: 80%;
-}
-#Medical_MyPrescription_add .edit-drug {
-    margin-right: 25px;
-    font-weight: bold;
-    font-size: 16px;
-}
-#Medical_MyPrescription_add .drug-ipt {
-    border: none;
-    border-bottom: 1px solid #888;
-    width: 80%;
-}
-#Medical_MyPrescription_add .element-txt {
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    width: 100%;
-    border: 2px solid #85f2dc;
-    padding: 5px;
-    margin: 5px 0;
-}
 
 /*添加常用语*/
 #Medical_UsefulExpressionsAdd{
@@ -400,68 +186,7 @@ button{
     border: 1px solid #85f2dc;
 }
 
-/*出诊申请*/
-#Medical_VisitSet {
-    padding: 25px;
-}
-#Medical_VisitSet .hospitalID-sel {
-    padding: 5px;
-}
-#Medical_VisitSet .edit-registrationFee {
-    font-weight: bold;
-}
 
-/*医生资料编辑*/
-#Medical_Edt {
-    padding: 25px;
-}
-#Medical_Edt .speciality1-ipt {
-    width: 100%;
-    padding: 5px 2px;
-}
-#Medical_Edt .speciality2-ipt {
-    width: 100%;
-    padding: 5px 2px;
-}
-#Medical_Edt .speciality3-ipt {
-    width: 100%;
-    padding: 5px 2px;
-}
-#Medical_Edt .backdrop-txt {
-    width: 100%;
-    border: #85f2dc solid 1px;
-    padding: 10px;
-}
-#Medical_Edt .sendword-txt {
-    width: 100%;
-    border: #85f2dc solid 1px;
-    padding: 10px;
-}
-#ShoppingCart-list{
-    margin-bottom: 100px;
-}
-
-
-/*医生认证*/
-#Medical_DoctorApprove {
-    padding: 25px;
-}
-#Medical_DoctorApprove .Name-ipt {
-    border: none;
-    border-bottom: solid 1px #888;
-    margin-left: 10px;
-}
-#Medical_DoctorApprove .professionalNsme-sel {
-    padding: 5px 10px;
-}
-#Medical_DoctorApprove .hospitalID-sel {
-    padding: 5px 10px;
-}
-#Medical_DoctorApprove .intro-txt  {
-    width: 100%;
-    border: #85f2dc solid 1px;
-    padding: 10px;
-}
 
 /*添加银行卡*/
 #Ant_addBandCard{
@@ -478,60 +203,7 @@ button{
     margin-left: 10px;
 }
 
-/*我的就诊人*/
-#Medical_my_patient_list{
-    padding: 25px;
-}
-#Medical_my_patient_list .Medical_my_patient_list-item{
-    margin-bottom: 10px;
-    border-bottom: 1px solid #eee;
-    padding: 10px 0
-}
 
-    /*添加就诊人*/
-#Medical_add_my_patient{
-    padding: 25px;
-}
-#Medical_add_my_patient .realName-ipt{
-    border: none;
-    border-bottom: solid 1px #888;
-    width: 80%;
-    margin-left: 10px;
-}
-#Medical_add_my_patient .mobile-ipt{
-    border: none;
-    border-bottom: solid 1px #888;
-    width: 80%;
-    margin-left: 10px;
-}
-#Medical_add_my_patient .gender-sel{
-    margin-left: 10px;
-    padding: 5px 10px;
-}
-/*医生详情*/
-#Medical_dordetail1 {
-    width: 100%;
-    height: 200px;
-    color: white;
-    font-size: 0px;
-}
-#Medical_dordetail3{
-    position: relative;
-}
-#Medical_dordetail25,#Medical_dordetail5{
-    padding: 10px;
-    font-size: 0px;
-}
-#Medical_dordetail23{
-    padding: 10px;
-}
-#Medical_dordetail8{
-    position: fixed;
-    left: 0px;
-    bottom: 0px;
-    font-size: 0px;
-    width: 100%;
-}
 /*医院管理*/
 .Medical_HospitalManager-item {
     width: 100%;
@@ -908,17 +580,9 @@ div:first-child
     color: #fff;
     line-height: 40px;
 }
-/*我的圈子--产品*/
-.Medical_mykeepgoods-item {
-    padding: 10px 15px;
-}
 
-/*咨询订单*/
-.Medical_mygoodsproduct-item{
-    padding: 10px 15px;
-    line-height: 30px;
-    border-bottom: 10px solid #eee;
-}
+
+
 
 /*医馆编辑*/
 #Medical_hospital_editPage{
@@ -1475,6 +1139,22 @@ table thead {
     text-overflow: ellipsis;
 }
 
+/*隐藏*/
+.hidden{
+    display:none;
+}
+/*显示*/
+.show{
+    display: block;
+}
+
+/* label对齐*/
+.labelRight{
+    width: 100px;
+    text-align: right;
+    margin-right: 20px;
+}
+
 @media only screen and (min-width: 768px){
     .hovertable td {
         background-color: white;
@@ -1493,7 +1173,9 @@ table thead {
 }
 
 
+
 /* 分页*/
 #pageDiv >  a:hover{background: none;color: #1963AA;text-decoration: none;}
 #pageDiv > a{display: inline-block !important;color: #1963AA;text-decoration: none;padding: 0 5px;}
 #goText { width: 30px !important;border: none;border-bottom: 1px solid #1963AA;padding: 0;text-align:center;margin: 0 5px;}
+

@@ -6,6 +6,9 @@ import viewtype.View;
 import java.util.List;
 import java.util.Map;
 
+
+
+
 /**
  * sql工具类，用于拼接sql
  */
@@ -45,6 +48,7 @@ public class SQLUtil {
 
           return targetSql;
       }
+
 
 
       public  static  String getNonQuerySql(Form form, List<View> viewList, Map<String,String> datas, String type,Map<String,String> condition){
@@ -126,6 +130,12 @@ public class SQLUtil {
         return  null;
       }
 
+
+
+    public static String getCondition(String sql, Map map){
+
+        return  sql;
+    }
 
 
 }

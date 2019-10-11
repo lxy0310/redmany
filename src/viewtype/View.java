@@ -45,16 +45,14 @@ public class View {
     private String FormName;
     private String data_replacer;
     private String isTitle="0"; //是否传标题   默认长标题0 ，不长1
+    private String isValue="0"; //是否有value   默认有value 0 ，没有value 1
 
-    public View() {
+    public String getIsValue() {
+        return isValue;
     }
 
-    public String getIsTitle() {
-        return isTitle;
-    }
-
-    public void setIsTitle(String isTitle) {
-        this.isTitle = isTitle;
+    public void setIsValue(String isValue) {
+        this.isValue = isValue;
     }
 
     @Override
@@ -84,8 +82,20 @@ public class View {
                 ", FormName='" + FormName + '\'' +
                 ", data_replacer='" + data_replacer + '\'' +
                 ", isTitle='" + isTitle + '\'' +
+                ", isValue='" + isValue + '\'' +
                 ", filedGroup='" + filedGroup + '\'' +
                 '}';
+    }
+
+    public View() {
+    }
+
+    public String getIsTitle() {
+        return isTitle;
+    }
+
+    public void setIsTitle(String isTitle) {
+        this.isTitle = isTitle;
     }
 
     public String getData_replacer() { return data_replacer; }

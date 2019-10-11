@@ -545,8 +545,6 @@ public class Page implements ParentForm.ISQLReplacer {
 
             if (element != null) {
                 body.add(element);
-
-
             }
         }
         try {
@@ -584,7 +582,6 @@ public class Page implements ParentForm.ISQLReplacer {
 
         head.css("layui/css/layui.css");
         head.script("layui/layui.js");
-
         head.script("js/commonUtils.js");
         /*树形图*/
         head.css("css/demo.css");

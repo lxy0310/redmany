@@ -1,7 +1,9 @@
 package dao;
 
 import common.SQLHelper;
+import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +12,25 @@ public class CommonDao extends BaseDao {
     public CommonDao(SQLHelper pSQLHelper) {
         super(pSQLHelper);
     }
+
+
+    public List<Map<String,Object>> getxyByDatas(String Company_Id,String sql){
+        return sqlHelper.executeQueryList(Company_Id, sql, null);
+    }
+
+    public List<Map<String,Object>> getxyByData(String Company_Id,String tableName,String xColumn,String yColumn){
+
+        String sql= "";
+        if (yColumn.contains("counts")){
+            sql = "select COUNT(1)" +" from " + tableName +" GROUP BY "+xColumn;
+        }else{
+            sql = "select top 10 SUM(convert(DECIMAL(8,1),"+yColumn+"))"+" from "+tableName+" GROUP BY "+xColumn;
+        }
+        System.out.println(sql);
+
+        return sqlHelper.executeQueryList(Company_Id, sql, null);
+    }
+
 
     /**
      * 根据sql,uid查询数据
@@ -28,6 +49,7 @@ public class CommonDao extends BaseDao {
         }
         return sqlHelper.executeQueryList(Company_Id,sql,null)!=null?sqlHelper.executeQueryList(Company_Id,sql,null):null;
     }
+
 
     /**
      *  点击更改当前数据按钮状态
@@ -98,7 +120,7 @@ public class CommonDao extends BaseDao {
      * @param map
      * @return
      */
-    public int addDate(String Company_Id,String TableName,Map<String,Object> map){
+    public int addDate(String Company_Id,String TableName,Map<String,Object> map,String mdWord){
         int result=0;
         StringBuilder sb = new StringBuilder("");
         if (TableName!=null && map!=null){
@@ -108,9 +130,6 @@ public class CommonDao extends BaseDao {
             String content="";
             int states = 0; //默认是没有state
             for (Map.Entry<String,Object> entry : map.entrySet()) {
-                //Map.entry<Integer,String> 映射项（键-值对）  有几个方法：用上面的名字entry
-                //entry.getKey() ;entry.getValue(); entry.setValue();
-                //map.entrySet()  返回此映射中包含的映射关系的 Set视图。
                 parentheses+=","+entry.getKey();
                 content+=",'"+entry.getValue()+"'";
                 System.out.println(parentheses);
@@ -122,18 +141,24 @@ public class CommonDao extends BaseDao {
                 }
             }
             if (states == 0 ){
-                sb.append("state"+parentheses+")");
-                sb.append(" VALUES ('0'"+content+")");
-            }else
+
+                if (mdWord!=null){
+                    String name = StringUtils.substringBefore(mdWord,"&");
+                    String value = StringUtils.substringAfter(mdWord,"&");
+                    sb.append("state"+","+name+parentheses+")");
+                    sb.append(" VALUES ('0'"+","+value+content+")");
+                }else {
+                    sb.append("state"+parentheses+")");
+                    sb.append(" VALUES ('0'"+content+")");
+                }
+            }
+            else
             {
                 String parenthese=parentheses.substring(1,parentheses.length());
                 String contents=content.substring(1,content.length());
                 sb.append(parenthese+")");
                 sb.append(" VALUES ("+contents+")");
             }
-           // sb.append(parentheses+")");
-            //sb.append(" VALUES ('0'"+content+")");
-
             System.out.println(sb.toString());
         }
         result=sqlHelper.ExecuteInsertGetId(Company_Id,sb.toString(),null).intValue();

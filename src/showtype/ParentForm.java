@@ -266,7 +266,8 @@ public abstract class ParentForm {
             System.out.println(getFormName() + "/" + getViewType() + ",initData=" + mViews);
         }
         //Form的实体对象不为空，则获取相应的数据
-        if (mFormData != null && !"newForm".equalsIgnoreCase(getPage().getShowType()) ) {
+
+        if (mFormData != null) { // && !"newForm".equalsIgnoreCase(getPage().getShowType())
             String Get_data_sql = DataHelper.toString(mFormData.getGet_data_sql());
             if (Get_data_sql != null && Get_data_sql.length() > 0) {
                 String sql;
@@ -291,20 +292,12 @@ public abstract class ParentForm {
 //                        sql = sql.replace("and type=1", "");
 //                    }
 //                }
-                 //获取总的条数
-               Integer dataCount=(Integer) getPage().getSQLHelper().ExecScalar(companyId,SQLUtil.getCountSql(sql),null);
-             //   List<Map<String, Object>> test=    getPage().getSQLHelper().executeQueryList(companyId,sql,null);
-                if(dataCount!=null&& dataCount>0){
-
-                   getPage().setDataCount(dataCount);
-                }
-
-                //获取到分页后的url
-                   sql= SQLUtil.getPagingSQL(sql,mPage.getPageSize(),mPage.getPageIndex(),getFormData().getReplaceName());
                 loadData(sql);
                 if (LOG) {
                     System.out.println("" + getClass().getSimpleName() + ":sql=" + sql + ":数据=" + mDatas);
                 }
+
+
             }
         }
         if ("jkdView".equalsIgnoreCase(getFormName())) {
@@ -391,19 +384,69 @@ public abstract class ParentForm {
      * @return
      */
     public String sqlGetID(String paramId,String sql){
+        sql = sql.toLowerCase();
         if (paramId!=null){
-            if (sql.toLowerCase().contains("where")){
+            if (sql.contains("where")){
                 //截取
                 String before = StringUtils.substringBefore(sql, "where");
                 String after = StringUtils.substringAfter(sql, "where");
                 sql = before + " where Id="+paramId  +" and "+after;
             }else {
-                sql=sql+" where Id="+paramId;
+                if(sql.contains("order by")){
+                    String after = sql.substring(sql.indexOf("order by"),sql.length());
+                    String before = StringUtils.substringBefore(sql, "order by");
+                    sql = before +" where Id="+paramId +after;
+                }else {
+                    sql=sql+" where Id="+paramId;
+                }
+
             }
         }
         return sql;
     }
 
+    public String sqlGetIDs(String paramId,String sql,String ReplaceName){
+        sql = sql.toLowerCase();
+        if (paramId!=null){
+            if (sql.contains("where")){
+                //截取
+                String before = StringUtils.substringBefore(sql, "where");
+                String after = StringUtils.substringAfter(sql, "where");
+                sql = before + " where "+ReplaceName+".Id="+paramId  +" and "+after;
+            }else {
+                if(sql.contains("order by")){
+                    String after = sql.substring(sql.indexOf("order by"),sql.length());
+                    String before = StringUtils.substringBefore(sql, "order by");
+                    sql = before +" where Id="+paramId +after;
+                }else {
+                    sql=sql+" where Id="+paramId;
+                }
+
+            }
+        }
+        return sql;
+    }
+
+    public String sqlGetMD(String mdAssoWord,String sql){
+        sql = sql.toLowerCase();
+        if (mdAssoWord!=null){
+            mdAssoWord = mdAssoWord.replace(":","=");
+            if (sql.contains("where")){
+                String before = StringUtils.substringBefore(sql, "where");
+                String after = StringUtils.substringAfter(sql, "where");
+                sql = before + " where "+mdAssoWord  +" and "+after;
+            }else {
+                if(sql.contains("order by")){
+                    String after = sql.substring(sql.indexOf("order by"),sql.length());
+                    String before = StringUtils.substringBefore(sql, "order by");
+                    sql = before +" where "+mdAssoWord +after;
+                }else {
+                    sql=sql+" where "+mdAssoWord;
+                }
+            }
+        }
+        return sql;
+    }
 
     public String get(Map<String, Object> data, String key) {
         Object var = data.get(key);

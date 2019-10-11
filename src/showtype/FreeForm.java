@@ -15,7 +15,9 @@ public class FreeForm extends CustomForm {
 
     @Override
     protected void loadData(String sql) {
-/*        if(formName.equals("simpleIDInfo_09")) {
+
+   /*     if(formName.equals("simpleIDInfo_09")) {
+
             sql=sql+" where U.id="+getPage().getUserId();
         }
         if(formName.equals("Ant_mainMenu")) {
