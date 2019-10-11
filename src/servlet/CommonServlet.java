@@ -37,6 +37,8 @@ public class CommonServlet extends BaseServlet {
         if (method.equals("addForm")){ //   添加 、 修改
             String paramId=request.getParameter("paramId");//获取当前ID参数
             String formName = request.getParameter("FormName"); //获取formName
+            String tableName = request.getParameter("tableName"); //获取要数据表名
+            String mdAssoWord = request.getParameter("mdAssoWords"); //获取子表单的关联字段
             String ds = request.getParameter("addForm"); //获取form表单
             System.out.println(ds.toString());
             //获取tablename
@@ -44,11 +46,15 @@ public class CommonServlet extends BaseServlet {
             Gson gson=new Gson();
             Map<String,Object> map=new HashMap<String,Object>();
             map=gson.fromJson(ds,map.getClass());
+
             int results = 0;
             if (paramId!=null & !"".equals(paramId)){//修改
                 results=commonDao.editDate(Company_Id,TableName,map,paramId);
-            }else{ //添加
-                results=commonDao.addDate(Company_Id,TableName,map);
+            }else if (mdAssoWord!=null && !"".equals(mdAssoWord) && paramId==null){ //子表添加
+                results = commonDao.addDate(Company_Id,TableName,map,mdAssoWord);
+            }
+            else{ //添加
+                results=commonDao.addDate(Company_Id,TableName,map,null);
             }
             out.print(results);
 

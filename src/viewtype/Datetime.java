@@ -1,7 +1,11 @@
 package viewtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
+import com.sangupta.htmlgen.tags.body.forms.Input;
+import com.sangupta.htmlgen.tags.body.grouping.Div;
+import com.sangupta.htmlgen.tags.body.text.Label;
 import com.sangupta.htmlgen.tags.body.text.Span;
+import com.sangupta.htmlgen.tags.head.Script;
 
 public class Datetime extends ParentView {
     @Override
@@ -11,32 +15,40 @@ public class Datetime extends ParentView {
 
     @Override
     protected HtmlBodyElement<?> create() {
-        Span span = new Span();
-        span.id(getName());
+        Div span = new Div();
+        span.addCssClass(getName()+"Div");
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
         String txtName =getDataProvider().getTextName(this,getForm());
         String isEdit =getDataProvider().getTextEdit(this,getForm());
         String color = getDataProvider().getTextColor(this, getForm());
+        Label label = span.label();
+        Input input = span.input();
+        input.addCssClass(getName()+"-val");
+        input.id(getName()); //getName()
+        input.type("text");
+        input.onClick("useLayDateMultiple('"+getName()+"')");
+        input.placeholder("请选择"+getView().getTitle());
+
         if (getView() != null) {
-            View view = getView();
-            if (view.getIsTitle() != null && "1".equals(view.getIsTitle())) {//不长title
-                span.text(text == null ? "" : text);
+            View view=getView();
+            if(view.getIsTitle()!=null && "1".equals(view.getIsTitle())) {//不长title
+                span.text(text==null?"":text);
                 return span;
-            } else {
-                span.text(view.getTitle() == null ? "" : view.getTitle());
+            }else{
+                label.text(view.getTitle()==null?"":view.getTitle());
             }
         }
+
         if(txtName!=null){
             Span name =span.span();
             name.addCssClass("edit-"+getName());
             name.text(txtName);
         }
+
         if(text!=null){
-            Span txt =span.span();
-            txt.addCssClass(getName()+"-val");
-            txt.text(text);
+            input.value(text);
         }
 
         if (color != null) {

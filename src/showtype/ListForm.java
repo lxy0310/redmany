@@ -13,6 +13,7 @@ import com.sangupta.htmlgen.tags.body.text.Span;
 import com.sangupta.htmlgen.tags.head.Script;
 import common.CommonUtils;
 import common.SQLHelper;
+import common.SQLUtil;
 import common.utils.SQLFixer;
 import common.utils.TextUtils;
 import dao.FormDao;
@@ -129,13 +130,16 @@ public class ListForm extends CustomForm {
                 group = 1;
             }
         }
+        //获取总的条数
+        Integer dataCount=(Integer) getPage().getSQLHelper().ExecScalar(companyId, SQLUtil.getCountSql(sql),null);
+        if(dataCount!=null&& dataCount>0){
+            getPage().setDataCount(dataCount);
+        }
+        //获取到分页后的url
+        sql= SQLUtil.getPagingSQL(sql,getPage().getPageSize(),getPage().getPageIndex(),getFormData().getReplaceName());
         super.loadData(sql);
         System.out.println(sql);
-        if (mDatas != null) {
-            System.out.println("mDatas>>>>>>>>>>>>>>>>>>" + mDatas.toString());
-        } else {
-            System.out.println("getData()>>>>>>>>>>>>>>>>>>>>>>" + getDatas().toString());
-        }
+
     }
 
     @Override

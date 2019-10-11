@@ -1,5 +1,7 @@
 package common;
 
+import com.sangupta.htmlgen.tags.body.embed.Map;
+
 /**
  * sql工具类，用于拼接sql
  */
@@ -39,4 +41,10 @@ public class SQLUtil {
 
           return targetSql;
       }
+
+    public static String getCondition(String sql, Map map){
+
+        return  sql;
+    }
+
 }
