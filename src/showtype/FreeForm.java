@@ -15,7 +15,7 @@ public class FreeForm extends CustomForm {
 
     @Override
     protected void loadData(String sql) {
-        if(formName.equals("simpleIDInfo_09")) {
+/*        if(formName.equals("simpleIDInfo_09")) {
             sql=sql+" where U.id="+getPage().getUserId();
         }
         if(formName.equals("Ant_mainMenu")) {
@@ -23,7 +23,7 @@ public class FreeForm extends CustomForm {
         }
         if(formName.equals("Ant_Personal")) {
             sql=sql+" where u.Id="+getPage().getUserId();
-        }
+        }*/
         System.out.println(formName);
         if (formName.equals("BondNewDetail")){
 
@@ -39,8 +39,9 @@ public class FreeForm extends CustomForm {
 
     @Override
     protected void make(Div div) {
-        Form form = div.form();
-        List<View> views = getViews();
+      //  Form form = div.form();
+       // List<View> views = getViews();
+        List<View> views = mViews;
         String html = getHtmlTemplate();
         List<String> list = new ArrayList<>();
 

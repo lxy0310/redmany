@@ -36,4 +36,6 @@ public interface APPConfig {
     //url参数
     String COP_FORM_NAME = "copformName";
     String SHOW_TYPE = "showType";
+    //文件上传路劲
+    String DOCUMENT="E:\\备份\\后台";
 }

@@ -114,6 +114,8 @@ public class NewForm extends FreeForm {
         }
         Input formname = btnDiv.input("hidden",getFormName()).addCssClass("formName").value(formName);
         saveBtn.addCssClass("saveBtn");
+        saveBtn.attr("type","button");
+        //saveBtn.onClick("gotoPage('submit:"+getFormName()+",newForm[^]refresh:',null);");
         saveBtn.text("提交");
         saveBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
         Button cancelBtn=btnDiv.button();
