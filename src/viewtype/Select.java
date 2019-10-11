@@ -84,6 +84,7 @@ public class Select extends ParentView {
             com.sangupta.htmlgen.tags.body.sections.Select select = div.select();
             select.attr("lay-filter","aihao");
             select.id(getName()+"0");
+            select.name(getName());
             if (view.getWapAttribute() != null) {
                 String str = view.getWapAttribute();//获取下拉框样式
                 String[] strs = str.split("\\[\\^\\]");
