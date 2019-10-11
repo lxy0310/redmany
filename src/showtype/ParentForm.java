@@ -402,6 +402,28 @@ public abstract class ParentForm {
         return sql;
     }
 
+    public String sqlGetIDs(String paramId,String sql,String ReplaceName){
+        sql = sql.toLowerCase();
+        if (paramId!=null){
+            if (sql.contains("where")){
+                //截取
+                String before = StringUtils.substringBefore(sql, "where");
+                String after = StringUtils.substringAfter(sql, "where");
+                sql = before + " where "+ReplaceName+".Id="+paramId  +" and "+after;
+            }else {
+                if(sql.contains("order by")){
+                    String after = sql.substring(sql.indexOf("order by"),sql.length());
+                    String before = StringUtils.substringBefore(sql, "order by");
+                    sql = before +" where Id="+paramId +after;
+                }else {
+                    sql=sql+" where Id="+paramId;
+                }
+
+            }
+        }
+        return sql;
+    }
+
     public String sqlGetMD(String mdAssoWord,String sql){
         sql = sql.toLowerCase();
         if (mdAssoWord!=null){

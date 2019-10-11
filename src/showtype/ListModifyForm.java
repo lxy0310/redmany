@@ -67,24 +67,13 @@ public class ListModifyForm extends CustomForm {
         sql = sqlGetMD(mdAssoWord,sql);
         Menus = menuDao.getMenu(getCompanyId(), getFormName());
         if (Menus != null) {
-
             isShow = Menus.getIsShow();
         }
         //查询是否有分组
         group = 0;  //默认没有分组
-//        System.out.println(formName);
-//        List<Map<String, Object>> filedList = filedDao.getFormFeildList(getCompanyId(), formName);
-//        for (Map<String, Object> filed : filedList) {
-//            if ((String) filed.get("filedGroup") != null || "".equals(filed.get("filedGroup"))) {
-//                group = 1;
-//            }
-//        }
 
         if (platform.equals("1") || platform == "1") {  //platform 1 为后台
-            Menus = menuDao.getMenu(getCompanyId(), getFormName());
-            if (Menus != null) {
-                isShow = Menus.getIsShow();
-            }
+
             // if (isShow!=null){
             Integer formStateId = commonDao.getFormStateIdByFormName(getCompanyId(), getFormName());
             if (formStateId != null) {
@@ -133,7 +122,7 @@ public class ListModifyForm extends CustomForm {
     }
     //查询
     public void search(Div div){
-        Div searchDiv = div.div();
+     /*   Div searchDiv = div.div();
         Button searchBtn = searchDiv.button();
         String url = "queryStudentServlet?copformName="+formName+"&showType=SearchForm";
         searchBtn.onClick("search('"+formName+"','"+ getPage().getShowType()+"')");
@@ -143,7 +132,7 @@ public class ListModifyForm extends CustomForm {
         i.addCssClass("layui-icon layui-icon-search layuiadmin-button-btn");
         searchBtn.italic(i);
         searchBtn.text("搜索");
-        searchBtn.styles("margin-left:20px;margin-bottom:7px;");
+        searchBtn.styles("margin-bottom:7px;margin-top: 10px;");*/
     }
 
     public void showBack(Div div) {
@@ -206,8 +195,13 @@ public class ListModifyForm extends CustomForm {
                     String before = StringUtils.substringBefore(v, "</div>");
                     String after1 = StringUtils.substringAfter(before, ">");
                     //字段内容长度过长，鼠标移入显示
+
                     if ( after1.length() > 20) {
-                        td.attr("title", after1);
+                        if (v.contains("-val")){
+
+                        }else {
+                            td.attr("title", after1);
+                        }
                     }
                     td.onClick("tableUpdate('" + getFormName() + "'," + line.get("Id") + ");");
                 }

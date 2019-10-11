@@ -85,6 +85,8 @@ public class CustomForm extends ParentForm {
 
 
 
+
+
     protected String addMakeViews(List<String> list, View view, Map<String, Object> datas, String html) {
         if (view == null) return null;
         ParentView parentView = makeTypes(view);

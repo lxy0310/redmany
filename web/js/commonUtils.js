@@ -2,31 +2,35 @@ var SumbitUrl = "http://oa.redmany.com:50011/submitData.aspx?";
 var userLogin="http://oa.redmany.com:50011/userRegister.aspx?";
 
 
-var layer,$,form,upload;
+var layer,$,form,upload,laydate;
 //一般直接写在一个js文件中
 
-layui.use(['layer','element','form','upload'],function(){
+layui.use(['layer','element','form','upload','laydate'],function(){
     layer=layui.layer,
-        element = layui.element,
+        element = layui.element
         upload = layui.upload,
         form=layui.form;
+    laydate = layui.laydate;
+
+
 
     $(".saveBtn").click(function() {
-        var dataList=$(".saveData").val();
-        var dataJson=eval('('+dataList +')');
+        // var dataList=$(".saveData").val();
+        // var dataJson=eval('('+dataList +')');
 
         var d = {};
         //循环获取input的值
         var t=$('form').serializeArray();
+        console.log(t);
         $.each(t, function() {
             d[this.name] = this.value;
         });
-        alert(JSON.stringify(d));
+        console.log("json:"+JSON.stringify(d));
         //获取参数
         var paramId = $(".paramId").val();
         //alert(paramId);
         var FormName = $(".formName").val();
-        alert(FormName);
+        console.log(FormName);
         $.ajax({
             url:"common",
             data:{"method":"addForm","addForm":JSON.stringify(d),"FormName":FormName,"paramId":paramId},
@@ -51,8 +55,6 @@ layui.use(['layer','element','form','upload'],function(){
     //     active[type] ? active[type].call(this, othis) : '';
     // });
 
-
-
     //触发事件 选项卡切换
     var active = {
         tabAdd: function(){
@@ -63,11 +65,6 @@ layui.use(['layer','element','form','upload'],function(){
                 ,id: 1 //实际使用一般是规定好的id，这里以时间戳模拟下
             })
         }
-        // ,tabDelete: function(othis){
-        //     //删除指定Tab项
-        //     element.tabDelete('demo', '44'); //删除：“商品管理”
-        //     othis.addClass('layui-btn-disabled');
-        // }
         ,tabChange: function(){
             //切换到指定Tab项
             element.tabChange('test1', '2'); //切换到：用户管理
@@ -80,7 +77,22 @@ layui.use(['layer','element','form','upload'],function(){
     element.on('tab(test1)', function(elem){
         location.hash = 'test1='+ $(this).attr('lay-id');
     });
+
+
 });
+
+function useLayDateMultiple(cls) {
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        lay('#' + cls).each(function() {
+            laydate.render({
+                elem : this,
+                trigger : 'click',
+                type: 'datetime',
+            });
+        });
+    });
+}
 
 //搜索
 function search(formName,showType) {
@@ -91,38 +103,12 @@ function search(formName,showType) {
         area: ['700px', '450px'],
         content: 'queryStudentServlet?copformName='+formName+'&showType=SearchForm',
         btn:['查询','取消'],
-        success: function(layero,index){
-            var body = layer.getChildFrame('body', index);
-            alert(body)
-            var iframe = window['layui-layer-iframe' + index];
-            //layero.find('.layui-layer-btn').css('text-align', 'center'); //改变位置按钮居中，left左
-        },
         yes: function(index, layero){
-            var res = window["layui-layer-iframe" + index].callbackdata();
-            alert(res)
-            //var searchUrl = 'queryStudentServlet?copformName='+formName+'&showType='+showType+"searchCondition="+JSON.stringify(d);
-           // alert(searchUrl);
-           /* var params = serializeForm('searchForm');
-            alert(params);
-            alert($("#searchForm").serialize());
-            $.ajax({
-                url:searchUrl,
-               // data:{"method":"addForm","addForm":JSON.stringify(d),"FormName":FormName,"paramId":paramId},
-                success:function(data){
-                   /!* if (data>0){
-                        layer.msg("操作成功！",{icon:6});
-                        window.parent.location.reload();
-                    }else {
-                        layer.msg("操作失败！",{icon:5});
-                        location.reload();
-                    }*!/
-                },
-                error:function(data){
-                    layer.msg('服务器异常！',{icon:5});
-                }
-            });*/
-            //按钮【按钮一】的回调
-        },btn2: function(index, layero){
+            var form = $("iframe").contents().find("#searchForm").serialize();
+            console.log(form);
+        },success: function(layero,index){ //成功回调
+
+        },cancel: function(index, layero){
             //按钮【按钮二】的回调
 
             //return false 开启该代码可禁止点击该按钮关闭
@@ -185,10 +171,7 @@ function del(FormName) {
             layer.msg("服务异常暂时无法删除,请及时联系工作人员！",{icon:5});
         }
     });
-    //生成链接
-    // s="deletel?id="+s+"";
-    //把链接添加到删除的超链接中中
-   //s $("#deletel").attr('href',s);
+
    /* layer.confirm('您确定要删除吗？', {
         btn: ['忍心删除','在想想'] //按钮
     }, function(){

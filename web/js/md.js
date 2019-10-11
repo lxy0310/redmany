@@ -50,7 +50,6 @@ layui.use(['layer','element','form','upload'],function() {
         location.hash = 'sform='+ $(this).attr('lay-id');
     });
 
-
     $(".saveBtn").click(function() {
         var dataList=$(".saveData").val();
         var dataJson=eval('('+dataList +')');
@@ -61,23 +60,19 @@ layui.use(['layer','element','form','upload'],function() {
         $.each(t, function() {
             d[this.name] = this.value;
         });
-        //alert(JSON.stringify(d));
-        //queryStudentServlet?copformName=Order_management,Order_management_info,Order_info_id&showType=MDnewForm
         //获取参数
         var paramId = $(".paramId").val();
-        //alert(paramId);
         var FormName = $(".formName").val();
         alert(FormName);
         $.ajax({
             url:"common",
             data:{"method":"addForm","mdAddForm":JSON.stringify(d),"FormName":FormName,"paramId":paramId},
-            //async:false,
             success:function(data){
                 if (data>0){
+                    $("#mdID").val(data);
                     layer.msg("操作成功！",{icon:6});
-                    alert(data);
-                    $("#mdID").value(data);
-                    location.href = "";
+                   /* alert(data);*/
+                    location.href = "queryStudentServlet?copformName="+FormName+"&showType=MDnewForm";
                     // window.parent.location.reload();
                 }else {
                     layer.msg("操作失败！",{icon:5});
@@ -90,18 +85,50 @@ layui.use(['layer','element','form','upload'],function() {
         });
     });
 
-
 });
 
 
 
 
 function addMDform(url) {
+    //获取表名
+
     layer.open({
         type: 2,
         area: ['700px', '450px'],
         fixed: false, //不固定
         maxmin: true,
-        content: url
+        content: url,
+        btn:['提交','取消'],
+        yes: function(index, layero){
+
+            var t = $("iframe").contents().find("#addForm").serializeArray();
+            console.log(t);
+            var form = {};
+            $.each(t, function() {
+                form[this.name] = this.value;
+            });
+            console.log(JSON.stringify(form));
+            var TableName = $("iframe").contents().find(".formName").val();
+            var mdAssoWords = $("iframe").contents().find(".mdAssoWords").val();
+            mdAssoWords = mdAssoWords.replace(":","&");
+            console.log(mdAssoWords);
+            $.ajax({
+                url:"common",
+                data:{"method":"addForm","gCompany_Id":gCompany_Id,"addForm":JSON.stringify(form),"FormName":TableName,"mdAssoWords":mdAssoWords},
+                type:"POST",
+                success:function(data){
+                    if (data>0){
+                        layer.msg("操作成功！",{icon:6});
+                        window.parent.location.reload();
+                    }else {
+                        layer.msg("操作失败！",{icon:5});
+                        location.reload();
+                    }
+                },error:function(){
+                    layer.msg("服务异常暂时无法删除,请及时联系工作人员！",{icon:5});
+                }
+            });
+        }
     });
 }
