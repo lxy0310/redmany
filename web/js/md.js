@@ -50,7 +50,7 @@ layui.use(['layer','element','form','upload'],function() {
         location.hash = 'sform='+ $(this).attr('lay-id');
     });
 
-    $(".saveBtn").click(function() {
+    /*$(".saveBtn").click(function() {
         var dataList=$(".saveData").val();
         var dataJson=eval('('+dataList +')');
 
@@ -71,7 +71,7 @@ layui.use(['layer','element','form','upload'],function() {
                 if (data>0){
                     $("#mdID").val(data);
                     layer.msg("操作成功！",{icon:6});
-                   /* alert(data);*/
+                   /!* alert(data);*!/
                     location.href = "queryStudentServlet?copformName="+FormName+"&showType=MDnewForm";
                     // window.parent.location.reload();
                 }else {
@@ -83,7 +83,7 @@ layui.use(['layer','element','form','upload'],function() {
                 layer.msg('服务器异常！',{icon:5});
             }
         });
-    });
+    });*/
 
 });
 
@@ -91,6 +91,7 @@ layui.use(['layer','element','form','upload'],function() {
 function addShow(FFormTitle) {
     alert('请先填写'+FFormTitle+'信息');
 }
+
 
 
 function addMDform(url) {

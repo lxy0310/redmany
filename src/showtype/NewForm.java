@@ -133,6 +133,7 @@ public class NewForm extends FreeForm {
             saveBtn.addCssClass("mdsaveBtn");
             saveBtn.text("提交");
             saveBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
+            saveBtn.onClick("gotoPage('submit:"+getFormName()+",newForm',null);");
             Button cancelBtn = btnDiv.button();
             cancelBtn.text("取消");
             cancelBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
@@ -141,11 +142,13 @@ public class NewForm extends FreeForm {
             saveBtn.addCssClass("saveBtn");
             saveBtn.text("提交");
             saveBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
+            saveBtn.onClick("gotoPage('submit:"+getFormName()+",newForm',null);");
             Button cancelBtn = btnDiv.button();
             cancelBtn.text("取消");
             cancelBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
             cancelBtn.onClick("javascript:history.go(-1);location.reload();");
         }
+        saveBtn.attr("type","button");
     }
 
     //分组

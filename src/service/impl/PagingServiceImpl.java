@@ -4,6 +4,9 @@ import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.sections.A;
 import com.sangupta.htmlgen.tags.body.text.Label;
+
+import com.sangupta.htmlgen.tags.body.text.Span;
+
 import page.Page;
 import service.PagingService;
 
@@ -16,6 +19,10 @@ public class PagingServiceImpl implements PagingService {
         pageDiv.id("pageDiv");
         pageDiv.attr("width","100%");
         pageDiv.attr("style","text-align:center;padding: 20px 0;");
+
+        Span currentPage= pageDiv.span();
+        currentPage.text(page.getPageIndex()+"");
+
         if(page.getPageIndex()!=1) {
             //首页
             A firstPage = pageDiv.a();

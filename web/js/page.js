@@ -138,9 +138,13 @@ function gotoPage(target, transferParams) {
         location.reload();
     }*/
 
-    if (target.indexOf('submit:') >= 0 && target.indexOf('[^]') > 0) {
+    if (target.indexOf('submit:') >= 0 ) {
+
+
+
+
         //{Id}在生成的页面的java，替换好
-        var strs = target.split('[^]');
+      var strs = target.split('[^]');
         var submit = strs[0];
         if (strs[0].length > 0) {
             if(submit=="isNeedLogin:1"){
@@ -157,11 +161,53 @@ function gotoPage(target, transferParams) {
             }
             var formName = submit1s[0];
             var showType = submit1s[1];
+            //alert(formName);
+           // alert(showType);
             //参数 itemProvideId={Id}╗price={totalPrice}
             var subparam="Company_Id=" + gCompany_Id + "&userid=" + gUesrId;
+            //获取表单参数集
+            //获取sumit formName
+            //var formParam=    $("#"+formName+"Form").serialize();
+            //alert( formParam);
+           // $("#"+formName+"Form").attr("action","submit?formName="+formName+"&showType="+showType);
+            //$("#"+formName+"Form").submit();
+            var form=document.getElementById(formName+"Form");
+            var formData=new FormData(form);
+            formData.set("formName",formName);
+            formData.set("showType",showType);
+            //alert(formData);
+            $.ajax({
+               url:"submit",
+               type:"post",
+                data:formData,
+                contentType:false,
+                processData:false,
+                cache:false,
+                success:function (data) {
+
+                 if(data>0){
+                     if(showType=="MDnewForm"  ){
+                         if($("#mdID").val()==""){
+                             $("#mdID").val(data);
+                         }
+
+                         layer.msg("操作成功！",{icon:6});
+                     }else{
+                         layer.msg("操作成功！",{icon:6});
+
+                     }
 
 
-           for (var t=1;t<submitArr.length;t++) {
+
+                 }else {
+                     layer.msg("操作失败！",{icon:5});
+                     window.location.reload();
+                 }
+
+
+                }
+            });
+       /*    for (var t=1;t<submitArr.length;t++) {
 
                if (submitArr[t].indexOf("╗") >= 0) {
                    // var subparam = submitArr[1].replace('╗', '&') + "Company_Id=" + gCompany_Id + "&userid=" + gUesrId;
@@ -178,51 +224,56 @@ function gotoPage(target, transferParams) {
                    subparam += "&" + subparam4;
                }
             }
-            console.log(subparam);
+            console.log(subparam);*/
           //  alert(subparam);
 
             //  submitArr循环
 
-            for (var j = 2; submit1s.length > j; j++) {
+         /*   for (var j = 2; submit1s.length > j; j++) {
                 subparam += "&" + submit1s[j];
              //   alert(submit1s[j])
             }
 
-             var submitUrl = SumbitUrl+'formName=' + formName + '&showType=' + showType + '&' + subparam;
+             var submitUrl = SumbitUrl+'formName=' + formName + '&showType=' + showType + '&' + subparam;*/
 
             //支付后跳转页面
             //strs[1]=goto:payFormBuyingService,freeForm
-            var refresh = strs[1].indexOf('refresh:') >= 0;
-            if (!refresh) {
-                if (strs[1].indexOf('pay') >= 0) {
-                    var url = genUrl(strs[1], transferParams);
-                    payUrl = "wxpay?url=" + escape(url) + "&" + subparam;
-                } else {
-                    payUrl = genUrl(strs[1], transferParams);
-                }
-            } else {
-                payUrl = null;
-            }
-            $.ajax({
-                type: 'post',
-                url: submitUrl,
-                success: function (data) {
-                        //goto(submitUrl);
-                    /*    alert(data)
-                    alert("注册成功");
-                    window.location.href="http://localhost:8080/queryStudentServlet?copformName=Service_mainPage&showType=copForm";*/
-                   /* var temp = 'qwerrreqwqwqw';
-                    alert(data.indexOf("success"));
-                    alert(temp.indexOf("success"));*/
-                     /* if (data.indexOf("success") != -1 ){
-                            window.location.href="http://localhost:8080/queryStudentServlet?copformName=OaLoginHM&showType=LoginForm";
-                            alert("注册成功");
-                        }*/
-                }
-            });
+            // var refresh = strs[1].indexOf('refresh:') >= 0;
+            // if (!refresh) {
+            //     if (strs[1].indexOf('pay') >= 0) {
+            //         var url = genUrl(strs[1], transferParams);
+            //         payUrl = "wxpay?url=" + escape(url) + "&" + subparam;
+            //     } else {
+            //         payUrl = genUrl(strs[1], transferParams);
+            //     }
+            // } else {
+            //     payUrl = null;
+            // }
+            // $.ajax({
+            //     type: 'post',
+            //     url: submitUrl,
+            //     success: function (data) {
+            //             //goto(submitUrl);
+            //         /!*    alert(data)
+            //         alert("注册成功");
+            //         window.location.href="http://localhost:8080/queryStudentServlet?copformName=Service_mainPage&showType=copForm";*!/
+            //        /!* var temp = 'qwerrreqwqwqw';
+            //         alert(data.indexOf("success"));
+            //         alert(temp.indexOf("success"));*!/
+            //          /!* if (data.indexOf("success") != -1 ){
+            //                 window.location.href="http://localhost:8080/queryStudentServlet?copformName=OaLoginHM&showType=LoginForm";
+            //                 alert("注册成功");
+            //             }*!/
+            //     }
+            // });
 
         }
-        return;
+        if(target.indexOf("[^]")>=0){
+
+        }else{
+            return false;
+        }
+
 
     }
     else if (target.indexOf('finish:') >= 0) {

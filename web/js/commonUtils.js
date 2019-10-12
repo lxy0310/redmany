@@ -14,13 +14,14 @@ layui.use(['layer','element','form','upload','laydate'],function(){
 
     $("#reset").on("click",function(){ window.location.reload();}); //重置
 
-    $(".saveBtn").click(function() {
+   /* $(".saveBtn").click(function() {
         // var dataList=$(".saveData").val();
         // var dataJson=eval('('+dataList +')');
 
         var d = {};
         //循环获取input的值
         var t=$('form').serializeArray();
+        alert(t);
         console.log(t);
         $.each(t, function() {
             d[this.name] = this.value;
@@ -48,7 +49,7 @@ layui.use(['layer','element','form','upload','laydate'],function(){
                 layer.msg('服务器异常！',{icon:5});
             }
         });
-    });
+    });*/
 
     // $('.site-demo-active').on('click', function(){
     //     var othis = $(this), type = othis.data('type');

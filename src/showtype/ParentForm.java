@@ -13,6 +13,7 @@ import model.OaAttribute;
 import org.apache.commons.lang.StringUtils;
 import page.Page;
 import service.FormFileAttribute;
+import service.PagingService;
 import service.impl.FormFileAttributeImpl;
 import viewtype.View;
 import viewtype.DefaultDataProvider;
@@ -65,6 +66,7 @@ public abstract class ParentForm {
     private static FormDao sFormDao;
     private  static FormFileAttribute formFileAttribute;
     protected SQLHelper sqlHelper;
+
 
     public ParentForm() {
 
@@ -264,6 +266,7 @@ public abstract class ParentForm {
             System.out.println(getFormName() + "/" + getViewType() + ",initData=" + mViews);
         }
         //Form的实体对象不为空，则获取相应的数据
+
         if (mFormData != null) { // && !"newForm".equalsIgnoreCase(getPage().getShowType())
             String Get_data_sql = DataHelper.toString(mFormData.getGet_data_sql());
             if (Get_data_sql != null && Get_data_sql.length() > 0) {
