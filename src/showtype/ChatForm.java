@@ -45,11 +45,12 @@ public class ChatForm extends CustomForm {
         System.out.println(sql);
     }
 
+    //图表初始化数据
     private void HighChart() {
         higt = new HighChart();
-        higt.setTitleText(forms.getTitle());
-       // higt.setSubtitleText("213");
-        if (forms.getbFormColumn() != null) {
+        higt.setTitleText(forms.getTitle()); //图表标题
+       // higt.setSubtitleText("213"); //图表小标题
+        if (forms.getbFormColumn() != null) { //图表类型
             higt.setType(forms.getChatType());
         } else {
             higt.setType("column");
@@ -60,9 +61,13 @@ public class ChatForm extends CustomForm {
         String xy = forms.getXycolumn();
         String[] strY = null;
         String[] strYTitle = null;
+        //字段名称
         if (y.contains(",")) {
             strY = y.split(",");
+            System.out.println(strY.toString());
         }
+
+        List<HighCharttwo> list = new ArrayList<HighCharttwo>();
         for (Map<String, Object> filed : formFeilds) {
             if (filed.get("Name").equals(xy) || filed.get("Name") == xy) {
                 higt.setyTitleText(filed.get("Title").toString());
@@ -77,66 +82,15 @@ public class ChatForm extends CustomForm {
                 }
             }
         }
-        //查询统计数据
-        List<Map<String, Object>> xyDatas = null;
-        if (y.contains("counts")) {
-            String sql = "select top 10 COUNT(1) as sums," + x + " from " + forms.getTable_name() + " " + forms.getReplaceName() + " GROUP BY " + x;
-            System.out.println(sql);
-            xyDatas = commonDao.getxyByDatas(getCompanyId(), sql);
-        } else {
-            String sql = "select top 10 SUM(convert(DECIMAL(8,1)," + y + ")) as sums," + x + " from " + forms.getTable_name() + " " + forms.getReplaceName() + " GROUP BY " + x;
-            System.out.println(sql);
-            xyDatas = commonDao.getxyByDatas(getCompanyId(), sql);
-        }
-        List<HighCharttwo> list = new ArrayList<HighCharttwo>();
-        HighCharttwo char12 = new HighCharttwo();
-        if (forms.getChatType().contains("pie")) {
-          //  List<HighChartPie> listtwo = new ArrayList<>();
-            /*  [{name: 'Chrome',y: 61.41}, { name: 'Internet Explorer',y: 11.84 }]*/
-            List<HighChartPie> pieList = new ArrayList<>();
-            JSONArray array = new JSONArray();
-            for (int i = 0; i < xyDatas.size(); i++) {
-                HighChartPie pie = new HighChartPie();
-
-                Map<String, Object> entity = xyDatas.get(i);
-                System.out.println(entity.toString());
-                System.out.println("sums" + entity.get("sums").toString());
-                String name = entity.get(x).toString();
-                Double numerical = Double.parseDouble(entity.get("sums").toString());
-
-                HighCharttwo char2 = new HighCharttwo();
-                char2.setName(name);
-                char2.setY(numerical);
-                //list.add(char2);
-                pie.setName(name);
-                pie.setY(numerical);
-                pieList.add(pie);
-
+        if (strY!=null){    //多个列表
+            for (int i = 0; i < strY.length ; i++) {
+                statistics(strY[i],x,list,0);
             }
-            char12.setData(pieList);
-            list.add(char12);
-
-        } else {
-            double[] yDatas = new double[xyDatas.size()];
-            String[] xtitle = new String[xyDatas.size()];
-            for (int i = 0; i < xyDatas.size(); i++) {
-                Map<String, Object> entity = xyDatas.get(i);
-                System.out.println(entity.toString());
-                xtitle[i] = entity.get(x).toString();
-                yDatas[i] = Double.parseDouble(entity.get("sums").toString());
-            }
-            char12.setName(y);
-            //char12.setData(yDatas);
-            list.add(char12);
-            higt.setxCategories(xtitle);
+        }else {
+            statistics(y,x,list,0);
         }
-        HighCharttwo char13 = new HighCharttwo();
-        char13.setName("1");
-       // char13.setData(new double[]{49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4});
-        //list.add(char13);
-
+       // higt.setxCategories(xtitle);
         higt.setData(list);
-
         /*        System.out.println(forms.getTable_name()+"\t"+forms.getXcolumn()+"\t"+forms.getYcolumn());
 //        String tableName = forms.getTable_name();
       //  List<Map<String, Object>> datas = commonDao.getxyByData(companyId,tableName,x,y);
@@ -186,7 +140,54 @@ public class ChatForm extends CustomForm {
     }
         */
     }
+    //统计数据
+    private void statistics (String y,String x,List<HighCharttwo> list,int pies){  //pies 1 多个饼图
+        //查询统计数据
+        List<Map<String, Object>> xyDatas = null;
+        if (y.contains("counts")) {
+            String sql = "select top 10 COUNT(1) as sums," + x + " from " + forms.getTable_name() + " " + forms.getReplaceName() + " GROUP BY " + x;
+            System.out.println(sql);
+            xyDatas = commonDao.getxyByDatas(getCompanyId(), sql);
+        } else {
+            String sql = "select top 10 SUM(convert(DECIMAL(16,1)," + y + ")) as sums," + x + " from " + forms.getTable_name() + " " + forms.getReplaceName() + " GROUP BY " + x;
+            System.out.println(sql);
+            xyDatas = commonDao.getxyByDatas(getCompanyId(), sql);
+        }
+        HighCharttwo char12 = new HighCharttwo();
+        if (forms.getChatType().contains("pie")) {//饼图
+            List<HighChartPie> pieList = new ArrayList<>();
+            for (int i = 0; i < xyDatas.size(); i++) {
+                HighChartPie pie = new HighChartPie();
+                Map<String, Object> entity = xyDatas.get(i);
 
+                System.out.println(entity.toString());
+                System.out.println("sums" + entity.get("sums").toString());
+
+                String name = entity.get(x).toString();
+                Double numerical = Double.parseDouble(entity.get("sums").toString());
+                pie.setName(name);
+                pie.setY(numerical);
+                pieList.add(pie);
+            }
+            Object o =  pieList;
+            char12.setData(o);
+            list.add(char12);
+
+        } else {
+            double[] yDatas = new double[xyDatas.size()];
+            String[] xtitle = new String[xyDatas.size()];
+            for (int i = 0; i < xyDatas.size(); i++) {
+                Map<String, Object> entity = xyDatas.get(i);
+                System.out.println(entity.toString());
+                xtitle[i] = entity.get(x).toString();
+                yDatas[i] = Double.parseDouble(entity.get("sums").toString());
+            }
+            char12.setName(y);
+            char12.setData(yDatas);
+            list.add(char12);
+            higt.setxCategories(xtitle);
+        }
+    }
 
     private Map<String, Integer> xCount(String code, List<Map<String, Object>> mDatas) {
         Map<String, Integer> map = new HashMap<String, Integer>();
@@ -201,7 +202,6 @@ public class ChatForm extends CustomForm {
         }
         return map;
     }
-
     private Map<String, Double> xSum(String code, Double sum, List<Map<String, Object>> mDatas) {
         Map<String, Double> map = new HashMap<String, Double>();
         for (int i = 0; i < mDatas.size(); i++) {
@@ -219,39 +219,22 @@ public class ChatForm extends CustomForm {
 
     protected void make(Div div) {
 
-       // div.add(new Script("http://cdn.highcharts.com.cn/highcharts/modules/exporting.js"));
-       // div.add(new Script("js/highcharts-more.js"));
         HighChart(); //图表的封装
         System.out.println(mDatas.toString());
         div.add(new Script("js/jquery-2.1.4.min.js"));
         div.add(new Script("js/highcharts.js"));
         div.add(new Script("js/highcharts-3d.js"));
-        div.add(new Script("js/grid.js"));
+       // div.add(new Script("js/grid.js"));
         div.add(new Script("js/exporting.js"));
         Div div1 = div.div();
         div1.id("container");
-        div1.styles("width: 1000px;height:400px;");
+        div1.styles("min-width:400px;height:400px;");
         Input input = div.input();
         input.type("hidden");
         input.id("data");
-        String json = JSONArray.toJSONString(higt).replaceAll("\"", "\'");//
+        String json = JSONArray.toJSONString(higt).replaceAll("\"", "\'");
         input.value(json);
-//        div.add(new Script().text("" +
-//                "$(function(){" +
-//                "var data =$(\"#data\").val().replace(/'/g,\"\\\"\");"+
-//                " var jsonObject= JSON.parse(data);"+
-//                "var chart = Highcharts.chart('container', {"+
-//                " chart: {  type: jsonObject.type },"+
-//                "title: {  text: jsonObject.titleText },"+
-//                " subtitle: {   text: jsonObject.subtitleText  },"+
-//                " xAxis: {  categories: jsonObject.xCategories,crosshair: true},"+
-//                "yAxis: {  categories: jsonObject.xCategories, title: { text: jsonObject.yTitleText }  },"+
-//                "series: jsonObject.data"+
-//                " });"+
-//                "var chart = Highcharts.chart('container', chart);"+
-//                "});"));
-        div.add(new Script("js/chart1.js"));
-
+        div.add(new Script("js/chart.js"));
     }
 
 

@@ -105,7 +105,6 @@ function addMDform(url) {
         content: url,
         btn:['提交','取消'],
         yes: function(index, layero){
-
             var t = $("iframe").contents().find("#addForm").serializeArray();
             console.log(t);
             var form = {};
