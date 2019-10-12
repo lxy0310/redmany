@@ -46,7 +46,7 @@ public class ListForm extends CustomForm {
     // private String publish; //   1 pc,2 mobile
     private String isShow;  //  不为空,可以修改,   1   替换页面,   2 上下页面
     private int group;   // 判断是否有分组
-    private service.PagingService pagingService=new PagingServiceImpl();    //分页服务接口
+    private PagingService pagingService=new PagingServiceImpl();    //分页服务接口
 
 
     public String one, two, three, four;

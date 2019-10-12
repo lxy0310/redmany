@@ -185,7 +185,25 @@ function gotoPage(target, transferParams) {
                 cache:false,
                 success:function (data) {
 
-                    alert(data);
+                 if(data>0){
+                     if(showType=="MDnewForm"  ){
+                         if($("#mdID").val()==""){
+                             $("#mdID").val(data);
+                         }
+
+                         layer.msg("操作成功！",{icon:6});
+                     }else{
+                         layer.msg("操作成功！",{icon:6});
+
+                     }
+
+
+
+                 }else {
+                     layer.msg("操作失败！",{icon:5});
+                     window.location.reload();
+                 }
+
 
                 }
             });
@@ -253,7 +271,7 @@ function gotoPage(target, transferParams) {
         if(target.indexOf("[^]")>=0){
 
         }else{
-            return;
+            return false;
         }
 
 

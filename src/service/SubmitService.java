@@ -9,5 +9,5 @@ public interface SubmitService {
      * @param companyId 企业Id
      * @return true-提交成功 false-提交失败
      */
-    public  boolean doSubmit(String companyId);
+    public  Long doSubmit(String companyId);
 }

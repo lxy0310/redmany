@@ -37,7 +37,7 @@ public class SubmitServiceImpl implements SubmitService {
     }
 
     @Override
-    public boolean doSubmit(String companyId) {
+    public Long doSubmit(String companyId) {
         Map<String,String> datas=new HashMap<>();
         Map<String,String> condition=new HashMap<>();
 
@@ -68,19 +68,33 @@ public class SubmitServiceImpl implements SubmitService {
                     //获得文件上传组件的输入流
                     value= PropsUtil.updateOneFile(fileItem, APPConfig.DOCUMENT);
                 }
-                if(datas.containsKey(key) && datas.get(key)!=null){
-                    datas.put(key,datas.get(key)+","+value);
+                if ("Id".equalsIgnoreCase(key) ){
+                    if(!"".equals(value.trim())){
+
+                        condition.put("Id",value);
+                    }
+
                 }else{
-                    datas.put(key,value);
+                    if(datas.containsKey(key) && datas.get(key)!=null){
+                        datas.put(key,datas.get(key)+","+value);
+                    }else{
+                        datas.put(key,value);
+                    }
                 }
+
 
             }
         } catch (FileUploadException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        if(!condition.containsKey("Id")){
+            String Id=request.getParameter("Id")!=null?request.getParameter("Id"):request.getParameter("id");
+            if(Id!=null && !"".equals(Id.trim())){
+                condition.put("Id",Id);
+            }
 
-        String Id=request.getParameter("Id")!=null?request.getParameter("Id"):request.getParameter("id");
-        condition.put("Id",Id);
+        }
+
          formName=datas.get("formName");
          showType=datas.get("showType");
         datas.remove("formName");
@@ -88,7 +102,8 @@ public class SubmitServiceImpl implements SubmitService {
         //获取sql语句
         Form submitForm=formDao.getForm(companyId,formName);
         List<View> viewList=formFiledDao.getFormContorl(companyId,formName,null);
-        String sql= SQLUtil.getNonQuerySql(submitForm,viewList,datas,"newForm".equalsIgnoreCase(showType)?"insert":"update",condition);
+        String type=condition.containsKey("Id")?"update":"insert";
+        String sql= SQLUtil.getNonQuerySql(submitForm,viewList,datas,type,condition);
         //替换[userId]
         HttpSession session=request.getSession();
         Integer userid=-1;
@@ -98,10 +113,15 @@ public class SubmitServiceImpl implements SubmitService {
         if(sql.indexOf("[userid]")>=0){
             sql=sql.replace("[userid]",userid+"");
         }
-        int count =sqlHelper.ExecuteNonQuery(companyId,sql,null);
-        if (count>0){
-            return  true;
+        long count=0;
+        if("insert".equals(type)){
+            count=sqlHelper.ExecuteInsertGetId(companyId,sql,null);
+        }else{
+            count =sqlHelper.ExecuteNonQuery(companyId,sql,null);
+
         }
-        return false;
+
+
+        return count;
     }
 }
