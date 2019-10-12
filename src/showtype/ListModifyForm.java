@@ -71,9 +71,7 @@ public class ListModifyForm extends CustomForm {
         }
         //查询是否有分组
         group = 0;  //默认没有分组
-
         if (platform.equals("1") || platform == "1") {  //platform 1 为后台
-
             // if (isShow!=null){
             Integer formStateId = commonDao.getFormStateIdByFormName(getCompanyId(), getFormName());
             if (formStateId != null) {

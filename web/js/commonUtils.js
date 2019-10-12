@@ -12,7 +12,7 @@ layui.use(['layer','element','form','upload','laydate'],function(){
         form=layui.form;
     laydate = layui.laydate;
 
-
+    $("#reset").on("click",function(){ window.location.reload();}); //重置
 
     $(".saveBtn").click(function() {
         // var dataList=$(".saveData").val();

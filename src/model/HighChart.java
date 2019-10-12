@@ -12,6 +12,7 @@ public class HighChart implements Serializable {
     private List<HighChartAxis> xAxis; //x轴标题
     private List<HighChartAxis> yAxis; //y轴标题
     private List<HighCharttwo> data; //数据
+    private String distance;
 
     public String getyTitleText() {
         return yTitleText;

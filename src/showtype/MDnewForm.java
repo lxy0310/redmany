@@ -114,7 +114,7 @@ public class MDnewForm extends CustomForm {
         List<String> list = new ArrayList<>();
         if (ParamId!=null){
             Tables(views,html,list,saveForm);
-}else {
+        }else {
         Table(views,html,list,saveForm);
         }
 
@@ -125,19 +125,18 @@ public class MDnewForm extends CustomForm {
         //按钮操作
         Div btnDiv=saveForm.div().addCssClass("layui-form-item").styles("margin-left: 180px;");
         Input formname = btnDiv.input("hidden",getFormName()).addCssClass("formName").value(FFormColumnName);
-        Input hiddenId = saveForm.input("hidden","").id("mdID");
+        Input hiddenId = saveForm.input("hidden",ParamId).id("mdID");
         Button saveBtn = btnDiv.button().text("提交").addCssClass("layui-btn saveBtn");//保存按钮
+        Button reset = btnDiv.button().text("重置").addCssClass("layui-btn").id("reset");
+        reset.attr("type","reset");
         Button cancelBtn = btnDiv.button().text("取消").addCssClass("layui-btn").onClick("javascript:history.go(-1);location.reload();"); //取消按钮
 
         }
     //主表
     public  void Table(List<View> views,String html,List<String> list, Form saveForm){
         Map<String,String> map = new HashMap<>();
-        // List<String> list1 = new ArrayList<>();
         for (View view : views) {
-            if ("TextNoTitle".equals(view.getType())){
-                view.setType("text");
-            }
+            view.setIsValue("1");
             html = addMakeViews(list, view, null, html);
         }
         if (!TextUtils.isEmpty(html)) {
@@ -245,14 +244,20 @@ public class MDnewForm extends CustomForm {
                 if (key==sformName || key.equals(sformName)){
                     item.addCssClass("layui-tab-item layui-show");
                 }
-
                 Button addMDform1 = item.button().addCssClass("layui-btn"); //新增子表按钮
                 String url ="queryStudentServlet?copformName="+key+"&showType=NewForm&mdAssoWord="+SFormColumn.get(key)+":"+"151";
-                addMDform1.onClick("addMDform('"+url+"');");
+
+                if (ParamId==null || "".equals(ParamId)){
+                    addMDform1.onClick("addShow('"+FFormTitle+"');");
+                }else {
+                    addMDform1.onClick("addMDform('"+url+"');");
+                }
+
                 Italic i = new Italic();
                 i.text("&#xe608;").addCssClass("layui-icon");
                 addMDform1.italic(i);
                 addMDform1.text("新增");
+
                 IFrame iFrame =item.iframe("queryStudentServlet?copformName="+key+ "&showType=ListModifyForm&mdAssoWord="+SFormColumn.get(key)+":"+ParamId);
                 iFrame.attr("width","100%");
                 iFrame.height(500);
