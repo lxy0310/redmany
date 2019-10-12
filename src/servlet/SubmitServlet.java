@@ -32,11 +32,10 @@ public class SubmitServlet extends BaseServlet {
         resp.setCharacterEncoding("utf-8");
         PrintWriter out=resp.getWriter();
         SubmitService submitService=new SubmitServiceImpl(req);
-        boolean flag=submitService.doSubmit(getCompany_Id());
-         if(flag){
-               out.print("提交成功");
-         }else{
-             out.print("提交失败");
-         }
+        Long Id=submitService.doSubmit(getCompany_Id());
+
+               out.print(Id);
+
+
     }
 }

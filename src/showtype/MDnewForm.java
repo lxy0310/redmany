@@ -125,8 +125,12 @@ public class MDnewForm extends CustomForm {
         //按钮操作
         Div btnDiv=saveForm.div().addCssClass("layui-form-item").styles("margin-left: 180px;");
         Input formname = btnDiv.input("hidden",getFormName()).addCssClass("formName").value(FFormColumnName);
-        Input hiddenId = saveForm.input("hidden","").id("mdID");
+        Input hiddenId = saveForm.input("hidden",ParamId).id("mdID");
+        hiddenId.attr("name","Id");
         Button saveBtn = btnDiv.button().text("提交").addCssClass("layui-btn saveBtn");//保存按钮
+        saveBtn.attr("type","button");
+        String firstFormName=getFormName().split(",")[0];
+        saveBtn.onClick("gotoPage('submit:"+firstFormName+",MDnewForm',null);");
         Button cancelBtn = btnDiv.button().text("取消").addCssClass("layui-btn").onClick("javascript:history.go(-1);location.reload();"); //取消按钮
 
         }
@@ -138,6 +142,7 @@ public class MDnewForm extends CustomForm {
             if ("TextNoTitle".equals(view.getType())){
                 view.setType("text");
             }
+            view.setIsValue("1");
             html = addMakeViews(list, view, null, html);
         }
         if (!TextUtils.isEmpty(html)) {
@@ -249,10 +254,16 @@ public class MDnewForm extends CustomForm {
                 Button addMDform1 = item.button().addCssClass("layui-btn"); //新增子表按钮
                 String url ="queryStudentServlet?copformName="+key+"&showType=NewForm&mdAssoWord="+SFormColumn.get(key)+":"+"151";
                 addMDform1.onClick("addMDform('"+url+"');");
+             /*   if (ParamId==null || "".equals(ParamId)){
+                    addMDform1.onClick("addShow('"+FFormTitle+"');");
+                }else {
+                    addMDform1.onClick("addMDform('"+url+"');");
+                }*/
                 Italic i = new Italic();
                 i.text("&#xe608;").addCssClass("layui-icon");
                 addMDform1.italic(i);
                 addMDform1.text("新增");
+                addMDform1.attr("type","button");
                 IFrame iFrame =item.iframe("queryStudentServlet?copformName="+key+ "&showType=ListModifyForm&mdAssoWord="+SFormColumn.get(key)+":"+ParamId);
                 iFrame.attr("width","100%");
                 iFrame.height(500);

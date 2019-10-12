@@ -93,11 +93,12 @@ public class SQLUtil {
                   values=values.substring(0,values.lastIndexOf(","));
               }
               sql.append(" ("+filed+") ");
-              sql.append(" values ("+values+") ");
+              sql.append(" values ("+values+"); ");
+              sql.append("select @@identity;");
                   return  sql.toString();
           }else if("update".equalsIgnoreCase(type)){
 
-              sql.append("update "+form.getTable_name() +" set");
+              sql.append("update "+form.getTable_name() +" set ");
               String setfiled="";
               String where="";
               //拼接formfiled

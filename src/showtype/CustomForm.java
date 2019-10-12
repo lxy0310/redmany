@@ -16,7 +16,14 @@ public class CustomForm extends ParentForm {
     @Override
     public HtmlBodyElement<?> createViews() {
         Form dataForm=new Form();
-        dataForm.id(formName+"Form");
+        if("MDnewForm".equalsIgnoreCase(getPage().getShowType())){
+            dataForm.id(formName.split(",")[0]+"Form");
+        }else {
+
+            dataForm.id(formName+"Form");
+        }
+
+
         dataForm.attr("method","post");
         dataForm.attr("enctype","multipart/form-data");
         Div div =  dataForm.div();
