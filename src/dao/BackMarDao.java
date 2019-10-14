@@ -130,13 +130,12 @@ public class BackMarDao extends BaseDao {
      * 查询菜单
      * @param Company_Id
      * @param userId
-     * @param roleId
-     * @param deptId
      * @return
      */
-    public  List<Map<String, Object>> getMenuLists(String Company_Id,String userId,String roleId,String deptId){
-        String sql="";
-        if (userId!=null){
+    public  List<Map<String, Object>> getMenuLists(String Company_Id,String userId){
+        String sql="{call UMenu(?)}";
+        String[] parameters={String.valueOf(userId)};
+        /*if (userId!=null){
             sql="select m.* from menu m  LEFT JOIN UserMenu u on m.id=u.MenuID where 1=1  and u.UserID="+userId;
         }
         if (roleId!=null){
@@ -146,29 +145,9 @@ public class BackMarDao extends BaseDao {
         if (deptId!=null){
             sql+=" UNION";
             sql+=" (select m.* from menu m  LEFT JOIN DepartmentMenu d on m.id=d.MenuID where 1=1  and d.DepartmentId="+deptId+") ";
-        }
-
-        /*String sql="select * from menu m LEFT JOIN RoleMenu r on m.id=r.MenuID LEFT JOIN UserMenu u on m.id=u.MenuID LEFT JOIN DepartmentMenu d on m.id=d.MenuID where 1=1 ";
-        if (userId!=null && !"0".equals(userId)){
-            sql+=" and u.UserID="+userId;
-        }
-        if (roleId!=null){
-            if (userId!=null && !"0".equals(userId)){
-                sql+=" or r.roleId="+roleId;
-            }else {
-                sql += " and r.roleId=" + roleId;
-            }
-        }
-        if (deptId!=null && !deptId.equals("0")){
-                if (userId!=null || roleId!=null){
-                    sql+=" or d.DepartmentId="+deptId;
-                }else{
-                    sql+=" and d.DepartmentId="+deptId;
-                }
-
         }*/
-        System.out.println(sql);
-        return sqlHelper.executeQueryList(Company_Id,sql,null);
+        System.out.println("sql:"+sql);
+        return sqlHelper.executeQueryList(Company_Id,sql,parameters);
     }
 
     /**
@@ -266,7 +245,7 @@ public class BackMarDao extends BaseDao {
      * @return
      */
     public List<Map<String,Object>> getPanelList(String Company_Id){
-        String sql="select * from UserPanel";
+        String sql="select * from UserPanel order by SortIndex";
         return sqlHelper.executeQueryList(Company_Id,sql,null);
     }
 
@@ -304,7 +283,8 @@ public class BackMarDao extends BaseDao {
     public Integer getDeptIdByUserId(String Company_Id,int UserId){
         String sql="select deptId from [User] where Id=?";
         String[] parameters={String.valueOf(UserId)};
-        Long result=(Long) sqlHelper.ExecScalar(Company_Id,sql,parameters);
+        Object obj = sqlHelper.ExecScalar(Company_Id,sql,parameters);
+        Long result=(Long)obj;
         Integer results=null;
         if (result!=null){
             results=result.intValue();

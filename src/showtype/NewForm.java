@@ -59,7 +59,7 @@ public class NewForm extends FreeForm {
         sql = sqlGetIDs(paramId,sql,formList.getReplaceName());  //拼接参数ID
         mdAssoWord = getPage().getParameter("mdAssoWord");
         System.out.println(mdAssoWord);
-        sql = sqlGetMD(mdAssoWord,sql);
+        sql = sqlGetMD(mdAssoWord,sql,formList.getReplaceName());
         System.err.println(sql);
         List<Map<String, Object>> formFeildList=filedDao.getFormFeildList(getCompanyId(),formName);
         //判断是否有分组
@@ -76,6 +76,7 @@ public class NewForm extends FreeForm {
           //   forms =formDao.getForm(getCompanyId(),formName);
         }
 
+
         //TableName = forms.getTable_name();
         super.loadData(sql);
     }
@@ -88,7 +89,13 @@ public class NewForm extends FreeForm {
         saveForm.styles("width:100%;text-align:center;");
         Input formname = saveForm.input("hidden",getFormName()).addCssClass("formName"); //formname
         Input tableName = saveForm.input("hidden",TableName).addCssClass("TableName"); //表名
-        Input mdAssoWords =saveForm.input("hidden",mdAssoWord).addCssClass("mdAssoWords");  //双列表的子表关联字段
+        if (mdAssoWord!=null){
+            String[] t=mdAssoWord.split(":");
+            Input mdAssoWords =saveForm.input("hidden",mdAssoWord).addCssClass("mdAssoWords");  //双列表的子表关联字段
+            mdAssoWords.name(t[0]+"_md");
+            mdAssoWords.value(t[1]);
+        }
+//        Input mdAssoWords =saveForm.input("hidden",mdAssoWord).addCssClass("mdAssoWords");  //双列表的子表关联字段
         String filedStr = filedDao.getFormFiledStr(getCompanyId(),formName);
         List<View> views = getViewLists(filedStr);
         String html = getHtmlTemplate();
@@ -119,6 +126,7 @@ public class NewForm extends FreeForm {
             group(resultMap,saveForm,optype,html,"panel");//tab
         }
         Div btnDiv=saveForm.div();
+        btnDiv.styles("text-align: center;");
         Button saveBtn=btnDiv.button();  //保存
         if (optype!=null){ //参数
             Input input=btnDiv.input("hidden",getFormName()).addCssClass("optype").value(optype);
@@ -156,7 +164,6 @@ public class NewForm extends FreeForm {
         // Div div1 = saveForm.div();
         //如果是分组的数据
         Div div1 = saveForm.div();
-
         //groupTab = "tab";
         if (groupTab=="tab"){
             div1.addCssClass("layui-tab layui-tab-brief");
@@ -212,14 +219,11 @@ public class NewForm extends FreeForm {
                     div4.text(html);
                 }
             }
-
         }else {
-
             //div1.addCssClass("layui-card");
             div1.styles("padding: 20px;background-color: #F2F2F2;margin-bottom:50px;");
             Div row = div1.div().addCssClass("layui-row layui-col-space15");
             for (String key : resultMap.keySet()) {
-
                 if (key == null || "".equals(key)) {  //没分组数据
                     Div divmd12 = row.div().addCssClass("layui-col-md12");
                     Div card1 = divmd12.div();
@@ -264,25 +268,46 @@ public class NewForm extends FreeForm {
 
     //修改，查看
     private void isEdit_Show(List<View> views,String html,List<String> list, Form saveForm){
+        Div layuiRow = saveForm.div().addCssClass("layui-row").styles("margin-top:10px;");
         if (mDatas!=null){
             Map<String,String> map = new HashMap<>();
             for (Map<String, Object> line : mDatas) {
                 System.out.println(line.toString());
-                for (View view : views) {
-                    if ("TextNoTitle".equals(view.getType())){
-                        view.setType("text");
+                if ("1".equals(optype)) {    //修改
+                    String Modify_fields = formList.getModify_fields();
+
+                    for (View view : views) {
+                        if (!Modify_fields.contains("view")){
+                            view.setWapAttribute("");
+                        }
+                        html = addMakeViewMap(map, view, line, html);
                     }
-                    html = addMakeViewMap(map, view, line, html);
+                }else{ //查看
+                    for (View view : views) {
+                        html = addMakeViewMap(map, view, line, html);
+                    }
                 }
                 if (!TextUtils.isEmpty(html)) {
                     saveForm.text(html);
                 }
                 System.out.println(list);
                 for(String key : map.keySet()){
-                    Div div = saveForm.div().addCssClass("layui-form-item");
-                    Div div1 = div.div().addCssClass("layui-input-block");//.styles("width: 700px;padding-top: 7px;margin-left: 30px;");
-                    key = key.replaceAll("<label>","<label class=\"labelRight\">");
+                    Div div= null;
+                    if (formList.getRow()!=null){
+                        Div  divs = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md4");
+                        div = divs.div().addCssClass("layui-form-item");
+                    }else {
+                        div = layuiRow.div().addCssClass("layui-form-item");
+                    }
+                    Div div1 =div.div();
                     String value = map.get(key).toString();
+                    if (!value.contains("type=\"File\"")){
+                        div1.styles("height: 30px;line-height: 30px;" );
+                    }
+
+                 /*   Div div = saveForm.div().addCssClass("layui-form-item");
+                    Div div1 = div.div().addCssClass("layui-input-block");*/
+                    key = key.replaceAll("<label>","<label class=\"labelRight\">");
                     div1.text(value);
                 }
             }
@@ -300,8 +325,15 @@ public class NewForm extends FreeForm {
             saveForm.text(html);
         }
         for (String v : list) {
-            Div divs = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md4");
-            Div div = divs.div().addCssClass("layui-form-item");
+            Div div= null;
+            if (formList.getRow()!=null){
+                Div  divs = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md4");
+                div = divs.div().addCssClass("layui-form-item");
+            }else {
+                div = layuiRow.div().addCssClass("layui-form-item");
+            }
+
+
             Div div1 = div.div().styles("height: 30px;line-height: 30px;" );
             div1.addCssClass("layui-input-block").styles("margin:0px;");
             v = v.replaceAll("<label>","<label class=\"labelRight\">");

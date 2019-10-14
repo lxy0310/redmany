@@ -85,6 +85,12 @@
         <servlet-class>servlet.SubmitServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>BackLoginServlet</servlet-name>
+        <servlet-class>servlet.BackLoginServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
     
     <servlet-mapping>
         <servlet-name>CommonServlet</servlet-name>
@@ -131,6 +137,11 @@
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackLoginServlet</servlet-name>
+        <url-pattern>/backLogin</url-pattern>
+    </servlet-mapping>
+
 
     <servlet-mapping>
         <servlet-name>SearchServlet</servlet-name>

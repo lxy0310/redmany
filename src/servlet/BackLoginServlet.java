@@ -36,11 +36,12 @@ public class BackLoginServlet extends BaseServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("UTF-8");
+
         PrintWriter out = response.getWriter();//输出
         String method=request.getParameter("method");//获取方法
         SQLHelper sqlHelper = new SQLHelper(request);
         BackMarDao backDao=new BackMarDao(sqlHelper);//创建数据层
-//accountHelper.onLogin(result, pwd, "true".equals(reme))
+
         if (method.equals("login")){
             int result=0;
             String ds = request.getParameter("setSubList");
@@ -60,7 +61,6 @@ public class BackLoginServlet extends BaseServlet {
                     String userName = (String) map.get("username");
                     String password = (String) map.get("password");
 
-
                     String results = openUrl(ApiParser.getBackLogin(userName, password,CompanyId));
                     if (results.startsWith("fail")) {
                         response.sendRedirect("backLogin.jsp");
@@ -78,11 +78,10 @@ public class BackLoginServlet extends BaseServlet {
                             session.setAttribute("roleId",roleId);
                             session.setAttribute("CompanyId",CompanyId);
                            // Page.RoleId=roleId;
-                            Integer DeptId = backDao.getDeptIdByUserId(CompanyId,userId);
+                            /*Integer DeptId = backDao.getDeptIdByUserId(CompanyId,userId);
                             if (DeptId!=null){
                                 session.setAttribute("DeptId",DeptId);
-                               // Page.DeptId=DeptId;
-                            }
+                            }*/
                             String targetUrl = CookieHelper.getCookieValue(request, Page.Settings.TARGETURL);
                             System.out.println(targetUrl);
                             if (!TextUtils.isEmpty(targetUrl)) {
@@ -92,7 +91,7 @@ public class BackLoginServlet extends BaseServlet {
                                 response.sendRedirect(targetUrl);
                             } else {
                                 //response.sendRedirect("backMar?method=BackHome");
-                                List<Map<String,Object>> menuList=backDao.getMenuLists(CompanyId,String.valueOf(userId),String.valueOf(roleId), DeptId.toString());
+                                List<Map<String,Object>> menuList=backDao.getMenuLists(CompanyId,String.valueOf(userId));
                                 List<Map<String,Object>> panelList=backDao.getPanelList(CompanyId);
                                 List<Map<String,Object>> panelId=backDao.getPanelId(CompanyId);
                                 request.getSession().setAttribute("menuList",menuList);
@@ -105,7 +104,6 @@ public class BackLoginServlet extends BaseServlet {
                             response.sendRedirect("queryStudentServlet");
                         }
                     }
-
                 }else{
 
                     response.sendRedirect("backLogin.jsp");
@@ -117,7 +115,6 @@ public class BackLoginServlet extends BaseServlet {
                 out.print("</script>");*/
                 result=6;
                 out.print(result);
-                System.out.println(6);
             }
 
 

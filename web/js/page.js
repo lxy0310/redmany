@@ -189,12 +189,24 @@ function gotoPage(target, transferParams) {
                      if(showType=="MDnewForm"  ){
                          if($("#mdID").val()==""){
                              $("#mdID").val(data);
+
+                             var a= $("#mdAddIframe").attr("onclick").replace("null",data+"");
+                              $("#mdAddIframe").attr("onclick",a);
+
+                             var a= $("#mdIframe").attr("src").replace("null",data+"");
+
+                             document.getElementById('mdIframe').src=a;
+
+
                          }
 
                          layer.msg("操作成功！",{icon:6});
                      }else{
                          layer.msg("操作成功！",{icon:6});
+                         document.getElementById(formName+"Form").reset();
+                         window.parent.document.getElementById('mdIframe').contentWindow.location.reload();
 
+                       //  window.parent.getElementById('mdIframe').reload();
                      }
 
 

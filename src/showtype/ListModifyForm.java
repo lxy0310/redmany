@@ -1,6 +1,7 @@
 package showtype;
 
 
+import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.body.forms.Button;
 import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
@@ -20,6 +21,8 @@ import dao.MenuDao;
 import model.Form;
 import model.Menu;
 import org.apache.commons.lang.StringUtils;
+import service.PagingService;
+import service.impl.PagingServiceImpl;
 import viewtype.View;
 
 import java.util.ArrayList;
@@ -47,8 +50,20 @@ public class ListModifyForm extends CustomForm {
     private String paramId; //参数 ID
     private String mdAssoWord; //从表
     private  Form froms ;//form表信息
+    private PagingService pagingService=new PagingServiceImpl();
 
 
+
+    @Override
+    public HtmlBodyElement<?> createViews() {
+        Div div = new Div();
+        div.id(formName);
+
+        make(div);
+        //添加分页菜单栏
+        pagingService.addPagingMenuBar(div,getPage());
+        return div;
+    }
     protected void initDao(SQLHelper pSQLHelper) {
         menuDao = new MenuDao(pSQLHelper);
         commonDao = new CommonDao(pSQLHelper);
@@ -62,9 +77,9 @@ public class ListModifyForm extends CustomForm {
     protected void loadData(String sql) {
         froms = formDao.getForm(companyId,formName);
         paramId=getPage().getParameter("ParamId"); //获取参数ID
-        sql = sqlGetID(paramId,sql);
+        sql = sqlGetIDs(paramId,sql,froms.getReplaceName());
         mdAssoWord = getPage().getParameter("mdAssoWord");
-        sql = sqlGetMD(mdAssoWord,sql);
+        sql = sqlGetMD(mdAssoWord,sql,froms.getReplaceName());
         Menus = menuDao.getMenu(getCompanyId(), getFormName());
         if (Menus != null) {
             isShow = Menus.getIsShow();
@@ -179,7 +194,6 @@ public class ListModifyForm extends CustomForm {
                 check.value(line.get("Id") != null ? line.get("Id").toString() : line.get("id").toString());
 
                 for (View view : views) {
-
                     view.setIsTitle("1");
                     html = makeViews(list, view, line, html);
                 }
@@ -209,6 +223,7 @@ public class ListModifyForm extends CustomForm {
                     if (FormStateOpertionList != null) {
                         TableDataCell td = row.td();
                         Span span = td.span().styles("white-space: nowrap;");
+                        String  Id = line.get("Id")!= null?line.get("Id").toString() : line.get("id").toString();
                         for (Map<String, Object> btnList : FormStateOpertionList) {
                             Integer FormState = (Integer) btnList.get("FormState");
 
@@ -216,24 +231,24 @@ public class ListModifyForm extends CustomForm {
                                 A a1 = span.a();
                                 if ("_update".equals(btnList.get("OperationType").toString())) {  //修改
                                     a1.text(btnList.get("OperationName").toString());
-                                    a1.herf("queryStudentServlet?copformName=" + getFormName() + "&showType=newForm&optype=1&ParamId=" + line.get("Id"));
+                                    a1.herf("queryStudentServlet?copformName=" + getFormName() + "&showType=newForm&optype=1&ParamId=" + Id);
                                 } else if ("_look".equals(btnList.get("OperationType").toString())) { //查看
                                     a1.text(btnList.get("OperationName").toString());
-                                    a1.herf("queryStudentServlet?copformName=" + getFormName() + "&showType=newForm&optype=2&ParamId=" + line.get("Id"));
+                                    a1.herf("queryStudentServlet?copformName=" + getFormName() + "&showType=newForm&optype=2&ParamId=" + Id);
                                 } else if ("_del".equals(btnList.get("OperationType").toString())) {    //删除
                                     a1.text(btnList.get("OperationName").toString());
-                                    a1.herf("javascript:void(0);").onClick("delListForm(" + line.get("Id") + ",'" + getFormName() + "');");
+                                    a1.herf("javascript:void(0);").onClick("delListForm(" + Id + ",'" + getFormName() + "');");
                                 } else if ("_add".equals(btnList.get("OperationType").toString())) {  //添加
                                     a1.text(btnList.get("OperationName").toString());
-                                    a1.herf("queryStudentServlet?copformName=" + getFormName() + "&showType=newForm&optype=2&ParamId=" + line.get("Id"));
+                                    a1.herf("queryStudentServlet?copformName=" + getFormName() + "&showType=newForm&optype=2&ParamId=" + Id);
                                 } else if ("_select".equals(btnList.get("OperationType").toString())) { //跳转到自定义页面
                                     a1.text(btnList.get("OperationName").toString());
                                     String TemplatePage = commonDao.getTemplatePageByOperationId(getCompanyId(), (Integer) btnList.get("OperationId"));
-                                    a1.herf(TemplatePage + "?FormName=" + getFormName() + "&id=" + line.get("Id") + "&NeedState=" + Tablestate);
+                                    a1.herf(TemplatePage + "?FormName=" + getFormName() + "&id=" + Id + "&NeedState=" + Tablestate);
                                 } else {   //其他的操作按钮
                                     // Button del1 = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text(btnList.get("OperationName").toString()).id("elDelete").onClick("del("+getFormName()+")");
                                     a1.text(btnList.get("OperationName").toString());
-                                    a1.herf("javascript:void(0);").onClick("updateListBtn(" + line.get("Id") + ",'" + getFormName() + "','" + btnList.get("AfterProcessState") + "'" + ");");
+                                    a1.herf("javascript:void(0);").onClick("updateListBtn(" + Id + ",'" + getFormName() + "','" + btnList.get("AfterProcessState") + "'" + ");");
                                 }
                                 a1.styles("white-space: nowrap;background-color: #1E9FFF;color: white;padding: 5px;border-radius: 3px;margin-right: 5px;" +
                                         "text-decoration: none;");

@@ -69,16 +69,18 @@ public class SQLUtil {
                       values+= tempData.get(view.getName())!=null?"'"+tempData.get(view.getName())+"', ":tempData.get(view.getName())+", ";
                       tempData.remove(view.getName());
                   }
+
               }
               //添加tempData剩余的值
-       /*       for ( String key:
+           for ( String key:
                    tempData.keySet()) {
-                  if(!"id".equalsIgnoreCase(key)){
-                      filed+=key+", ";
+                  if(key.indexOf("_md")>0){
+                      String keyfile=key.substring(0,key.indexOf("_md"));
+                      filed+=keyfile+", ";
                       values+= tempData.get(key)+", ";
                   }
 
-              }*/
+              }
              //拼接form的put_data_sql_...
               if(form.getPut_data_sql_set_field()!=null && "".equalsIgnoreCase(form.getPut_data_sql_set_field().trim())){
                   filed+=form.getPut_data_sql_set_field();
