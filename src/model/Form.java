@@ -68,6 +68,7 @@ public class Form implements Serializable {
     private String isShowAll;
     private String isHasTopOrBottomEvent;
     private String chatType;
+    private String row;
 
     @Override
     public String toString() {
@@ -133,7 +134,16 @@ public class Form implements Serializable {
                 ", isShowAll='" + isShowAll + '\'' +
                 ", isHasTopOrBottomEvent='" + isHasTopOrBottomEvent + '\'' +
                 ", chatType='" + chatType + '\'' +
+                ", row='" + row + '\'' +
                 '}';
+    }
+
+    public String getRow() {
+        return row;
+    }
+
+    public void setRow(String row) {
+        this.row = row;
     }
 
     public String getChatType() {

@@ -103,7 +103,14 @@ function addMDform(url) {
         fixed: false, //不固定
         maxmin: true,
         content: url,
-        btn:['提交','取消'],
+        id:'mdalertIframe',
+        cancel: function(index, layero){
+            if(confirm('确定要关闭么')){ //只有当点击confirm框的确定时，该层才会关闭
+                layer.close(index);
+            }
+            return false;
+        }
+        /*btn:['提交','取消'],
         yes: function(index, layero){
             var t = $("iframe").contents().find("#addForm").serializeArray();
             console.log(t);
@@ -132,6 +139,6 @@ function addMDform(url) {
                     layer.msg("服务异常暂时无法删除,请及时联系工作人员！",{icon:5});
                 }
             });
-        }
+        }*/
     });
 }

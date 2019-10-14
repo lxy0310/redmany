@@ -296,8 +296,6 @@ public abstract class ParentForm {
                 if (LOG) {
                     System.out.println("" + getClass().getSimpleName() + ":sql=" + sql + ":数据=" + mDatas);
                 }
-
-
             }
         }
         if ("jkdView".equalsIgnoreCase(getFormName())) {
@@ -417,9 +415,9 @@ public abstract class ParentForm {
                 if(sql.contains("order by")){
                     String after = sql.substring(sql.indexOf("order by"),sql.length());
                     String before = StringUtils.substringBefore(sql, "order by");
-                    sql = before +" where Id="+paramId +after;
+                    sql = before +" where "+ReplaceName+".Id="+paramId +after;
                 }else {
-                    sql=sql+" where Id="+paramId;
+                    sql=sql+" where "+ReplaceName+".Id="+paramId;
                 }
 
             }
@@ -427,21 +425,22 @@ public abstract class ParentForm {
         return sql;
     }
 
-    public String sqlGetMD(String mdAssoWord,String sql){
+    public String sqlGetMD(String mdAssoWord,String sql,String ReplaceName){
         sql = sql.toLowerCase();
         if (mdAssoWord!=null){
             mdAssoWord = mdAssoWord.replace(":","=");
             if (sql.contains("where")){
                 String before = StringUtils.substringBefore(sql, "where");
                 String after = StringUtils.substringAfter(sql, "where");
-                sql = before + " where "+mdAssoWord  +" and "+after;
+                // " where "+ReplaceName+".Id="
+                sql = before + " where "+ReplaceName+"."+mdAssoWord  +" and "+after;
             }else {
                 if(sql.contains("order by")){
                     String after = sql.substring(sql.indexOf("order by"),sql.length());
                     String before = StringUtils.substringBefore(sql, "order by");
-                    sql = before +" where "+mdAssoWord +after;
+                    sql = before +" where "+ReplaceName+"."+mdAssoWord +after;
                 }else {
-                    sql=sql+" where "+mdAssoWord;
+                    sql=sql+" where "+ReplaceName+"."+mdAssoWord;
                 }
             }
         }

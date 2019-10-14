@@ -4,7 +4,7 @@
     <title>登陆</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
-    <script type="text/javascript" src="js/jquery-1.8.1.js"></script>
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="layui/layui.js"></script>
     <link rel="stylesheet" href="layui/css/layui.css">
     <link rel="stylesheet" href="css/backLogins.css">
@@ -44,7 +44,7 @@
             </div>
             <div class="login-button">
                <%-- <input class="layui-btn login-sub" type="submit" value="登录"/>--%>
-                <button class="layui-btn login-submit" lay-submit lay-filter="formDemo">登录</button>
+                <button id="login" class="layui-btn login-submit" lay-submit lay-filter="formDemo">登录</button>
             </div>
         </form>
 
