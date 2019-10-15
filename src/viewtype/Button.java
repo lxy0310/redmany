@@ -12,6 +12,7 @@ public class Button extends ParentView {
     protected HtmlBodyElement<?> create() {
         com.sangupta.htmlgen.tags.body.forms.Button btn = new com.sangupta.htmlgen.tags.body.forms.Button();
         btn.id(getName());
+        btn.attr("type","button");
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());

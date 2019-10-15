@@ -1,5 +1,7 @@
 package showtype;
 
+import com.sangupta.htmlgen.core.HtmlBodyElement;
+import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.sections.A;
 import com.sangupta.htmlgen.tags.body.table.TBody;
@@ -9,11 +11,14 @@ import com.sangupta.htmlgen.tags.body.table.TableRow;
 import com.sangupta.htmlgen.tags.body.text.Span;
 import com.sangupta.htmlgen.tags.head.Script;
 import common.SQLHelper;
+import common.SQLUtil;
 import common.utils.TextUtils;
 import dao.CommonDao;
 import dao.FormDao;
 import dao.MenuDao;
 import model.Menu;
+import service.PagingService;
+import service.impl.PagingServiceImpl;
 import viewtype.View;
 
 import java.util.ArrayList;
@@ -39,13 +44,22 @@ public class MDlistForm extends CustomForm {
     private String publish; //   1 pc,2 mobile
     private List<Map<String, Object>> FormStateOpertionList;
     private List<Map<String, Object>> getFormUpdateFileldList;
-
+    private PagingService pagingService=new PagingServiceImpl();
     protected void initDao(SQLHelper pSQLHelper) {
         menuDao = new MenuDao(pSQLHelper);
         commonDao = new CommonDao(pSQLHelper);
         formDao = new FormDao(pSQLHelper);
     }
+    public HtmlBodyElement<?> createViews() {
+        Div div = new Div();
+        div.id(formName);
 
+        make(div);
+        //添加分页菜单栏
+        pagingService.addPagingMenuBar(div,getPage());
+
+        return div;
+    }
     @Override
     protected void loadData(String sql) {
 
@@ -69,9 +83,17 @@ public class MDlistForm extends CustomForm {
         System.out.println("getFormUpdateFileldList:>>>>" + getFormUpdateFileldList.toString());
         String setList = getPage().getUrlParameter("map");
         System.out.println("setList===" + setList);
-
+//获取总的条数
+        Integer dataCount=(Integer) getPage().getSQLHelper().ExecScalar(companyId, SQLUtil.getCountSql(sql),null);
+        if(dataCount!=null&& dataCount>0){
+            getPage().setDataCount(dataCount);
+        }
+        //获取到分页后的url
+        sql= SQLUtil.getPagingSQL(sql,getPage().getPageSize(),getPage().getPageIndex(),getFormData().getReplaceName());
         super.loadData(sql);
     }
+
+
 
     @Override
     protected void make(Div div) {
@@ -122,6 +144,7 @@ public class MDlistForm extends CustomForm {
                 row.td(v);
             }
             Integer Tablestate=(Integer) line.get("state");
+
             System.out.println(Tablestate);
             if (Tablestate!=null) {
                 FormStateOpertionList = commonDao.getFormListOperationShow(getCompanyId(), 1, FFormColumnName, Tablestate);

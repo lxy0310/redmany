@@ -17,17 +17,18 @@ layui.use('form', function(){
         }
     });
 
+
     //监听提交
     form.on('submit(formDemo)', function(data){
-       // layer.msg("asdf");
-      //  layer.msg(JSON.stringify(data.field));
+       /* layer.msg(JSON.stringify(data.field));
+        alert(JSON.stringify(data.field));*/
+
         $.ajax({
             url:"backLogin",
             data:{"method":"login","setSubList":JSON.stringify(data.field)},
             type:"POST",
             success: function (result) {
-               // alert("abcdfghjkl");
-              alert(result);
+              /*alert(result);*/
               if (result==6){
                   layer.msg("验证码错误！",{icon:6});
                   window.location.href="backLogin.jsp";
@@ -53,8 +54,6 @@ layui.use('form', function(){
         });
         return false;
     });
-
-
 });
 function reloadCode() {
     var time=new Date().getTime();

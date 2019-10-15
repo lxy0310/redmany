@@ -151,6 +151,7 @@ public class Text extends ParentView {
                    }
                }
             }
+
             if (hintContent !=null && hintContent.length()>0){ //提示
                 input.placeholder(hintContent);
             }else{ //默认提示

@@ -11,6 +11,8 @@ import com.sangupta.htmlgen.tags.body.table.TableRow;
 import com.sangupta.htmlgen.tags.body.text.Span;
 import com.sangupta.htmlgen.tags.head.Script;
 import common.SQLHelper;
+import common.SQLUtil;
+import common.utils.SQLFixer;
 import common.utils.TextUtils;
 import dao.FormDao;
 import dao.FormFiledDao;
@@ -19,6 +21,9 @@ import dao.ReplacerDao;
 import model.FormFiled;
 import model.Menu;
 import page.CustomForm;
+import service.PagingService;
+import service.impl.PagingServiceImpl;
+import viewtype.Image;
 import viewtype.View;
 
 import java.util.ArrayList;
@@ -37,56 +42,18 @@ public class ListForm extends CustomForm {
     // private String publish; //   1 pc,2 mobile
     private String isShow;  //  不为空,可以修改,   1   替换页面,   2 上下页面
     private int group;   // 判断是否有分组
-
+    private PagingService pagingService=new PagingServiceImpl();    //分页服务接口
     public String one, two, three, four;
 
     @Override
     public HtmlBodyElement<?> createViews() {
         Div div = new Div();
         div.id(formName);
+
         make(div);
         //添加分页菜单栏
+         pagingService.addPagingMenuBar(div,getPage());
 
-        Div pageDiv=div.div();
-        pageDiv.id("pageDiv");
-        pageDiv.attr("width","100%");
-        pageDiv.attr("style","text-align:center;padding: 20px 0;");
-
-        A firstPage=pageDiv.a();
-        firstPage.id("firstPage");
-
-        // hiddenIndex.value(getPage().getPageIndex()+"");
-        firstPage.attr("href","javascript:pageJump('"+getFormName()+"','ListForm',1");
-        firstPage.text("首页");
-        A prePage=pageDiv.a();
-        prePage.id("prePage=");
-
-        // hiddenIndex.value(getPage().getPageIndex()+"");
-        prePage.attr("href","javascript:pageJump('"+getFormName()+"','ListForm',"+(getPage().getPageIndex()-1<1?1:getPage().getPageIndex()-1)+")");
-        prePage.text("上一页");
-
-        A nextPage=pageDiv.a();
-        nextPage.id("nextPage");
-
-        nextPage.attr("href","javascript:pageJump('"+getFormName()+"','ListForm',"+(getPage().getPageIndex()+1>getPage().getPageCount()?getPage().getPageCount():getPage().getPageIndex()+1)+")");
-        nextPage.text("下一页");
-
-        A lastPage=pageDiv.a();
-        lastPage.id("lastPage");
-
-        lastPage.attr("href","javascript:pageJump('"+getFormName()+"','ListForm',"+getPage().getPageCount()+")");
-        lastPage.text("尾页");
-
-        Input goText=pageDiv.input();
-        goText.id("goText");
-        goText.type("text");
-        goText.value(getPage().getPageIndex()+"");
-        goText.attr("style","width:20px;height:18px");
-        A goPage=pageDiv.a();
-        goPage.id("goPage");
-
-        goPage.attr("href","javascript:pageJump('"+getFormName()+"','ListForm','goText')");
-        goPage.text("跳转");
 
         return div;
     }
@@ -120,13 +87,16 @@ public class ListForm extends CustomForm {
                 group = 1;
             }
         }
+        //获取总的条数
+        Integer dataCount=(Integer) getPage().getSQLHelper().ExecScalar(companyId, SQLUtil.getCountSql(sql),null);
+        if(dataCount!=null&& dataCount>0){
+            getPage().setDataCount(dataCount);
+        }
+        //获取到分页后的url
+        sql= SQLUtil.getPagingSQL(sql,getPage().getPageSize(),getPage().getPageIndex(),getFormData().getReplaceName());
         super.loadData(sql);
         System.out.println(sql);
-        if (mDatas != null) {
-            System.out.println("mDatas>>>>>>>>>>>>>>>>>>" + mDatas.toString());
-        } else {
-            System.out.println("getData()>>>>>>>>>>>>>>>>>>>>>>" + getDatas().toString());
-        }
+
     }
 
     @Override

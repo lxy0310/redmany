@@ -8,12 +8,14 @@ import com.sangupta.htmlgen.tags.body.grouping.ListItem;
 import com.sangupta.htmlgen.tags.body.grouping.UL;
 import com.sangupta.htmlgen.tags.body.sections.A;
 import com.sangupta.htmlgen.tags.body.sections.H3;
+import com.sangupta.htmlgen.tags.body.table.Table;
 import com.sangupta.htmlgen.tags.body.text.Label;
 import com.sangupta.htmlgen.tags.head.Script;
 import com.sun.org.apache.bcel.internal.generic.DLOAD;
 import common.SQLHelper;
 import common.utils.TextUtils;
 import dao.BackMarDao;
+import dao.FormDao;
 import dao.FormFiledDao;
 import model.FormFiled;
 import org.apache.commons.lang.StringUtils;
@@ -27,11 +29,17 @@ public class NewForm extends FreeForm {
 
     private BackMarDao backMarDao;
     private FormFiledDao filedDao;
-   // private List<Map<String,Object>> viewList;
+    private FormDao formDao;
     private List<Map<String,Object>> formFeildList;
     private String optype;  //optype为1标识修改，2标识查看详情
     private String paramId;
     private int filedGroup;  //是否有分组
+    private String mdAssoWord;
+    private String TableName; //表名
+    private String forms;  //form表数据
+    private model.Form formList;
+    private String FFormColumnName; //主表
+    //private model.Form forms;
 
     @Override
     public void initDao(SQLHelper pSqlHelper) {
@@ -41,13 +49,17 @@ public class NewForm extends FreeForm {
         super.initDao(pSqlHelper);
         backMarDao = new BackMarDao(pSqlHelper);
         filedDao = new FormFiledDao(pSqlHelper);
+        formDao = new FormDao(pSqlHelper);
         optype=getPage().getUrlParameter("optype");
-        System.out.println("optype"+optype);
     }
 
     protected void loadData(String sql) {
+        formList = formDao.getForm(companyId,formName);
         System.out.println(sql);
-        sql = sqlGetID(paramId,sql);  //拼接参数ID
+        sql = sqlGetIDs(paramId,sql,formList.getReplaceName());  //拼接参数ID
+        mdAssoWord = getPage().getParameter("mdAssoWord");
+        System.out.println(mdAssoWord);
+        sql = sqlGetMD(mdAssoWord,sql,formList.getReplaceName());
         System.err.println(sql);
         List<Map<String, Object>> formFeildList=filedDao.getFormFeildList(getCompanyId(),formName);
         //判断是否有分组
@@ -57,21 +69,36 @@ public class NewForm extends FreeForm {
                 filedGroup = 1;
             }
         }
-        System.out.println("\\\\\\\\\\\\"+formFeildList);
+        if (formName.contains(",")){
+            FFormColumnName = formName.split(",")[0]; //主表
+          //  forms =formDao.getForm(getCompanyId(),formName);
+        }else {
+          //   forms =formDao.getForm(getCompanyId(),formName);
+        }
+
+
+        //TableName = forms.getTable_name();
         super.loadData(sql);
     }
 
     protected void make(Div div) {
-
         div.add(new Script("js/commonUtils.js"));
-
-        Form saveForm=div.form();
+        Div container = div.addCssClass("layui-container");
+        Form saveForm=container.form();
         saveForm.id("addForm").addCssClass("layui-form");
-        saveForm.styles("width:100%;text-align:center;");//padding-top:50px;padding-left:50px;
+        saveForm.styles("width:100%;text-align:center;");
+        Input formname = saveForm.input("hidden",getFormName()).addCssClass("formName"); //formname
+        Input tableName = saveForm.input("hidden",TableName).addCssClass("TableName"); //表名
+        if (mdAssoWord!=null){
+            String[] t=mdAssoWord.split(":");
+            Input mdAssoWords =saveForm.input("hidden",mdAssoWord).addCssClass("mdAssoWords");  //双列表的子表关联字段
+            mdAssoWords.name(t[0]+"_md");
+            mdAssoWords.value(t[1]);
+        }
+//        Input mdAssoWords =saveForm.input("hidden",mdAssoWord).addCssClass("mdAssoWords");  //双列表的子表关联字段
         String filedStr = filedDao.getFormFiledStr(getCompanyId(),formName);
         List<View> views = getViewLists(filedStr);
         String html = getHtmlTemplate();
-
         List<String> list = new ArrayList<>();
 
         if(filedGroup == 0){ //没有分组
@@ -82,10 +109,9 @@ public class NewForm extends FreeForm {
             }
         }else{  //分组
             Map<String, List<View>> resultMap = new LinkedHashMap<>();
-
             try {
                 for (View filed : views) {
-                    if (resultMap.containsKey(filed.getFiledGroup())) {//map中异常批次已存在，将该数据存放到同一个key（key存放的是异常批次）的map中
+                    if (resultMap.containsKey(filed.getFiledGroup())) {//map中异常已存在，将该数据存放到同一个key（key存放的是异常）的map中
                         resultMap.get(filed.getFiledGroup()).add(filed);
                     } else {//map中不存在，新建key，用来存放数据
                         List<View> tmpList = new ArrayList<View>();
@@ -94,15 +120,13 @@ public class NewForm extends FreeForm {
                     }
                 }
             } catch (Exception e) {
-                //throw new Exception("按分组时出现异常", e);
                 e.printStackTrace();
             }
             System.out.println(resultMap.toString());
             group(resultMap,saveForm,optype,html,"panel");//tab
-
-
         }
-        Div btnDiv=saveForm.div();//.styles("margin-left: -21%")
+        Div btnDiv=saveForm.div();
+        btnDiv.styles("text-align: center;");
         Button saveBtn=btnDiv.button();  //保存
         if (optype!=null){ //参数
             Input input=btnDiv.input("hidden",getFormName()).addCssClass("optype").value(optype);
@@ -112,29 +136,40 @@ public class NewForm extends FreeForm {
         } else if ("2".equals(optype)){     //查看
             saveBtn.styles(" pointer-events:none;");//禁止鼠标事件
         }
-        Input formname = btnDiv.input("hidden",getFormName()).addCssClass("formName").value(formName);
-        saveBtn.addCssClass("saveBtn");
-        saveBtn.text("提交");
-        saveBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
-        Button cancelBtn=btnDiv.button();
-        cancelBtn.text("取消");
-        cancelBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
-        cancelBtn.onClick("javascript:history.go(-1);location.reload();");
+
+        if (mdAssoWord!=null){
+            saveBtn.addCssClass("mdsaveBtn");
+            saveBtn.text("提交");
+            saveBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
+            saveBtn.onClick("gotoPage('submit:"+getFormName()+",newForm',null);");
+            Button cancelBtn = btnDiv.button();
+            cancelBtn.text("取消");
+            cancelBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
+            cancelBtn.onClick("javascript:history.go(-1);location.reload();");
+        }else {
+            saveBtn.addCssClass("saveBtn");
+            saveBtn.text("提交");
+            saveBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
+            saveBtn.onClick("gotoPage('submit:"+getFormName()+",newForm',null);");
+            Button cancelBtn = btnDiv.button();
+            cancelBtn.text("取消");
+            cancelBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
+            cancelBtn.onClick("javascript:history.go(-1);location.reload();");
+        }
+        saveBtn.attr("type","button");
     }
 
-
-   //分组
+    //分组
     private void group(Map<String, List<View>> resultMap,Form saveForm,String optype,String html,String groupTab){
-       // Div div1 = saveForm.div();
+        // Div div1 = saveForm.div();
         //如果是分组的数据
         Div div1 = saveForm.div();
-
-       //groupTab = "tab";
+        //groupTab = "tab";
         if (groupTab=="tab"){
-           div1.addCssClass("layui-tab layui-tab-brief");
-           div1.filter("test1");
+            div1.addCssClass("layui-tab layui-tab-brief");
+            div1.filter("test1");
 
-           // div1.addCssClass("container");
+            // div1.addCssClass("container");
             UL ul = div1.ul();
             ul.addCssClass("layui-tab-title");
             //ul.addCssClass("nav nav-pills");
@@ -142,21 +177,18 @@ public class NewForm extends FreeForm {
             for (String key : resultMap.keySet()) {
                 ListItem li = new ListItem();
 
-               // A a1 = li.a();
+                // A a1 = li.a();
                 if (key == null || "".equals(key)) {  //没分组数据
                     li.text("默认分组");
-                   // a1.text("默认分组");
                 }else {
                     if (key.contains("[^]")){
                         String before = StringUtils.substringBefore(key, "[^]");
                         li.text(before);
-                        //a1.text(before);
                         String after = StringUtils.substringAfter(key,"[^]");
                         li.layid(after);
                         if (key != null & !"".equals(key)) {
                             if (after == "1" || "1".equals(after)) {
-                               li.addCssClass("layui-this");
-                              //  li.addCssClass("active");
+                                li.addCssClass("layui-this");
                             }
                         }
                     }else {
@@ -183,18 +215,15 @@ public class NewForm extends FreeForm {
                     Label label = div3.label();
                     label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();
                     html = makeView(v, null, html);
-                    Div div4 = div3.div().addCssClass("layui-input-inline");
+                    Div div4 = div3.div().addCssClass("layui-input-block");
                     div4.text(html);
                 }
             }
-
         }else {
-
             //div1.addCssClass("layui-card");
             div1.styles("padding: 20px;background-color: #F2F2F2;margin-bottom:50px;");
             Div row = div1.div().addCssClass("layui-row layui-col-space15");
             for (String key : resultMap.keySet()) {
-
                 if (key == null || "".equals(key)) {  //没分组数据
                     Div divmd12 = row.div().addCssClass("layui-col-md12");
                     Div card1 = divmd12.div();
@@ -203,10 +232,10 @@ public class NewForm extends FreeForm {
                     Div body1 = card1.div().addCssClass("layui-card-body");
                     for (View v : resultMap.get(key)) {
                         Div div2 = body1.div().addCssClass("layui-form-item");
-                        Label label = div2.label();
-                        label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();
+//                        Label label = div2.label();
+//                        label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();
                         html = makeView(v, null, html);
-                        Div div3 = div2.div().addCssClass("layui-input-inline");
+                        Div div3 = div2.div().addCssClass("layui-input-block");
                         div3.text(html);
                     }
                 } else { //分组
@@ -224,10 +253,10 @@ public class NewForm extends FreeForm {
                     Map<String, String> listShow = new HashMap<>();
                     for (View v : resultMap.get(key)) {
                         Div div2 = body.div().addCssClass("layui-form-item");
-                        Label label = div2.label();
-                        label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();
+                        /*Label label = div2.label();
+                        label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();*/
                         html = makeView(v, null, html);
-                        Div div3 = div2.div().addCssClass("layui-input-inline");
+                        Div div3 = div2.div().addCssClass("layui-input-block");
                         div3.text(html);
                     }
                 }
@@ -239,34 +268,47 @@ public class NewForm extends FreeForm {
 
     //修改，查看
     private void isEdit_Show(List<View> views,String html,List<String> list, Form saveForm){
+        Div layuiRow = saveForm.div().addCssClass("layui-row").styles("margin-top:10px;");
         if (mDatas!=null){
-
             Map<String,String> map = new HashMap<>();
             for (Map<String, Object> line : mDatas) {
                 System.out.println(line.toString());
-                for (View view : views) {
-                    if ("TextNoTitle".equals(view.getType())){
-                        view.setType("text");
+                if ("1".equals(optype)) {    //修改
+                    String Modify_fields = formList.getModify_fields();
+
+                    for (View view : views) {
+                        if (!Modify_fields.contains("view")){
+                            view.setWapAttribute("");
+                        }
+                        html = addMakeViewMap(map, view, line, html);
                     }
-                    html = addMakeViewMap(map, view, line, html);
+                }else{ //查看
+                    for (View view : views) {
+                        html = addMakeViewMap(map, view, line, html);
+                    }
                 }
                 if (!TextUtils.isEmpty(html)) {
                     saveForm.text(html);
                 }
                 System.out.println(list);
-//                for (String v : list) {
-////                    System.out.println(v);
-////                    div1.text(v);
-////                }
                 for(String key : map.keySet()){
-
-                    Div div = saveForm.div().addCssClass("layui-form-item");
-//                    Label label = div.label().addCssClass("layui-form-label").styles("width:500px;");
-                    Div div1 = div.div().addCssClass("layui-input-block");//.styles("width: 700px;padding-top: 7px;margin-left: 30px;");
-//                    label.text(key);
+                    Div div= null;
+                    if (formList.getRow()!=null){
+                        Div  divs = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md4");
+                        div = divs.div().addCssClass("layui-form-item");
+                    }else {
+                        div = layuiRow.div().addCssClass("layui-form-item");
+                    }
+                    Div div1 =div.div();
                     String value = map.get(key).toString();
+                    if (!value.contains("type=\"File\"")){
+                        div1.styles("height: 30px;line-height: 30px;" );
+                    }
+
+                 /*   Div div = saveForm.div().addCssClass("layui-form-item");
+                    Div div1 = div.div().addCssClass("layui-input-block");*/
+                    key = key.replaceAll("<label>","<label class=\"labelRight\">");
                     div1.text(value);
-//                    System.out.println(key+"  "+value);
                 }
             }
         }
@@ -274,58 +316,30 @@ public class NewForm extends FreeForm {
 
     //新增
     private void isAdd(List<View> views,String html,List<String> list, Form saveForm){
+        Div layuiRow = saveForm.div().addCssClass("layui-row").styles("margin-top:10px;");
         for (View view : views) {
+            view.setIsValue("1");
             html = makeViews(list, view, null, html);
         }
         if (!TextUtils.isEmpty(html)) {
             saveForm.text(html);
         }
         for (String v : list) {
-            Div div1 = saveForm.div().styles("margin-bottom:10px;");
+            Div div= null;
+            if (formList.getRow()!=null){
+                Div  divs = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md4");
+                div = divs.div().addCssClass("layui-form-item");
+            }else {
+                div = layuiRow.div().addCssClass("layui-form-item");
+            }
+
+
+            Div div1 = div.div().styles("height: 30px;line-height: 30px;" );
+            div1.addCssClass("layui-input-block").styles("margin:0px;");
+            v = v.replaceAll("<label>","<label class=\"labelRight\">");
             div1.text(v);
         }
     }
 
-
-    private Map<String, List<FormFiled>> groupBillingDataByExcpBatchCode(List<FormFiled> billingList) throws Exception {
-        Map<String, List<FormFiled>> resultMap = new HashMap<String, List<FormFiled>>();
-
-        try {
-            for (FormFiled filed : billingList) {
-
-                if (resultMap.containsKey(filed.getFiledGroup())) {//map中异常批次已存在，将该数据存放到同一个key（key存放的是异常批次）的map中
-                    resultMap.get(filed.getFiledGroup()).add(filed);
-                } else {//map中不存在，新建key，用来存放数据
-                    List<FormFiled> tmpList = new ArrayList<FormFiled>();
-                    tmpList.add(filed);
-                    resultMap.put(filed.getFiledGroup(), tmpList);
-                }
-            }
-        } catch (Exception e) {
-            throw new Exception("按分组时出现异常", e);
-        }
-        return resultMap;
-    }
-
-    private static String getText(String str, int st, int ed) {
-        int n = 0;
-        int pos = -1;
-        while (n < st) {
-            pos = str.indexOf("\n", pos + 1);
-            if (pos == -1) {
-                return "";
-            }
-            n++;
-        }
-        int st_pos = pos;
-        while (n < ed) {
-            pos = str.indexOf("\n", pos + 1);
-            if (pos == -1) {
-                return str.substring(pos + 1);
-            }
-            n++;
-        }
-        return str.substring(st_pos + 1, pos);
-    }
 
 }

@@ -9,7 +9,7 @@ public interface APPConfig {
     //域名
     String HOST = "oa.redmany.com";
     //项目名
-    String COMPANYID = "antmall";//waihui  CloudMall
+    String COMPANYID = "antmall";//waihui  CloudMall huasier
 
     int VERSION=11;
 
@@ -36,4 +36,6 @@ public interface APPConfig {
     //url参数
     String COP_FORM_NAME = "copformName";
     String SHOW_TYPE = "showType";
+    //文件上传路劲
+    String DOCUMENT="E:\\备份\\后台";
 }
