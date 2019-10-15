@@ -32,7 +32,7 @@ public class BackMarServelt extends BaseServlet {
        // String Company_Id=request.getParameter("gCompany_Id");
         HttpSession session=request.getSession();
         String Company_Id=(String)session.getAttribute("CompanyId");
-        Company_Id="guoyuhall";
+        Company_Id="antmall";
 //        if (Company_Id==null){
 //            Company_Id="CloudMall";
 //        }

@@ -63,7 +63,7 @@ public class PropsUtil {
      */
      public static  String updateOneFile(FileItem fileItem,String savePath){
          //判断是否是文件表单字段
-          if (fileItem!=null && !fileItem.isFormField()){
+          if (fileItem!=null && !fileItem.isFormField() && fileItem.getName()!=null && !"".equalsIgnoreCase(fileItem.getName().trim())){
               //获取文件名
               String fileName=fileItem.getName();
               //获取新的文件名

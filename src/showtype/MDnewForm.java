@@ -3,6 +3,7 @@ package showtype;
 import com.sangupta.htmlgen.tags.body.embed.IFrame;
 import com.sangupta.htmlgen.tags.body.forms.Button;
 import com.sangupta.htmlgen.tags.body.forms.Form;
+import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.grouping.ListItem;
 import com.sangupta.htmlgen.tags.body.grouping.UL;
@@ -31,7 +32,7 @@ public class MDnewForm extends CustomForm {
     private Menu Menus;
     private MenuDao menuDao;
     private CommonDao commonDao;
-    private List<Map<String, Object>> FFormList; //主表Form
+    private model.Form FFormList; //主表Form
     private String FFormColumnName;//主表formname
     private Integer IsSFormColumn; //是否有多个主从关系 0 一个主从 普通显示 1 多个主从 选项卡显示
     private  FormUtil formUtil;
@@ -52,31 +53,29 @@ public class MDnewForm extends CustomForm {
         commonDao=new CommonDao(pSQLHelper);
         formDao = new FormDao(pSQLHelper);
         filedDao = new FormFiledDao(pSQLHelper);
-        ParamId=getPage().getParameter("ParamId"); //获取ID
         optype=getPage().getUrlParameter("optype");
+        IsSFormColumn = 0;
+
     }
 
     protected void loadData(String sql) {
 
-        sqlGetID(ParamId,sql); //拼接ID
         formUtil = new FormUtil();
         FFormColumnName = formName.split(",")[0]; //主表
-        FFormList = formDao.getFormList(getCompanyId(), FFormColumnName);//获取主表form表信息
+        FFormList = formDao.getForm(getCompanyId(), FFormColumnName);//获取主表form表信息
         System.out.println("FFormList:" + FFormList.toString());
+        ParamId=getPage().getParameter("ParamId"); //获取ID
+        sql = sqlGetIDs(ParamId,sql,FFormList.getReplaceName()); //拼接ID
         if (FFormList != null) {
-            for (Map<String, Object> line : FFormList) {
-                sql = line.get("Get_data_sql").toString();   //获取主表的sql语句
-                System.out.println("sql:"+sql);
-                ListFeilds = line.get("List_fields").toString(); //获取主表显示字段
-                FFormTitle = line.get("Title").toString();
-            }
+            ListFeilds = FFormList.getList_fields();//line.get("List_fields").toString(); //获取主表显示字段
+            FFormTitle = FFormList.getTitle();//line.get("Title").toString();
         }
-        Menus=menuDao.getMenu(getCompanyId(),getFormName());
+        Menus=menuDao.getMenu(getCompanyId(),formName);
         String[] formSize = formName.split(",");
         System.out.println(formSize.length);
         String formList = StringUtils.substringAfter(formName,",");
         SFormColumn = sFormList(formList); //存储从表的forname和关联id
-         sformTitle = new ArrayList<>();//所有的从表标题
+        sformTitle = new ArrayList<>();//所有的从表标题
         Map<String, Object> sFormData = new LinkedHashMap<>(); //存储从表的所有form表信息
         for (String key : SFormColumn.keySet()) {
             //根据formname获取form表信息
@@ -105,31 +104,43 @@ public class MDnewForm extends CustomForm {
         Div header =panel.div().text(FFormTitle).addCssClass("layui-card-header");
         Div body = panel.div().addCssClass("layui-card-body");
         Form saveForm=body.form().addCssClass("layui-form");
-
+        saveForm.id("mdAddForm");
         String filedStr = filedDao.getFormFiledStr(getCompanyId(),formName);  //获取formfiled表的数据
         List<View> views = getViewLists(filedStr);
         String html = getHtmlTemplate();
         List<String> list = new ArrayList<>();
+        if (ParamId!=null){
+            Tables(views,html,list,saveForm);
+        }else {
         Table(views,html,list,saveForm);
+        }
+
 
         //从表
         STable(div);
 
         //按钮操作
-        Div btnDiv=saveForm.div().addCssClass("layui-form-item").styles("margin-left: 120px;");
+        Div btnDiv=saveForm.div().addCssClass("layui-form-item").styles("margin-top: 20px;margin-left: 5%;");
+        Input formname = btnDiv.input("hidden",getFormName()).addCssClass("formName").value(FFormColumnName);
+        Input hiddenId = saveForm.input("hidden",ParamId).id("mdID");
 
+        hiddenId.attr("name","Id");
         Button saveBtn = btnDiv.button().text("提交").addCssClass("layui-btn saveBtn");//保存按钮
-        Button cancelBtn=btnDiv.button().text("取消").addCssClass("layui-btn").onClick("javascript:history.go(-1);location.reload();"); //取消按钮
+        saveBtn.attr("type","button");
+        Button reset = btnDiv.button().text("重置").addCssClass("layui-btn").id("reset");
+        reset.attr("type","reset");
+        String firstFormName=getFormName().split(",")[0];
+        saveBtn.onClick("gotoPage('submit:"+firstFormName+",MDnewForm',null);");
 
-    }
+        Button cancelBtn = btnDiv.button().text("取消").addCssClass("layui-btn").onClick("javascript:history.go(-1);location.reload();"); //取消按钮
+
+        }
     //主表
     public  void Table(List<View> views,String html,List<String> list, Form saveForm){
+        Div layuiRow = saveForm.div().addCssClass("layui-row").styles("margin-top:10px;");
         Map<String,String> map = new HashMap<>();
-       // List<String> list1 = new ArrayList<>();
         for (View view : views) {
-            if ("TextNoTitle".equals(view.getType())){
-                view.setType("text");
-            }
+            view.setIsValue("1");
             html = addMakeViews(list, view, null, html);
         }
         if (!TextUtils.isEmpty(html)) {
@@ -137,15 +148,52 @@ public class MDnewForm extends CustomForm {
         }
         System.out.println(list);
         for(String key : list){ //String v : list
-            Div div = saveForm.div().addCssClass("layui-form-item").styles("line-height: 30px;height: 30px;");//margin: 20px auto;width: 800px;
+           // Div div = saveForm.div().addCssClass("layui-form-item").styles("line-height: 30px;height: 30px;");//margin: 20px auto;width: 800px;
             //Label label = div.label().addCssClass("layui-form-label").styles("width:200px;");
-            Div div1 = div.div().addCssClass("layui-input-block");//.styles("width: 700px;padding-top: 7px;margin-left: 30px;");
+           // Div div1 = div.div().addCssClass("layui-input-block");//.styles("width: 700px;padding-top: 7px;margin-left: 30px;");
             //label.text(key);
-           // String value = map.get(key).toString();
+            // String value = map.get(key).toString();
+            Div divs = layuiRow.div().addCssClass("layui-col-xs12 layui-col-sm6 layui-col-md4");
+            Div div = divs.div().addCssClass("layui-form-item");
+            Div div1 = div.div().styles("height: 30px;line-height: 30px;" );
+            div1.addCssClass("layui-input-block").styles("margin:0px;");
+            key = key.replaceAll("<label>","<label class=\"labelRight\">");
             div1.text(key);
-           // System.out.println(key+"  "+value);
+            // System.out.println(key+"  "+value);
         }
     }
+
+    public  void Tables(List<View> views,String html,List<String> list, Form saveForm){
+
+        if (mDatas!=null){
+            for (Map<String, Object> line : mDatas){
+                Map<String,String> map = new HashMap<>();
+                // List<String> list1 = new ArrayList<>();
+                for (View view : views) {
+                    if ("TextNoTitle".equals(view.getType())){
+                        view.setType("text");
+                    }
+                    html = addMakeViews(list, view, line, html);
+                }
+                if (!TextUtils.isEmpty(html)) {
+                    saveForm.text(html);
+                }
+                System.out.println(list);
+                for(String key : list){ //String v : list
+                    Div div = saveForm.div().addCssClass("layui-form-item").styles("line-height: 30px;height: 30px;");//margin: 20px auto;width: 800px;
+                    //Label label = div.label().addCssClass("layui-form-label").styles("width:200px;");
+                    Div div1 = div.div().addCssClass("layui-input-block");//.styles("width: 700px;padding-top: 7px;margin-left: 30px;");
+
+                    key = key.replaceAll("<label>","<label class=\"labelRight\">");
+                    div1.text(key);
+                    // System.out.println(key+"  "+value);
+                }
+            }
+
+        }
+
+    }
+
     //从表的formname、关联字段
     private Map<String,Object> sFormList(String formname){
         String[] formSize = formname.split(",");
@@ -164,43 +212,21 @@ public class MDnewForm extends CustomForm {
                 key.add(formSize[i]);
             }
         }
-        IsSFormColumn = 0;
         for (int i = 0; i <key.size() ; i++) {
             IsSFormColumn++;
             System.out.println(IsSFormColumn);
             sFormColumn.put(key.get(i),value.get(i));
             System.out.println("key:"+key.get(i) +"\t"+ "value:" + value.get(i));
-
         }
         return sFormColumn;
     }
 
     private void  STable(Div div){
-       // String ListFeilds = getFormFieldNames();
-
-        Button addMDform = div.button().addCssClass("layui-btn"); //新增子表按钮
-        //onClick("delListForm(" + line.get("Id") + ",'" + getFormName() + "');");
+        // String ListFeilds = getFormFieldNames();
         Map<String,Object> popup = new LinkedHashMap<>();
-        //content: '<iframe data-frameid="'+id+'" frameborder="0" name="content" scrolling="no" width="100%" src="' + url + '"></iframe>'
-        //"queryStudentServlet?copformName="+key+ "&showType=ListModifyForm&transferParams="+SFormColumn.get(key)+"="+ParamId);
-        String url ="queryStudentServlet?copformName="+"Order_management_info"+"&showType=NewForm";
-        String v1 = "'<iframe data-frameid="+"1"+" width=100%"+"src="+url + "></iframe>'";
-
-
-        addMDform.onClick("addMDform('"+url+"');");
-        Italic i = new Italic();
-        i.text("&#xe608;").addCssClass("layui-icon");
-        addMDform.italic(i);
-        addMDform.text("新增");
-
         Div sdiv = div.div().styles("background-color: white;");
         System.out.println(IsSFormColumn);
-        if (IsSFormColumn==1 ){
-            IFrame iFrame =sdiv.iframe("queryStudentServlet?copformName="+sformName+ "&showType=ListModifyForm&transferParams="+assoFields+"="+ParamId);
-            iFrame.attr("width","100%");
-            iFrame.height(500);
-        }else {
-            //sformTitle
+
             Div tab = sdiv.div().addCssClass("layui-tab layui-tab-brief");
             tab.filter("sform");
             //选项卡标题
@@ -213,7 +239,6 @@ public class MDnewForm extends CustomForm {
                     li.addCssClass("layui-this");
                 }
                 ul.li(li);
-
             }
             //选项卡内容
             Div tabContent = tab.div();
@@ -222,15 +247,41 @@ public class MDnewForm extends CustomForm {
             for (String key : SFormColumn.keySet()) {
                 Div item = tabContent.div();
                 item.addCssClass("layui-tab-item");
-               // Div divtext =item.text(key+"\t"+SFormColumn.get(key)).styles("width:400px");
+                // Div divtext =item.text(key+"\t"+SFormColumn.get(key)).styles("width:400px");
                 if (key==sformName || key.equals(sformName)){
                     item.addCssClass("layui-tab-item layui-show");
                 }
-               /* IFrame iFrame =item.iframe("queryStudentServlet?copformName="+key+ "&showType=ListModifyForm&transferParams="+SFormColumn.get(key)+"="+ParamId);
+                Button addMDform1 = item.button().addCssClass("layui-btn").id("mdAddIframe"); //新增子表按钮
+                String url ="queryStudentServlet?copformName="+key+"&showType=NewForm&mdAssoWord="+SFormColumn.get(key)+":"+ParamId;
+
+                if (ParamId==null || "".equals(ParamId)){
+                    addMDform1.onClick("addShow('"+FFormTitle+"');");
+                }else {
+                    addMDform1.onClick("addMDform('"+url+"');");
+                }
+
+
+                addMDform1.onClick("addMDform('"+url+"');");
+             /*   if (ParamId==null || "".equals(ParamId)){
+                    addMDform1.onClick("addShow('"+FFormTitle+"');");
+                }else {
+                    addMDform1.onClick("addMDform('"+url+"');");
+                }*/
+
+                Italic i = new Italic();
+                i.text("&#xe608;").addCssClass("layui-icon");
+                addMDform1.italic(i);
+                addMDform1.text("新增");
+
+
+
+                addMDform1.attr("type","button");
+
+                IFrame iFrame =item.iframe("queryStudentServlet?copformName="+key+ "&showType=ListModifyForm&mdAssoWord="+SFormColumn.get(key)+":"+ParamId);
                 iFrame.attr("width","100%");
-                iFrame.height(500);*/
+                iFrame.id("mdIframe");
+                iFrame.height(500);
             }
-        }
     }
 
 

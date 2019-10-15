@@ -1,6 +1,7 @@
 package showtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
+import com.sangupta.htmlgen.tags.body.forms.Form;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.text.Label;
 import common.utils.TextUtils;
@@ -14,10 +15,22 @@ public class CustomForm extends ParentForm {
 
     @Override
     public HtmlBodyElement<?> createViews() {
-        Div div = new Div();
+        Form dataForm=new Form();
+        if("MDnewForm".equalsIgnoreCase(getPage().getShowType())){
+            dataForm.id(formName.split(",")[0]+"Form");
+        }else {
+
+            dataForm.id(formName+"Form");
+        }
+
+
+        dataForm.attr("method","post");
+        dataForm.attr("enctype","multipart/form-data");
+        Div div =  dataForm.div();
         div.id(formName);
         make(div);
-        return div;
+      //  return div;
+        return dataForm;
     }
 
     protected void make(Div div) {
@@ -82,6 +95,8 @@ public class CustomForm extends ParentForm {
        // list.add(childView);
         return childView;
     }
+
+
 
 
 
