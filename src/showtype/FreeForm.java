@@ -15,16 +15,14 @@ public class FreeForm extends CustomForm {
 
     @Override
     protected void loadData(String sql) {
-
    /*     if(formName.equals("simpleIDInfo_09")) {
-
-            sql=sql+" where U.id="+getPage().getUserId();
+            sql=sql+" and id="+getPage().getUserId();
         }
         if(formName.equals("Ant_mainMenu")) {
-            sql=sql+" where u.Id="+getPage().getUserId();
+            sql=sql+" and Id="+getPage().getUserId();
         }
         if(formName.equals("Ant_Personal")) {
-            sql=sql+" where u.Id="+getPage().getUserId();
+            sql=sql+" and Id="+getPage().getUserId();
         }*/
         System.out.println(formName);
         if (formName.equals("BondNewDetail")){
@@ -32,7 +30,7 @@ public class FreeForm extends CustomForm {
             String str=getPage().getUrlParameter("id")+getPage().getUrl();
             String id = str.substring(str.lastIndexOf("D")+1);
            // System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"+str+"id:"+id);
-            sql=sql+" where id="+id;
+            sql=sql+" and id="+id;
         }
         System.out.println(sql);
 

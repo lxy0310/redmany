@@ -266,7 +266,6 @@ public abstract class ParentForm {
             System.out.println(getFormName() + "/" + getViewType() + ",initData=" + mViews);
         }
         //Form的实体对象不为空，则获取相应的数据
-
         if (mFormData != null) { // && !"newForm".equalsIgnoreCase(getPage().getShowType())
             String Get_data_sql = DataHelper.toString(mFormData.getGet_data_sql());
             if (Get_data_sql != null && Get_data_sql.length() > 0) {

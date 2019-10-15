@@ -349,123 +349,130 @@ function linkageSelectChange(fid,cid){
 }
 
 //多图的回显
-function uploadMultiImg(e,id,isOne){
+function uploadMultiImg(e,id){
     var files = e.files;
     var length = files.length;
-    var div = document.getElementById(id+"_div");
-    if(isOne){//单张图片时清空
-        $('#'+id+"_div").empty();
+    // var div = document.getElementById(id);
+    var oldValue = document.getElementById(id+"_old").value;
+    var oldValueNum = 0;//旧图片的个数
+    if(oldValue!='' && oldValue.length>0){
+        var sf = oldValue.split(",");
+        oldValueNum = sf.length;
     }
-    $.each(files,function(key,value){
-        //回显：每次都只会遍历一个图片数据
-        var img = document.createElement("img");
-        // var hxImg = document.createElement("img");
-        var a = document.createElement("a");
-        div.style="display:inline-block; position:relative;";
-        var fr = new FileReader();
-        fr.onload = function(){
-            img.width = 50;
-            img.height = 50;
-            img.src=this.result;
-            div.appendChild(img);
-            a.href="javascript:void(0);";
-            a.id=id+"a";
-            div.appendChild(a);
-            var hxImg = '<Img src="/redmany/images/delete.jpg" style="position: absolute; height: 15px;width: 15px;top: 0px; right: 0px;" onclick="delFile(\''+id+'\',\'image\')"></Img>';
-            $("#"+id+"a").append(hxImg);
-        }
-        fr.readAsDataURL(value);
-    })
-}
-
-//单张、多张图片的回显（新的）
-function uploadImg(e,id,isOne){
-    var files = e.files;
-    var length = files.length;
-    var div = document.getElementById(id+"_div");
-    if(isOne){//单张图片时清空
-        $('#'+id+"_div").empty();
+    var delValue = document.getElementById(id+"_del").value;
+    var delValueNum = 0;//旧图片的删除个数
+    if(delValue!='' && delValue.length>0){
+        var delObj = delValue.split(",");
+        delValueNum = delObj.length;
     }
-    $.each(files,function(key,value){
-        //回显：每次都只会遍历一个图片数据
-        var img = document.createElement("img");
-        // var hxImg = document.createElement("img");
-        var a = document.createElement("a");
-        div.style="display:inline-block; position:relative;";
-        var fr = new FileReader();
-        fr.onload = function(){
-            img.width = 50;
-            img.height = 50;
-            img.src=this.result;
-            div.appendChild(img);
-            a.href="javascript:void(0);";
-            a.id=id+"a";
-            div.appendChild(a);
-            var hxImg = '<Img src="/redmany/images/delete.jpg" style="position: absolute; height: 15px;width: 15px;top: 0px; right: 0px;" onclick="delFile(\''+id+'\',\'image\')"></Img>';
-            $("#"+id+"a").append(hxImg);
-        }
-        fr.readAsDataURL(value);
-    })
-}
-
-//单张、多张图片的回显（旧的）
-function uploadImgOld(e,id,isOne){
-    var files = e.files;
-    var length = files.length;
-    var div = document.getElementById(id+"_div");
-    if(isOne){//单张图片时清空
-        $('#'+id+"_div").empty();
-    }
-    $.each(files,function(key,value){
-        //回显：每次都只会遍历一个图片数据
-        var img = document.createElement("img");
-        var hxImg = document.createElement("img");
-        hxImg.id=id+"_del";
-        var a = document.createElement("a");
-        div.style="display:inline-block; position:relative;";
-        var fr = new FileReader();
-        fr.onload = function(){
-            img.width = 50;
-            img.height = 50;
-            img.src=this.result;
-            div.appendChild(img);
-            a.href="javascript:void(0);";
-            div.appendChild(a);
-            hxImg.src="/redmany/images/delete.jpg";
-            hxImg.style="position: absolute; height: 15px;width: 15px;top: 0px; right: 0px;";
-            // hxImg.onclick="delFile('image')";
-            hxImg.addEventListener("click",delFile,false);
-            if(isOne) {//单张图片时清空
-                // $("#"+id+"_del").onclick="delFile('image')";
-                // hxImg.click(function(){
-                    // delFile('image');
-                    // var flag = window.confirm("您确定要删除该文件吗?");
-                    // if (flag) {
-                    //     $("#"+id+"_div").empty();
-                    // }
-                // });
+    var divNum = document.getElementById(id).getElementsByTagName("div").length;//回显div的个数
+    if(length>0){
+        var startLen = oldValueNum-delValueNum;
+        // alert(startLen);
+        for(var i=oldValueNum-delValueNum;i<=divNum;i++){
+            // $("#"+id+i+"_div").remove();
+            if($("#"+id).children("div").length>i){
+                $("#"+id).children("div")[i].remove();
             }
-            a.appendChild(hxImg);
+        }
+    }
+    $.each(files,function(key,value){
+        //回显：每次都只会遍历一个图片数据
+        var size = key;
+        if(oldValueNum>0){
+            // size = key+oldValueNum-delValueNum;
+            size = key+oldValueNum;
+        }
+        var idStr = id+size;
+        var div2 = '<div id=\''+idStr+'_div\' style="display: inline-block; position: relative;"></div>';
+        $("#"+id).append(div2);
+        var fr = new FileReader();
+        fr.onload = function(){
+            var img = '<img id=\''+idStr+'_img\' src=\''+this.result+'\' alt="查看图片" width="50" height="50">';
+            $("#"+idStr+"_div").append(img);
+            var a = '<a id=\''+idStr+'_a\' href="javascript:void(0);"></a>';
+            $("#"+idStr+"_div").append(a);
+            var hxImg = '<Img src="/redmany/images/delete.jpg" style="position: absolute; height: 15px;width: 15px;top: 0px; right: 0px;" onclick="delMultiImg(\''+id+'\',\''+size+'\')"></Img>';
+            $("#"+idStr+"_a").append(hxImg);
         }
         fr.readAsDataURL(value);
     })
 }
 
-//图片、多图、视频的文件删除
+//多图的删除
+function delMultiImg(fileId,index){
+    var flag = window.confirm("您确定要删除该图片吗?");
+    if (flag) {
+        // var file_name = $("#"+fileId+"0")[0].files[0].name;
+        var divNum = document.getElementById(fileId).getElementsByTagName("div").length;//回显div的个数
+        var fileNum = document.getElementById(fileId+"0").files.length;//文件的个数
+        var oldValue = document.getElementById(fileId+"_old").value;
+        var oldValueNum = 0;//旧图片的个数
+        if(oldValue!='' && oldValue.length>0){
+            var oldObj = oldValue.split(",");
+            oldValueNum = oldObj.length;
+        }
+        var num =fileNum+oldValueNum;
+        if(index<=oldValueNum-1){
+            var delValue = document.getElementById(fileId+"_del").value;
+            if(delValue!='' && oldValue.length>0){
+                delValue=delValue+","+oldValue.split(",")[index];
+            }else{
+                delValue=delValue+oldValue.split(",")[index];
+            }
+            document.getElementById(fileId+"_del").value=delValue;
+        }
+        $("#"+fileId+index+"_div").remove();
+    }
+}
+
+//单张图片的回显
+function uploadImg(e,id){
+    var files = e.files;
+    var length = files.length;
+    var div = document.getElementById(id+"_div");
+    $('#'+id+"_div").empty();
+    $.each(files,function(key,value){
+        //回显：每次都只会遍历一个图片数据
+        var img = document.createElement("img");
+        // var hxImg = document.createElement("img");
+        var a = document.createElement("a");
+        div.style="display:inline-block; position:relative;";
+        var fr = new FileReader();
+        fr.onload = function(){
+            img.width = 50;
+            img.height = 50;
+            img.src=this.result;
+            div.appendChild(img);
+            a.href="javascript:void(0);";
+            a.id=id+"a";
+            div.appendChild(a);
+            var hxImg = '<Img src="/redmany/images/delete.jpg" style="position: absolute; height: 15px;width: 15px;top: 0px; right: 0px;" onclick="delFile(\''+id+'\',\'image\')"></Img>';
+            $("#"+id+"a").append(hxImg);
+        }
+        fr.readAsDataURL(value);
+    })
+}
+
+//单张图片、视频的文件删除
 function delFile(fileId,type){
     var flag = window.confirm("您确定要删除该文件吗?");
     if (flag) {
-        if(type=="image"){
+        if(type=="image" || type=="video"){
             $("#"+fileId+"_div").empty();
             var image = document.getElementById(fileId+"0");
             image.value="";//清空已选中的文件流
         }
-        if(type=="multiImage"){
-            $("#"+fileId+"_div").empty();
-        }
+        // if(type=="multiImage"){
+        //     $("#"+fileId+"_div").remove();
+        //     var file_name = $("#lunbo0")[0].files[0].name;
+        //     var sdf = document.getElementById("lunbo0").files.length;
+        //     // alert(sdf);
+        // }
     }
 }
 
+//待用
 function del(imgId,delImgId,type){
     var flag = window.confirm("您确定要删除该文件吗?");
     if (flag) {
@@ -495,4 +502,230 @@ function del(imgId,delImgId,type){
             $(".imgDiv").find(".delete").hide();
         }
     }
+}
+
+//点击链接触发上传事件
+function upload_a(fileId) {
+    document.getElementById(fileId).click();
+}
+
+//图片的放大与切换
+function openImg(id) {
+    layer.photos({
+        photos: { "data": [{"src": 'http://oa.redmany.com:50016/document/071dede250d44fe4a519e7e857ad9e8f.jpg'},
+                {"src": 'http://oa.redmany.com:50016/document/0321b01646e8420db016f093d39942d0.jpg'}] }
+        ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+    });
+}
+
+//视频的上传回显
+function uploadVideo(e,id){
+    var files = e.files;
+    var div = document.getElementById(id+"_div");
+    $('#'+id+"_div").empty();
+    $.each(files,function(key,value){
+        var file_obj = files[0];
+        var fd = new FormData();
+        fd.append('video',file_obj);
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', '/redmany/uploadFile', true)
+        xhr.send(fd);
+        xhr.onreadystatechange = function () {
+            //后端接受完毕
+            if(xhr.readyState == 4){
+                var obj = JSON.parse(xhr.responseText);
+                var url = obj.url;
+                console.log(obj);
+                var a = document.createElement("a");
+                div.style="display:inline-block; position:relative;";
+                var fr = new FileReader();
+                fr.onload = function(){
+                    var hidden = '<input type="hidden" id=\''+id+'_hidden\' value=\''+url+'\' />';
+                    var video = '<video src=\''+this.result+'\' id=\''+id+'_hi\' style="height: 50px;width: 50px;" onclick="openVideo(\''+id+'_hidden\')"></video>';
+                    $("#"+id+"_div").append(hidden);
+                    $("#"+id+"_div").append(video);
+                    a.href="javascript:void(0);";
+                    a.id=id+"_a";
+                    div.appendChild(a);
+                    var hxImg = '<Img src="/redmany/images/delete.jpg" style="position: absolute; height: 15px;width: 15px;top: 0px; right: 0px;" onclick="delFile(\''+id+'\',\'video\')"></Img>';
+                    $("#"+id+"_a").append(hxImg);
+                }
+                fr.readAsDataURL(value);
+            }
+        };
+    })
+}
+
+// 播放视频
+function openVideo(id) {
+    var classVideo = document.getElementById(id).value;
+    var index = layer.open({
+        type: 2,
+        // content: $('#video_hi'),
+        // content: 'http://oa.redmany.com:50016/document/LSQ_20190505_161704372.mp4',
+        content: classVideo,
+        area: ['600px', '450px'],
+        offset:'t',
+        maxmin: true,
+        end: function () {
+        }
+    });
+}
+
+//文件的上传
+function uploadFile(e,id){
+    var files = e.files;
+    var demoListView = $('#file_list');
+        $.each(files,function(key,value){
+        var fileSize = getfilesize(files[key].size);
+        var fileName = files[key].name;
+        // var div = '<div class="attsep" id="123"><span id="uploader123"><input type="button" class="icon-prev" /><span>账号.txt</span><span>(580B)</span></span></div>';
+        var div = '<div id="attDivId"><span>'+fileName+'</span>&nbsp<span style="color: #798699">('+fileSize+')</span><div id="progressDiv" style="width:100px;height:18px;border-radius:8px;background-color: whitesmoke;display: inline-block;"><div style="display: inline-block;width: 0px;height: 18px; background: #979797;float:left " id="progressSpan">上传进度：0%</div></div></div>';
+        demoListView.append(div);
+
+        var fd = new FormData();
+        fd.set("type_file","file");
+        fd.append('file'+key,value);
+        xhr = new XMLHttpRequest();
+        xhr.type = "";
+        xhr.open('POST', '/redmany/uploadFile', true)
+        xhr.onload = uploadComplete; //请求完成
+        xhr.onerror =  uploadFailed; //请求失败
+        xhr.upload.onprogress = progressFunction;//【上传进度调用方法实现】
+        xhr.upload.onloadstart = function(){//上传开始执行方法
+            ot = new Date().getTime();   //设置上传开始时间
+            oloaded = 0;//设置上传开始时，以上传的文件大小为0
+        };
+        xhr.send(fd); //开始上传，发送form数据
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {//后端接受完毕
+                var obj = JSON.parse(xhr.responseText);
+                var error = obj.error;
+                var saveName = obj.name;
+                if (error == "0") {//上传成功
+                    $("#progressDiv").remove();//移除进度条
+                    var newDivId =  fileAddOrDel('add','#'+id+'_hidden',saveName);
+                    $('#attDivId').attr('id', newDivId);
+                    //删除按钮
+                    var delbar = '<a onclick="delAttachFile(\'Uploader1570600617755016568701975846012\');return false">删除</a>';
+                    $('#file_'+newDivId).append(delbar);
+                } else if (error == "1") {
+
+                }
+            }
+        }
+    });
+}
+
+//上传进度实现方法，上传过程中会频繁调用该方法
+function progressFunction(evt) {
+    var loaded = evt.loaded;//已经上传大小情况
+    var tot = evt.total;//附件总大小
+    var per = Math.floor(100*loaded/tot);  //已经上传的百分比
+    $("#progressSpan").html( per +"%" );
+    $("#progressSpan").css("width" , per +"%");
+    // console.log('附件总大小 = ' + loaded);
+    // console.log('已经上传大小 = ' + tot);
+
+    // var progressBar = document.getElementById("progressBar");
+    // var percentageDiv = document.getElementById("percentage");
+    // // event.total是需要传输的总字节，event.loaded是已经传输的字节。如果event.lengthComputable不为真，则event.total等于0
+    // if (evt.lengthComputable) {//
+    //     progressBar.max = evt.total;
+    //     var ot = evt.total;
+    //     progressBar.value = evt.loaded;
+    //     var oloaded = evt.loaded;
+    //     percentageDiv.innerHTML = Math.round(evt.loaded / evt.total * 100) + "%";
+    // }
+    //
+    // var time = document.getElementById("progressSpan");
+    // var nt = new Date().getTime();//获取当前时间
+    // var pertime = (nt-ot)/1000; //计算出上次调用该方法时到现在的时间差，单位为s
+    // ot = new Date().getTime(); //重新赋值时间，用于下次计算
+    //
+    // var perload = evt.loaded - oloaded; //计算该分段上传的文件大小，单位b
+    // oloaded = evt.loaded;//重新赋值已上传文件大小，用以下次计算
+    //
+    // //上传速度计算
+    // var speed = perload/pertime;//单位b/s
+    // var bspeed = speed;
+    // var units = 'b/s';//单位名称
+    // if(speed/1024>1){
+    //     speed = speed/1024;
+    //     units = 'k/s';
+    // }
+    // if(speed/1024>1){
+    //     speed = speed/1024;
+    //     units = 'M/s';
+    // }
+    // speed = speed.toFixed(1);
+    // //剩余时间
+    // var resttime = ((evt.total-evt.loaded)/bspeed).toFixed(1);
+    // time.innerHTML = '，速度：'+speed+units+'，剩余时间：'+resttime+'s';
+    // if(bspeed==0)
+    //     time.innerHTML = '上传已取消';
+}
+
+//上传成功响应
+function uploadComplete(evt) {
+    //服务断接收完文件返回的结果
+    // $("#progressDiv").remove();
+    // alert("上传成功！");
+    //删除按钮
+    // onclick="delAttach('Uploader157052531331506145200131618667');return false"
+}
+//上传失败
+function uploadFailed(evt) {
+    alert("上传失败！");
+}
+//取消上传
+function cancleUploadFile(){
+    xhr.abort();
+}
+
+//文件大小转换函数(保留两位小数),Size为字节大小
+function getfilesize(size) {
+    if (!size) return "";
+    var num = 1024.00; //byte
+    if (size < num)
+        return size + "b";
+    if (size < Math.pow(num, 2))
+        return (size / num).toFixed(2) + "kb"; //kb
+    if (size < Math.pow(num, 3))
+        return (size / Math.pow(num, 2)).toFixed(2) + "MB"; //M
+    if (size < Math.pow(num, 4))
+        return (size / Math.pow(num, 3)).toFixed(2) + "G"; //G
+    return (size / Math.pow(num, 4)).toFixed(2) + "T"; //T
+}
+
+//文件控件，上传或删除时对隐藏域的处理(参数：【操作类型、隐藏域id、文件名】；返回值：控件id)
+function fileAddOrDel(type,hiddenId,fileName){
+    var hiddenValue = $(hiddenId).val();
+    if(type=='add'){
+        if(hiddenValue=='' || hiddenId==null || hiddenId!=undefined){
+            hiddenValue=fileName;
+        }else{
+            hiddenValue=hiddenValue+","+fileName;
+        }
+        $(hiddenId).val(hiddenValue);
+    }else if(type=="del"){
+        if(hiddenValue=='') {
+            hiddenValue = '';
+        }else{
+            if(hiddenValue.index(fileName)>0){
+                hiddenValue.remove(fileName);
+            }else if(hiddenValue.index(","+fileName)>0){
+                hiddenValue.remove(","+fileName);
+            }
+        }
+        $(hiddenId).val(hiddenValue);
+    }
+    var oneSub = fileName.substr(fileName.indexOf("-suff-")+6,fileName.length);
+    var twoSub = oneSub.substr(0,oneSub.indexOf("."));
+    return twoSub;
+}
+
+function delAttachFile(divId,fileId) {
+    $("#"+divId).remove();
+
 }

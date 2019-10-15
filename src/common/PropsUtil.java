@@ -4,7 +4,9 @@ import org.apache.commons.fileupload.FileItem;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,5 +84,39 @@ public class PropsUtil {
           }
           return  null;
      }
+
+    /**
+     * 单个文件上传（返回原名）
+     * @param fileItem 文件元素
+     * @param savePath 文件保存路径
+     * @return 成功返回上传的原文件名（存在重名的话，就在原文件名后加上'-suff-日期时间'格式的后缀）
+     */
+    public static  String updateFileOldName(FileItem fileItem,String savePath){
+        //判断是否是文件表单字段
+        if (fileItem!=null && !fileItem.isFormField()){
+            String fileName=fileItem.getName();//获取文件名
+            String uuidName=renameToUUID(fileName);
+//            if(savePath!=null && fileName!=null){
+//                File file=new File( savePath+"/"+fileName);
+//                if(file.exists()){//如果存在重名文件，就在原文件名后家加上新后缀
+                    String time =  new SimpleDateFormat("yyyyMMddHHmmss").format(new Date().getTime());
+                    if(fileName!=null && fileName.lastIndexOf(".")>0){
+                        String fileSuffix=fileName.substring(fileName.lastIndexOf("."));
+                        String name=fileName.substring(0,fileName.lastIndexOf("."));
+//                        fileName = name+"-suff-"+time+fileSuffix;
+                        fileName = name+"-suff-"+uuidName+fileSuffix;
+//                    }
+//                }
+            }
+            try {
+                fileItem.write(new File(savePath,fileName));
+                return fileName;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return  null;
+            }
+        }
+        return  null;
+    }
 
 }

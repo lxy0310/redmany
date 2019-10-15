@@ -2522,9 +2522,9 @@ input[type="checkbox"] {
   margin-top: 1px \9;
   line-height: normal;
 }
-input[type="file"] {
-  display: block;
-}
+/*input[type="file"] {*/
+/*  display: block;*/
+/*}*/
 input[type="range"] {
   display: block;
   width: 100%;

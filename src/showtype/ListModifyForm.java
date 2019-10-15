@@ -108,7 +108,6 @@ public class ListModifyForm extends CustomForm {
         super.loadData(sql);
     }
 
-
     @Override
     protected void make(Div div) {
         div.add(new Script("js/jquery.js"));
@@ -131,7 +130,6 @@ public class ListModifyForm extends CustomForm {
         } else { // 前端
             listShow(div);
         }
-
     }
     //查询
     public void search(Div div){

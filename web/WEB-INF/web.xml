@@ -81,6 +81,10 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <servlet-class>servlet.UploadFileServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
         <servlet-name>SubmitServlet</servlet-name>
         <servlet-class>servlet.SubmitServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
@@ -90,7 +94,6 @@
         <servlet-class>servlet.BackLoginServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
     
     <servlet-mapping>
         <servlet-name>CommonServlet</servlet-name>
@@ -170,6 +173,10 @@
     <servlet-mapping>
         <servlet-name>SubmitServlet</servlet-name>
         <url-pattern>/submit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <url-pattern>/uploadFile</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>

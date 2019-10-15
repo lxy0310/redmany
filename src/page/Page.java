@@ -593,7 +593,9 @@ public class Page implements ParentForm.ISQLReplacer {
       /*  head.css("css/bounced/dialog.css");
         head.script("../js/bounced/dialog.js");
         head.script("../js/bounced/zepto.min.js");*/
-
+        //富文本编辑器插件
+        head.script("ueditor/ueditor.config.js");
+        head.script("ueditor/ueditor.all.js");
 
     }
 
