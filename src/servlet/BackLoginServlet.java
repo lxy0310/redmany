@@ -105,7 +105,6 @@ public class BackLoginServlet extends BaseServlet {
                         }
                     }
                 }else{
-
                     response.sendRedirect("backLogin.jsp");
                 }
             }else{

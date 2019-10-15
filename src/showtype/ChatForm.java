@@ -89,6 +89,7 @@ public class ChatForm extends CustomForm {
         }else {
             statistics(y,x,list,0);
         }
+        higt.setxCategories(strYTitle);
        // higt.setxCategories(xtitle);
         higt.setData(list);
         /*        System.out.println(forms.getTable_name()+"\t"+forms.getXcolumn()+"\t"+forms.getYcolumn());
@@ -185,7 +186,7 @@ public class ChatForm extends CustomForm {
             char12.setName(y);
             char12.setData(yDatas);
             list.add(char12);
-            higt.setxCategories(xtitle);
+
         }
     }
 
