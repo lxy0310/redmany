@@ -80,6 +80,11 @@
         <servlet-class>servlet.ViewServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <servlet-class>servlet.UploadFileServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     
     <servlet-mapping>
         <servlet-name>CommonServlet</servlet-name>
@@ -151,11 +156,17 @@
         <url-pattern>/view</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <url-pattern>/uploadFile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.css</url-pattern>
         <url-pattern>*.jpg</url-pattern>
         <url-pattern>*.png</url-pattern>
         <url-pattern>*.gif</url-pattern>
         <url-pattern>*.js</url-pattern>
+        <url-pattern>*.ttf</url-pattern>
+        <url-pattern>*.woff</url-pattern>
     </servlet-mapping>
 </web-app>

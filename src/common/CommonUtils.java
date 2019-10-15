@@ -30,6 +30,17 @@ public class CommonUtils {
 
     public static String language = "";//当前语言
 
+    //富文本编辑器实例化
+    public static String editorStr ="UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;\n" +
+            "    UE.Editor.prototype.getActionUrl = function(action) {\n" +
+            "        if (action == 'uploadimage') {\n" +
+            "            return '/redmany/uploadFile';\n" +
+            "        } else {\n" +
+            "            return this._bkGetActionUrl.call(this, action);\n" +
+            "        }\n" +
+            "    } ";
 
+    //图片上传路径（富文本）
+    public static String imgUploadPath = "D://AAA";//本地测试路径
 
 }

@@ -1475,6 +1475,30 @@ table thead {
     text-overflow: ellipsis;
 }
 
+/*文件颜色：*/
+/* #D0EEFF;浅蓝*/
+/* #1E9FFF 蓝色*/
+/* #5cb85c 绿色*/
+/* #009688 墨绿*/
+.file,.file:link,.file:visited,.file:hover,.file:active{
+/*.file,.file:hover {*/
+    text-decoration: none;
+    outline: none;
+    color:white;
+    position: relative;
+    display: inline-block;
+    background: #5cb85c;
+    border-radius: 4px;
+    padding: 4px 12px;
+}
+
+.file input {
+    width: 0px;
+    position: absolute;
+    top: 0;
+    opacity: 0;
+}
+
 @media only screen and (min-width: 768px){
     .hovertable td {
         background-color: white;

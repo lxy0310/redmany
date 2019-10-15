@@ -44,12 +44,12 @@ public class Text extends ParentView {
 
     protected void loadData(String sql) {
         enUrl = SafeString.escape(SafeString.encode(getPage().getUrl()));
-
     }
 
     @Override
     protected HtmlBodyElement<?> create() {
         boolean isShow = isShow(getForm().getPage().getShowType());
+        String optype = getPage().getParameter("optype");//修改1查看2
         Div div = new Div();
         div.id(getName());
         div.addCssClass("tableOverflow");
@@ -118,13 +118,13 @@ public class Text extends ParentView {
                     }
                 }
             }
+            String hintContent ="";
             if (view.getWapAttribute()!=null){
                 String str=view.getWapAttribute();//获取样式
                 String[] strs = str.split("\\[\\^\\]");
                 boolean hasHintContent=false;
                 String hintContenth=null;
                if (strs!=null){
-                   String hintContent ="";
                    for(int i=0;i<strs.length;i++){
                        if (strs[i].contains("style")){
                            int index = strs[i].indexOf(":");
@@ -149,22 +149,21 @@ public class Text extends ParentView {
                            hintContent = strs[i].substring(strs[i].lastIndexOf(":")+i);
                        }
                    }
-                if (hintContent !=null && hintContent.length()>0){ //提示
-                     input.placeholder(hintContent);
-                }else{ //默认提示
-                  String num=view.getTitle().toString();
-                  if (view.getTitle().contains(":")){ //如果有：去掉
-                      num=num.substring(0,num.length()-1);
-                  }
-                    input.placeholder("请输入"+num);
-                }
-
                }
             }
-            if (text!=null){
+            if (hintContent !=null && hintContent.length()>0){ //提示
+                input.placeholder(hintContent);
+            }else{ //默认提示
+                String num=view.getTitle().toString();
+                if (view.getTitle().contains(":")){ //如果有：去掉
+                    num=num.substring(0,num.length()-1);
+                }
+                input.placeholder("请输入"+num);
+            }
+            if (text!=null && optype!=null){
                 input.value(text);
             }
-            if(isShow){
+            if(optype!=null && "2".equals(optype)){
                 input.attr("readonly","readonly");
             }
             if (view.getShowState()!=null){

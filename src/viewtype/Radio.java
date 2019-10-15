@@ -4,11 +4,9 @@ import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.text.Label;
-import com.sangupta.htmlgen.tags.body.text.Span;
 import dao.CommonHelperDao;
 import model.Replacer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +18,7 @@ public class Radio extends ParentView {
 
     @Override
     protected HtmlBodyElement<?> create() {
-        boolean isShow = isShow(getForm().getPage().getShowType());
+        String optype = getPage().getParameter("optype");//修改1查看2
         Div div = new Div();
         div.id(getName());
         String styles = getDataProvider().getStyles(this, getForm());
@@ -92,9 +90,12 @@ public class Radio extends ParentView {
                     input.type("Radio");
                     input.value(a);
                     if (text!=null && a.equals(text)){//默认选中
-                        input.attr("checked","checked");
+                        if(optype!=null && "1".equals(optype)){
+                            input.attr("checked","checked");
+                        }
                     }
-                    if(isShow){
+                    if(optype!=null && "2".equals(optype)){
+                        input.attr("checked","checked");
                         input.attr("disabled","true");//查看时不可选
                     }
                 }
@@ -117,9 +118,12 @@ public class Radio extends ParentView {
                             input.type("Radio");
                             input.value(value);
                             if (text!=null && value.equals(text)){//默认选中
-                                input.attr("checked","checked");
+                                if(optype!=null && "1".equals(optype)){
+                                    input.attr("checked","checked");
+                                }
                             }
-                            if(isShow){
+                            if(optype!=null && "2".equals(optype)){
+                                input.attr("checked","checked");
                                 input.attr("disabled","true");//查看时不可选
                             }
                         }

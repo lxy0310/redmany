@@ -1,14 +1,12 @@
 package viewtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
-import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
+import com.sangupta.htmlgen.tags.body.sections.Option;
 import com.sangupta.htmlgen.tags.body.text.Label;
-import com.sangupta.htmlgen.tags.body.text.Span;
 import dao.CommonHelperDao;
 import model.Replacer;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +21,7 @@ public class Select extends ParentView {
         Div div = new Div();
         div.id(getName());
 //        div.attr("class","layui-input-block");
+        String optype = getPage().getParameter("optype");//修改1查看2
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
@@ -77,13 +76,12 @@ public class Select extends ParentView {
                 return div;
             }else{
                 Label label = div.label();
-//                label.attr("class","layui-form-label");
-                label.addCssClass(getName());
                 label.text(view.getTitle());
             }
             com.sangupta.htmlgen.tags.body.sections.Select select = div.select();
-            select.attr("lay-filter","aihao");
+            select.attr("lay-filter","aihao");//过滤layui的渲染
             select.id(getName()+"0");
+            select.name(getName());
             if (view.getWapAttribute() != null) {
                 String str = view.getWapAttribute();//获取下拉框样式
                 String[] strs = str.split("\\[\\^\\]");
@@ -104,7 +102,12 @@ public class Select extends ParentView {
                 for (int i = 0; i < arr.length; i++) {
                     String a = arr[i].substring(0, arr[i].indexOf(':'));
                     String b = arr[i].substring(arr[i].indexOf(':') + 1);
-                    select.option(b, a);
+                    Option option = select.option(b, a);
+                    if(text!=null && a.equals(text)){
+                        if(optype!=null && ("1".equals(optype) || "2".equals(optype))){
+                            option.selected();
+                        }
+                    }
                 }
             } else {
                 if (Datasql != null && Datasql.length() > 0) {
@@ -116,10 +119,18 @@ public class Select extends ParentView {
                             Object valueObj = map.get("value");
                             String value = valueObj.toString();
                             String name = (String) map.get("name");
-                            select.option(name, value);
+                            Option option = select.option(name, value);
+                            if(text!=null && value.equals(text)){
+                                if(optype!=null && ("1".equals(optype) || "2".equals(optype))){
+                                    option.selected();
+                                }
+                            }
                         }
                     }
                 }
+            }
+            if(optype!=null && "2".equals(optype)){
+                select.attr("disabled","disabled");
             }
             if (view.getIsNull() != null) {
                 String isNull = view.getIsNull();//是否为空(1不为空 0 可以为空)

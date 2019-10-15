@@ -98,7 +98,6 @@ public class ListModifyForm extends CustomForm {
         super.loadData(sql);
     }
 
-
     @Override
     protected void make(Div div) {
         div.add(new Script("js/jquery.js"));
@@ -118,13 +117,10 @@ public class ListModifyForm extends CustomForm {
         } else { // 前端
             listShow(div);
         }
-
     }
 
     public void showBack(Div div) {
-
         List<View> views = getViews();
-
         Div head = div.div().addCssClass("layui-table-tool");
         Div temp = head.div().addCssClass("layui-table-tool-temp");
         Div btncontainer = temp.div().addCssClass("layui-btn-container");
@@ -139,7 +135,6 @@ public class ListModifyForm extends CustomForm {
         table.styles("margin:0px auto;");
         THead thead = table.thead();
         TableRow rowTh = new TableRow();  //表头
-
 
         Div sel = rowTh.td().div().addCssClass("layui-input-inline");
        // sel.styles("white-space: nowrap;");
@@ -170,23 +165,23 @@ public class ListModifyForm extends CustomForm {
 
             for (View view : views) {
                 view.setIsTitle("1");
-
                 html = makeViews(list, view, line, html);
             }
             if (!TextUtils.isEmpty(html)) {
                 row.td(html);
             }
-
             for (String v : list) {
                 TableDataCell td = row.td();
                 td.text(v);
                 String before = StringUtils.substringBefore(v,"</div>");
                 String after1 = StringUtils.substringAfter(before,">");
                 //字段内容长度过长，鼠标移入显示
-                if (after1.length()>20){
-                    td.attr("title",after1);
+                if(!v.contains("<img") && !v.contains("src")){
+                    if (after1.length()>20){
+                        td.attr("title",after1);
+                    }
+                    td.onClick("tableUpdate('"+getFormName()+ "',"+line.get("Id")+");");
                 }
-                td.onClick("tableUpdate('"+getFormName()+ "',"+line.get("Id")+");");
             }
             Integer Tablestate = (Integer) line.get("state");
             if (Tablestate != null) {

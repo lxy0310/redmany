@@ -1,7 +1,6 @@
 package showtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
-import com.sangupta.htmlgen.tags.body.embed.Img;
 import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.sections.A;
@@ -11,9 +10,7 @@ import com.sangupta.htmlgen.tags.body.table.Table;
 import com.sangupta.htmlgen.tags.body.table.TableRow;
 import com.sangupta.htmlgen.tags.body.text.Span;
 import com.sangupta.htmlgen.tags.head.Script;
-import common.CommonUtils;
 import common.SQLHelper;
-import common.utils.SQLFixer;
 import common.utils.TextUtils;
 import dao.FormDao;
 import dao.FormFiledDao;
@@ -21,10 +18,7 @@ import dao.MenuDao;
 import dao.ReplacerDao;
 import model.FormFiled;
 import model.Menu;
-import model.Operation;
-import model.Replacer;
 import page.CustomForm;
-import viewtype.Image;
 import viewtype.View;
 
 import java.util.ArrayList;
@@ -43,8 +37,6 @@ public class ListForm extends CustomForm {
     // private String publish; //   1 pc,2 mobile
     private String isShow;  //  不为空,可以修改,   1   替换页面,   2 上下页面
     private int group;   // 判断是否有分组
-
-
 
     public String one, two, three, four;
 
@@ -153,14 +145,10 @@ public class ListForm extends CustomForm {
         }else{ // 前端
             list(div);
         }
-
     }
-
-
 
     /**
      * 后台没有分组
-     *
      * @param div
      */
     public void showBack(Div div) {
@@ -200,12 +188,8 @@ public class ListForm extends CustomForm {
         }
     }
 
-
-
-
     /**
      * 前端没有分组
-     *
      * @param div
      */
     public void list(Div div) {
