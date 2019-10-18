@@ -81,9 +81,8 @@ public class Radio extends ParentView {
                 for (int i=0;i<arr.length;i++){
                     String a=arr[i].substring(0,arr[i].indexOf(':'));
                     String b=arr[i].substring(arr[i].indexOf(':')+1);
-                    Label label = div.label();
-                    label.text(b);
-                    Input input =label.input();
+                    Input input =div.input();
+                    input.title(b);
                     input.id(getName()+i);
                     input.addCssClass(getName()+i);
                     input.name(getName());
@@ -109,9 +108,8 @@ public class Radio extends ParentView {
                             Object valueObj = map.get("value");
                             String value = valueObj.toString();
                             String name = (String) map.get("name");
-                            Label label = div.label();
-                            label.text(name);
-                            Input input =label.input();
+                            Input input =div.input();
+                            input.title(name);
                             input.id(getName()+i);
                             input.addCssClass(getName()+i);
                             input.name(getName());
