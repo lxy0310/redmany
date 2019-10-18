@@ -1,5 +1,6 @@
 package showtype;
 
+import com.google.gson.Gson;
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 import commandCenter.CommandCenter;
 import common.SQLHelper;
@@ -396,12 +397,11 @@ public abstract class ParentForm {
                 }else {
                     sql=sql+" where Id="+paramId;
                 }
-
             }
         }
         return sql;
     }
-
+    // sql Id 拼接
     public String sqlGetIDs(String paramId,String sql,String ReplaceName){
         sql = sql.toLowerCase();
         if (paramId!=null){
@@ -424,6 +424,7 @@ public abstract class ParentForm {
         return sql;
     }
 
+    //双列表 关键字段
     public String sqlGetMD(String mdAssoWord,String sql,String ReplaceName){
         sql = sql.toLowerCase();
         if (mdAssoWord!=null){
@@ -445,6 +446,39 @@ public abstract class ParentForm {
         }
         return sql;
     }
+
+    //搜索条件 拼接
+    public String sqlSearchCondition(String searchCondition,String sql,String ReplaceName){
+        sql = sql.toLowerCase();
+        System.out.println("searchCondition:\t"+searchCondition);
+        if (searchCondition!=null){
+            searchCondition = searchCondition.substring(1,searchCondition.length()-1);
+            String[] str1 = searchCondition.split(",");
+            String con = "";
+            for (int i = 0; i <str1.length ; i++) {
+                String str2 = str1[i];
+                String name = StringUtils.substringBefore(str2,":");
+                String value = StringUtils.substringAfter(str2,":");
+                con +=ReplaceName+"."+ name +" like '%"+value+"%' and ";
+            }
+            con = con.substring(0,con.length()-4); //去掉最后的and
+            if (sql.contains("where")){
+                String before = StringUtils.substringBefore(sql, "where");
+                String after = StringUtils.substringAfter(sql, "where");
+                sql = before + " where " +con +after;
+            }else {
+                if(sql.contains("order by")){
+                    String after = sql.substring(sql.indexOf("order by"),sql.length());
+                    String before = StringUtils.substringBefore(sql, "order by");
+                    sql = before + " where " + con +after;
+                }else {
+                    sql = sql + " where " + con;
+                }
+            }
+        }
+        return  sql;
+    }
+
 
     public String get(Map<String, Object> data, String key) {
         Object var = data.get(key);

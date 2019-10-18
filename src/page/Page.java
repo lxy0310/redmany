@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -58,6 +59,15 @@ public class Page implements ParentForm.ISQLReplacer {
 
     public HttpServletRequest getHttpServletRequest() {
         return mHttpServletRequest;
+    }
+
+    public String getRequestParamter(String name){
+        try {
+            getHttpServletRequest().setCharacterEncoding("utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return getHttpServletRequest().getParameter(name);
     }
 
     public interface Settings {
@@ -182,6 +192,8 @@ public class Page implements ParentForm.ISQLReplacer {
         return getHomeUrl(formName, showType) + "&" + TAB_NAME + "=" + tab;
     }
 
+
+
     public String getIP() {
         return mIP;
     }
@@ -205,11 +217,11 @@ public class Page implements ParentForm.ISQLReplacer {
      * @param showType
      */
     public void init(StudentServlet pServlet, String copformName, String showType, String title) {
-
         mPageServlet = pServlet;
         mDefTitle = title;
         HttpServletRequest req = pServlet.getRequest();
-         HttpServletResponse res = pServlet.getResponse();
+        HttpServletResponse res = pServlet.getResponse();
+
         this.sSQLHelper = new SQLHelper(req);
         mAccountHelper = new AccountHelper(req, res);
         mainDao = new MainDao(sSQLHelper);
@@ -358,6 +370,8 @@ public class Page implements ParentForm.ISQLReplacer {
     public String getParameter(String name) {
         return getParameter(name, null);
     }
+
+
 
     public String getParameter(String name, String def) {
         return getUrlParameter(name, def);

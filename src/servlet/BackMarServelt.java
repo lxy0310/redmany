@@ -31,14 +31,14 @@ public class BackMarServelt extends BaseServlet {
         BackMarDao backDao=new BackMarDao(sqlHelper);//创建数据层
        // String Company_Id=request.getParameter("gCompany_Id");
         HttpSession session=request.getSession();
-        String Company_Id=(String)session.getAttribute("CompanyId");
-        Company_Id="antmall";
-//        if (Company_Id==null){
-//            Company_Id="CloudMall";
-//        }
+        String Company_Id=(String)session.getAttribute("Company_Id");
+       // System.out.println(getCompany_Id());
+        Integer uids = (int)session.getAttribute("userId");
+        String uid = String.valueOf(uids);
         System.err.println("Company_Id-------------"+Company_Id);
+        System.err.println("userId-------------"+uid);
         if (method.equals("menuList")){
-            List<Map<String,Object>> menuList=backDao.getMenuList(Company_Id,"1");
+            List<Map<String,Object>> menuList=backDao.getMenuLists(Company_Id,uid);
             List<Map<String,Object>> panelList=backDao.getPanelList(Company_Id);
             List<Map<String,Object>> panelId=backDao.getPanelId(Company_Id);
             request.getSession().setAttribute("menuList",menuList);
@@ -52,7 +52,6 @@ public class BackMarServelt extends BaseServlet {
         else if (method.equals("addNewForm")){ //newForm   添加
             String hidFormName=request.getParameter("hidFormName");
             List<Map<String,Object>> formList=backDao.getForms(Company_Id,hidFormName);
-            //List<Map<String,Object>> formFeildList=backDao.getFormFeilds(Company_Id,hidFormName);
             String ds = request.getParameter("setList");
             System.out.println(ds);
             Gson gson=new Gson();
@@ -105,7 +104,6 @@ public class BackMarServelt extends BaseServlet {
                     }
                 }
             }
-
             List<Map<String,Object>> formFeildList=backDao.getSearchFormField(Company_Id,formName,Search_fields);  //formfeild表
             request.getSession().setAttribute("Search_fieldList",formSearchList);
             request.getSession().setAttribute("formFeildList",formFeildList);
@@ -121,11 +119,10 @@ public class BackMarServelt extends BaseServlet {
             System.out.println(map);
             //TransferParams
             request.getRequestDispatcher("queryStudentServlet?copformName=Shop_information_update&showType=ListModifyForm&map="+map).forward(request,response);
-
         }
         else if (method.equals("MDListjson")){
             String formName=request.getParameter("FormColumnName");
-            String uid = request.getParameter("uid");
+//            String uid = request.getParameter("uid");
             uid="1";
             String FFormColumnName = formName.split(",")[0]; //主表
             List<Map<String,Object>> formList = backDao.getForms(Company_Id,FFormColumnName);//form表
@@ -163,7 +160,7 @@ public class BackMarServelt extends BaseServlet {
         }
         else if (method.equals("MDinitializeJSon")){
             String formName=request.getParameter("FormColumnName");
-            String uid = request.getParameter("uid");
+            /*String uid = request.getParameter("uid");*/
             uid="1";
             String FFormColumnName = formName.split(",")[0]; //主表
             List<Map<String,Object>> formList = backDao.getForms(Company_Id,FFormColumnName);//form表
@@ -185,7 +182,7 @@ public class BackMarServelt extends BaseServlet {
             out.print(sb.toString());
         }else if (method.equals("MDlistTable")){
             String formName=request.getParameter("FormColumnName");
-            String uid = request.getParameter("uid");
+          /*  String uid = request.getParameter("uid");*/
             uid="1";
             String FFormColumnName = formName.split(",")[0]; //主表
             List<Map<String,Object>> formList = backDao.getForms(Company_Id,FFormColumnName);//form表
@@ -200,82 +197,7 @@ public class BackMarServelt extends BaseServlet {
             String jso = "{\"code\":0,\"msg\":\"\",\"count\":"+counts+",\"data\":"+js+"}";
             out.print(jso);
 
-        }else if (method.equals("MDlistShowTables")){
-
-        }else if (method.equals("MDnewFormDate")){
-            String formName=request.getParameter("FormColumnName");
-            String uid = request.getParameter("uid");
-            uid="1";
-            String FFormColumnName = formName.split(",")[0]; //主表
-            List<Map<String,Object>> fformList = backDao.getForms(Company_Id,FFormColumnName);//form表
-            List<Map<String,Object>> fformFeildList = backDao.getFormFeilds(Company_Id,FFormColumnName);  //formfeild表
-            StringBuilder sb = new StringBuilder();
-           sb.append("<form class='layui-form'>");
-            for (Map<String,Object> fform: fformFeildList){
-                sb.append("<div class='layui-form-item' >");
-                sb.append("<label class='layui-form-lable'>");
-                sb.append(fform.get("Title").toString()+"</label>");
-                sb.append("<div class='layui-input-block'>");
-                if ("select".equals(fform.get("Type").toString())){
-                    String replacerName = fform.get("data_source").toString();
-                    List<Map<String,Object>> replacerList = backDao.getReplacer(Company_Id,replacerName);
-                    sb.append("<select name='"+fform.get("Name").toString()+"' lay-verify='required' lay-search=''>");
-                    sb.append("<option value=''>==请选择==</option>");
-                    for (Map<String,Object> replacer: replacerList){
-                        String datasql = "";
-                        Object datasql1 = replacer.get("Datasql");
-                        datasql = datasql.toString();
-
-                        if (datasql !=null && !datasql.equals("") ){
-                            List<Map<String,Object>> selectList = backDao.getListBySql(Company_Id,replacer.get("Datasql").toString(),uid);
-                            for (Map<String,Object> s : selectList){
-                                sb.append("<option value='"+s.get("value").toString()+"'>"+s.get("name").toString()+"</option>");
-                            }
-                        }else if (replacer.get("Txtsource").toString() != null ){
-                            String str = replacer.get("Txtsource").toString();
-                            String strs[] = str.split("#");
-                            for (int i = 0; i <strs.length ; i++) {
-                                System.out.println(strs[i]);
-                                String stri= strs[i];
-                                String name = stri.substring(0,stri.indexOf(":"));
-                                String values=stri.substring(stri.lastIndexOf(":")+1,stri.length());
-                                sb.append("<option value='"+name+"'>"+values+"</option>");
-                            }
-                        }
-                    }
-                    sb.append("</select>");
-                }else if ("multiText".equals(fform.get("Type").toString())){
-                    sb.append("<textarea name='");
-                    sb.append(fform.get("Name").toString());
-                    sb.append("' class='layui-textarea'</textarea>");
-                }else if ("intText".equals(fform.get("Type").toString())){
-
-                }
-                else{
-                    sb.append("<input type='text' name='"+fform.get("Name").toString()+"' placeholder='请输入"+fform.get("Title").toString()+"' class='layui-input'>");
-                }
-                sb.append("</div>");
-                sb.append("</div>");
-            }
-            sb.append("</form>");
-
-
-            Gson gson=new Gson();
-            String fformLists = gson.toJson(fformFeildList);
-          //  String fformFeildLists = gson.toJson(fformFeildList);
-            System.out.println(fformLists);
-            String fformFeildListstr= fformLists.substring(1,fformLists.length()-1);
-            System.out.println(fformFeildListstr);
-        //    System.out.println(fformFeildLists);
-            // String json = "{\"fformTable\":\""+fformLists+"\",\"sformTable\":\""+fformFeildLists+"\"}";
-            String json = "{\"fformTable\":"+fformFeildListstr+"}";
-
-           // System.out.println(sb.toString());
-          //  out.print(sb.toString());
-            out.print(json);
-
         }
-
 
 
     }

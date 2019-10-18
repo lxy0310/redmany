@@ -242,7 +242,7 @@ public class CommonDao extends BaseDao {
      * @return
      */
     public  List<Map<String, Object>> getFormListOperationShow(String Company_Id,int userId,String FormName,int FormState){
-        String sql="{call GetFormStateOperationUserIds(?,?,?)}";
+        String sql="{call GetFormStateOperationUserId(?,?,?)}";
         String[] parameters={String.valueOf(userId),FormName,String.valueOf(FormState)};
         return sqlHelper.executeQueryList(Company_Id,sql,parameters)!=null?sqlHelper.executeQueryList(Company_Id,sql,parameters):null;
     }

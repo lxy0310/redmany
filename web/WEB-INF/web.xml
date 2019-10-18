@@ -85,6 +85,7 @@
         <servlet-class>servlet.UploadFileServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
         <servlet-name>SubmitServlet</servlet-name>
         <servlet-class>servlet.SubmitServlet</servlet-class>
         <load-on-startup>1</load-on-startup>

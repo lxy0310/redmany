@@ -12,7 +12,7 @@ layui.use(['layer','element','form','upload','laydate'],function(){
         form=layui.form;
     laydate = layui.laydate;
 
-    $("#reset").on("click",function(){ window.location.reload();}); //重置
+
 
    /* $(".saveBtn").click(function() {
         // var dataList=$(".saveData").val();
@@ -82,6 +82,8 @@ layui.use(['layer','element','form','upload','laydate'],function(){
 
 });
 
+$("#reset").on("click",function(){ window.location.reload();}); //重置
+//时间
 function useLayDateMultiple(cls) {
     layui.use('laydate', function() {
         var laydate = layui.laydate;
@@ -95,34 +97,43 @@ function useLayDateMultiple(cls) {
     });
 }
 
-//搜索
-function search(formName,showType) {
-    layer.open({
-        skin: 'layui-layer-molv', //样式类名
-        title:'搜索',
-        type: 2,
-        area: ['700px', '450px'],
-        content: 'queryStudentServlet?copformName='+formName+'&showType=SearchForm',
-        btn:['查询','取消'],
-        yes: function(index, layero){
-            var form = $("iframe").contents().find("#searchForm").serialize();
-            console.log(form);
-        },success: function(layero,index){ //成功回调
+function searchCondition() {
 
-        },cancel: function(index, layero){
-            //按钮【按钮二】的回调
-
-            //return false 开启该代码可禁止点击该按钮关闭
-        }
-
+    var d = {};
+    //循环获取input的值
+    var t=$('form').serializeArray();
+    $.each(t, function() {
+        d[this.name] = this.value;
     });
+   /* var  searchUrl = window.location.href +"&condition="+ d;
+    alert(searchUrl);
+    location.href = searchUrl;*/
+
+    var json = JSON.stringify(d);
+    var json2map=JSON.parse(json);
+    var condition = '';
+    var ce1 = '';
+    for(var key in json2map)
+    {
+        if (json2map[key]!=null && !json2map[key]==''){
+           condition += key+":"+json2map[key]+",";
+        }
+    }
+    condition = condition.substring(0,condition.length - 1);//去掉最后一个逗号
+    var getUrl = "queryStudentServlet?copformName=user1&showType=listForm"; //获取url
+    getUrl = getUrl + "&condition='"+ condition+"'";
+    location.href = getUrl;
+
 }
 
 //点击td跳转到修改页面
 function tableUpdate(formname,Id) {
     location.href = "queryStudentServlet?copformName="+formname+"&showType=newForm&optype=2&ParamId="+Id;
 }
-
+//点击td跳转到查看页面
+function tableShow(formname,Id) {
+    location.href = "queryStudentServlet?copformName="+formname+"&showType=newForm&optype=1&ParamId="+Id;
+}
 //全选
 function my(){
     var is=document.getElementById('box');//获取全选的复选框
@@ -141,10 +152,13 @@ function my(){
         ass.innerHTML='全选';
     }
 }
-
+function getUrlParam(name){
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r!=null) return unescape(r[2]); return null;
+}
 //批量删除
-function del(FormName) {
-    alert(FormName)
+function delBatch(FormName) {
     var s='';
     $('input[name="box1"]:checked').each(function(){
         s+=$(this).val()+','; //遍历得到所有checkbox的value
@@ -153,6 +167,12 @@ function del(FormName) {
         //删除多出来的“，”
         s = s.substring(0,s.length - 1);
     }
+    var str = s.split(',');
+    var selId = str.length;
+    var pageSize = $("#PageSize").val();
+    console.log(pageSize);
+    console.log(str.length);
+
     var flag = window.confirm("确认删除吗？");
     if (!flag){
         return;
@@ -164,7 +184,15 @@ function del(FormName) {
         success:function(data){
             if (data>0){
                 layer.msg("删除成功！",{icon:6});
-                window.parent.location.reload();
+                if (selId<pageSize){
+                    window.parent.location.reload();
+                }else {
+                    var getUrl = window.location.href; //获取url
+                    var index = getUrl.substring(getUrl.lastIndexOf('pageIndex=') + 10,getUrl.length);  //获取当前页
+                    var nowIndex = page-1;//当前页减1 ，删除后的当前页数
+                    var nowUrl = getUrl.replace(index,nowIndex);
+                    window.location.href = nowUrl;
+                }
             } else{
                 layer.msg("删除失败！",{icon:5});
             }
@@ -210,7 +238,7 @@ function batchList(FormName) {
         //删除多出来的“，”
         s = s.substring(0,s.length - 1);
     }
-    alert(FormName.toString());
+    alert(s);
     // 2
     $.ajax({
         url:"common",

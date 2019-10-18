@@ -46,6 +46,20 @@ public class FormFiledDao extends BaseDao {
         return filedStr;
     }
 
+    /**
+     * 根据name获取标题
+     * @param CompanyId
+     * @param FormName
+     * @param Name
+     * @return
+     */
+    public String getFiledTitleByName(String CompanyId, String FormName,String Name){
+        String sql = "SELECT Title FROM FormFiled WHERE FormName=? and Name=?";
+        String[] parameters = {FormName,Name};
+        Object obj = sqlHelper.ExecScalar(CompanyId,sql,parameters);
+        return sqlHelper.ExecScalar(CompanyId,sql,parameters)!=null?(String) sqlHelper.ExecScalar(CompanyId,sql,parameters):null;
+    }
+
 
     /**
      * 根据FormName查询返回结果集

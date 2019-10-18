@@ -245,7 +245,7 @@ public class BackMarDao extends BaseDao {
      * @return
      */
     public List<Map<String,Object>> getPanelList(String Company_Id){
-        String sql="select * from UserPanel order by SortIndex";
+        String sql="select * from UserPanel  where userrole is not NULL and userrole !='' and userrole !='暂时隐藏' order by SortIndex";
         return sqlHelper.executeQueryList(Company_Id,sql,null);
     }
 

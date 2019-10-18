@@ -63,7 +63,6 @@ public class AccountHelper {
         CookieHelper.saveCookie(resp, Page.Settings.PWD, null, false);
         CookieHelper.saveCookie(resp, Page.Settings.DeptId, null, false);
         CookieHelper.saveCookie(resp, Page.Settings.IP, null, false);
-
         HttpSession session = req.getSession();
         session.setAttribute(Page.Settings.USERID, null);
         session.setAttribute(Page.Settings.ACCOUNT, null);
@@ -74,6 +73,8 @@ public class AccountHelper {
         session.setAttribute(Page.Settings.DeptId, null);
         session.setAttribute(Page.Settings.IP, null);
     }
+
+
 
     public boolean onLogin(String result, String pwd, boolean reme) {
 //638&yonghu2&test11111111111111111111111111111111111111111&112&dfr_test1
@@ -112,10 +113,8 @@ public class AccountHelper {
         return true;
     }
 
-
     public boolean onLogin(Map<String, Object> uesrInfo, String pwd, boolean reme) {
 //638&yonghu2&test11111111111111111111111111111111111111111&112&dfr_test1
-
         try {
             int userId = uesrInfo.get("Id")==null? null: Integer.parseInt(uesrInfo.get("Id").toString());
             String account = uesrInfo.get("UserName")==null ? null:uesrInfo.get("UserName").toString();
@@ -126,7 +125,6 @@ public class AccountHelper {
             String Ip = null;
             CookieHelper.saveCookie(resp, Page.Settings.USERID, "" + userId, false);
             if (reme) {
-
                 CookieHelper.saveCookie(resp, Page.Settings.ACCOUNT, SafeString.encode(account), false);
                 CookieHelper.saveCookie(resp, Page.Settings.USER_NAME, name, false);
                 CookieHelper.saveCookie(resp, Page.Settings.ROLEID, "" + roleId, false);

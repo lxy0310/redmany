@@ -17,15 +17,11 @@ public class MD5Util {
      * @throws UnsupportedEncodingException
      */
     public static String passWordMd5(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-
             MessageDigest md = MessageDigest.getInstance("MD5");
 //            md.update(str.getBytes());
             md.update(str.getBytes("UTF-16LE"));
             byte b[] = md.digest();
-
-
             int i;
-
             StringBuffer buf = new StringBuffer("");
             for (int offset = 0; offset < b.length; offset++) {
                 i = b[offset];
@@ -39,4 +35,10 @@ public class MD5Util {
 
         return str;
     }
+
+
+
+
+
+
 }

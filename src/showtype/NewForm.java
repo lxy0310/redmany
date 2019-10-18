@@ -108,6 +108,7 @@ public class NewForm extends FreeForm {
                 isAdd(views,html,list,saveForm);
             }
         }else{  //分组
+            saveForm.styles("background-color: #F2F2F2;padding-bottom: 50px;");
             Map<String, List<View>> resultMap = new LinkedHashMap<>();
             try {
                 for (View filed : views) {
@@ -136,7 +137,6 @@ public class NewForm extends FreeForm {
         } else if ("2".equals(optype)){     //查看
             saveBtn.styles(" pointer-events:none;");//禁止鼠标事件
         }
-
         if (mdAssoWord!=null){
             saveBtn.addCssClass("mdsaveBtn");
             saveBtn.text("提交");
@@ -168,16 +168,10 @@ public class NewForm extends FreeForm {
         if (groupTab=="tab"){
             div1.addCssClass("layui-tab layui-tab-brief");
             div1.filter("test1");
-
-            // div1.addCssClass("container");
             UL ul = div1.ul();
             ul.addCssClass("layui-tab-title");
-            //ul.addCssClass("nav nav-pills");
-
             for (String key : resultMap.keySet()) {
                 ListItem li = new ListItem();
-
-                // A a1 = li.a();
                 if (key == null || "".equals(key)) {  //没分组数据
                     li.text("默认分组");
                 }else {
@@ -198,7 +192,6 @@ public class NewForm extends FreeForm {
                 ul.li(li);
             }
             Div content = div1.div().addCssClass("layui-tab-content");
-
             for (String key : resultMap.keySet()) {
                 Div div2 = content.div().addCssClass("layui-tab-item");
                 if (key != null & !"".equals(key)) {
@@ -215,27 +208,24 @@ public class NewForm extends FreeForm {
                     Label label = div3.label();
                     label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();
                     html = makeView(v, null, html);
-                    Div div4 = div3.div().addCssClass("layui-input-block");
+                    Div div4 = div3.div().addCssClass("layui-input-block").styles("margin-left: 35px;");
                     div4.text(html);
                 }
             }
         }else {
-            //div1.addCssClass("layui-card");
             div1.styles("padding: 20px;background-color: #F2F2F2;margin-bottom:50px;");
             Div row = div1.div().addCssClass("layui-row layui-col-space15");
             for (String key : resultMap.keySet()) {
                 if (key == null || "".equals(key)) {  //没分组数据
-                    Div divmd12 = row.div().addCssClass("layui-col-md12");
+                    Div divmd12 = row.div().addCssClass("layui-col-md4");
                     Div card1 = divmd12.div();
                     card1.addCssClass("layui-card");
                     Div header1 = card1.div().addCssClass("layui-card-header");
                     Div body1 = card1.div().addCssClass("layui-card-body");
                     for (View v : resultMap.get(key)) {
                         Div div2 = body1.div().addCssClass("layui-form-item");
-//                        Label label = div2.label();
-//                        label.text(v.getTitle()).addCssClass("layui-form-label").styles("width:100px").toString();
                         html = makeView(v, null, html);
-                        Div div3 = div2.div().addCssClass("layui-input-block");
+                        Div div3 = div2.div().addCssClass("layui-input-block").styles("margin-left: 35px;");
                         div3.text(html);
                     }
                 } else { //分组
@@ -332,8 +322,6 @@ public class NewForm extends FreeForm {
             }else {
                 div = layuiRow.div().addCssClass("layui-form-item");
             }
-
-
             Div div1 = div.div().styles("height: 30px;line-height: 30px;" );
             div1.addCssClass("layui-input-block").styles("margin:0px;");
             v = v.replaceAll("<label>","<label class=\"labelRight\">");
