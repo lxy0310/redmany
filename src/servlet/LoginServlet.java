@@ -6,6 +6,7 @@ import common.*;
 import common.utils.CookieHelper;
 import common.utils.SafeString;
 import common.utils.TextUtils;
+import dao.BackLoginDao;
 import dao.UserDao;
 import page.Page;
 
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ public class LoginServlet extends BaseServlet {
 
     @Override
     protected void doHtml(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html;charset=UTF-8");
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("utf-8");
         PrintWriter out=resp.getWriter();
@@ -50,8 +53,6 @@ public class LoginServlet extends BaseServlet {
             String gotoUrl = SafeString.unescape(req.getParameter("goto"));
             String transferParams = req.getParameter("transferParams");
             String targetUrl = null;
-
-
 
             if (gotoUrl != null) {
                 if (gotoUrl.contains(":")) {
@@ -87,53 +88,82 @@ public class LoginServlet extends BaseServlet {
 //            resp.sendRedirect(Page.getLoginPage());
 //            return;
         }
-        //获取输入的账号名
-        String name = req.getParameter("username");
-        if (name == null) {
-            name = req.getParameter("userName");
-        }
-        //获取输入的密码
-        String pwd = req.getParameter("password");
-        if (pwd == null) {
-            pwd = req.getParameter("passWord");
-        }
-        //新的登录逻辑（ajax版本）
-        UserDao userDao=new UserDao(new SQLHelper(req));
-        List<Map<String, Object>> userInfo=userDao.login(APPConfig.COMPANYID,name);
-        String loginMsg=null;
-        if (userInfo!=null && userInfo.size()>0){
-            Map<String,Object> user=userInfo.get(0);
-            //对比密码
-          String userPassword=  user.get("UserPassword").toString();
-            String md5Password=null;
-            try {
-               md5Password= MD5Util.passWordMd5(pwd);
-               if(userPassword.equals(md5Password)){
-                    loginMsg="success";
-               }else{
-                   loginMsg="账号或者密码错误";
-               }
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+
+        String results = "";//输出
+        String pcPort =  req.getParameter("pcPort");
+        if (pcPort=="1" || pcPort.equals("1")){ //后台
+            String piccode=(String) req.getSession().getAttribute("verifyCode"); //获取验证码
+            String  checkCode= req.getParameter("message");//获取输入验证码
+            //判断验证是否正确
+            if (checkCode.equalsIgnoreCase(piccode)){
+                //判断企业id
+                String CompanyId = getCompany_Id();
+                String falgs = CheckCompanyId(req,CompanyId); //判断企业id
+                if (falgs.equals("ok")){
+                  //  login(req,resp,out);
+                    //获取输入的账号名
+                    String name = req.getParameter("username");
+                    if (name == null) {
+                        name = req.getParameter("userName");
+                    }
+                    //获取输入的密码
+                    String pwd = req.getParameter("password");
+                    if (pwd == null) {
+                        pwd = req.getParameter("passWord");
+                    }
+                    //新的登录逻辑（ajax版本）
+                    UserDao userDao=new UserDao(new SQLHelper(req));
+                    List<Map<String, Object>> userInfo=userDao.login(getCompany_Id(),name);
+
+                    String loginMsg=null;
+                    if (userInfo!=null && userInfo.size()>0){
+                        Map<String,Object> user=userInfo.get(0);
+                        //对比密码
+                        String userPassword=  user.get("UserPassword").toString();
+                        String md5Password=null;
+                        try {
+                            md5Password= MD5Util.passWordMd5(pwd);
+                            if(userPassword.equals(md5Password)){
+                                HttpSession session = req.getSession();
+                                session.setAttribute("realName",user.get("RealName").toString());
+                                AccountHelper accountHelper = new AccountHelper(req, resp);
+                                boolean falg = accountHelper.onLogin(user,pwd,false);
+
+                                loginMsg="success";
+                            }else{
+                                loginMsg="账号或者密码错误";
+                            }
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        //用户不存在
+                        loginMsg="账号不存在";
+                    }
+                    if(loginMsg!=null){
+                        AccountHelper accountHelper = new AccountHelper(req, resp);
+                        accountHelper.onLogin(userInfo.get(0),pwd,false);
+                        String loginResult= JSON.toJSONString(loginMsg);
+                        out.println(loginResult);
+                        return;
+                    }
+
+
+                }else{
+                    out.print(results);
+                }
+            }else {
+                results = "验证码错误！";
+                out.print(results);
             }
-
         }else{
-            //用户不存在
-            loginMsg="账号不存在";
-
+            login(req,resp,out);
         }
-        if(loginMsg!=null){
-            AccountHelper accountHelper = new AccountHelper(req, resp);
-            accountHelper.onLogin(userInfo.get(0),pwd,false);
-            String loginResult= JSON.toJSONString(loginMsg);
-            out.println(loginResult);
-
-            return;
-        }
-
 
         //旧的登录实现逻辑,走rob平台的登录
-        if ("phone".equals(req.getParameter("type"))) {
+       /*if ("phone".equals(req.getParameter("type"))) {
             //手机号登录
         } else {
             String reme = req.getParameter("reme");
@@ -157,11 +187,6 @@ public class LoginServlet extends BaseServlet {
                     HttpSession session=req.getSession();
                     session.setAttribute("userId",userId);
                     session.setAttribute("roleId",roleId);
-                   /* Integer DeptId = backmar.getDeptIdByUserId(getCompany_Id(),userId);
-                    if (DeptId!=null){
-                        result += "&" + DeptId;
-                        session.setAttribute("DeptId",DeptId);
-                    }*/
                     String Ip=req.getRemoteAddr();
                     result += "&" + Ip;
                 }
@@ -173,10 +198,6 @@ public class LoginServlet extends BaseServlet {
                         System.err.println("LoginServlet targetUrl=" + targetUrl);
                         resp.sendRedirect(targetUrl);
                     } else {
-//                    Enumeration<String> names = req.getParameterNames();
-//                    while (names.hasMoreElements()) {
-//                        System.err.println("names=" + names.nextElement());
-//                    }
                         resp.sendRedirect("queryStudentServlet");
                     }
                 } else {
@@ -184,6 +205,106 @@ public class LoginServlet extends BaseServlet {
                     resp.sendRedirect(Page.getLoginPage());
                 }
             }
-        }
+        }*/
+
+
     }
+
+    /**
+     * 登陆
+     * @param req
+     * @param resp
+     * @param out
+     */
+    public String login(HttpServletRequest req,HttpServletResponse resp,PrintWriter out){
+
+        //获取输入的账号名
+        String name = req.getParameter("username");
+        if (name == null) {
+            name = req.getParameter("userName");
+        }
+        //获取输入的密码
+        String pwd = req.getParameter("password");
+        if (pwd == null) {
+            pwd = req.getParameter("passWord");
+        }
+
+        //新的登录逻辑（ajax版本）
+        UserDao userDao=new UserDao(new SQLHelper(req));
+        List<Map<String, Object>> userInfo=userDao.login(getCompany_Id(),name);
+
+        String loginMsg=null;
+        if (userInfo!=null && userInfo.size()>0){
+            Map<String,Object> user=userInfo.get(0);
+            //对比密码
+            String userPassword=  user.get("UserPassword").toString();
+            String md5Password=null;
+            try {
+                md5Password= MD5Util.passWordMd5(pwd);
+                if(userPassword.equals(md5Password)){
+                    HttpSession session = req.getSession();
+                    session.setAttribute("realName",user.get("RealName").toString());
+                   // session.setAttribute("","");
+                    AccountHelper accountHelper = new AccountHelper(req, resp);
+                    boolean falg = accountHelper.onLogin(user,pwd,false);
+
+                    loginMsg="success";
+                }else{
+                    loginMsg="账号或者密码错误";
+                }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }else{
+            //用户不存在
+            loginMsg="账号不存在";
+        }
+        if(loginMsg!=null){
+            AccountHelper accountHelper = new AccountHelper(req, resp);
+            accountHelper.onLogin(userInfo.get(0),pwd,false);
+            String loginResult= loginMsg;
+            //out.println(loginResult);
+            return loginResult;
+        }
+        return null;
+    }
+
+
+    /**
+     * 检查CompanyId
+     * @param request
+     * @param CompanyId
+     * @return
+     */
+    public String CheckCompanyId(HttpServletRequest request, String CompanyId){
+        String flag="";
+        SQLHelper sqlHelper = new SQLHelper(request);
+        BackLoginDao backDao=new BackLoginDao(sqlHelper);//创建数据层
+        String Company_Id="redmany";
+        int existCompany=backDao.getcheckCompanyId(Company_Id,CompanyId);
+        int users_mobile = backDao.getUsersMobileNum(Company_Id,CompanyId);//手机登录人数
+        int users_computer = backDao.getUsersPCNum(Company_Id,CompanyId); //PC登录人数
+        int mobile= backDao.getLoginMobileNum(CompanyId);    //获取授权手机数量
+        int pc = backDao.getLoginPCNum(CompanyId);   //获取授权电脑数量
+        if (existCompany>0){ ////是否存在
+            if (backDao.getExpireTimeByCompanyId(Company_Id,CompanyId)<= 0 ){//企业是否过期
+                flag="企业帐号已经过期，请联系客服中心处理，谢谢！";
+            }else if (users_mobile < mobile){   //手机数量超标
+                flag="手机客户端数量超过授权，请联系客服中心处理，谢谢！";
+            }else if (users_computer < pc){   //电脑用户数量超标
+                flag="电脑客户端数量超过授权，请联系客服中心处理，谢谢！";
+            }else {
+                flag="ok";
+            }
+        }else {
+            flag="企业帐号不存在，请重新输入，谢谢！";
+        }
+        return flag;
+    }
+
+
+
+
 }

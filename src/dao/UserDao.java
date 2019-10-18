@@ -128,6 +128,20 @@ public class UserDao extends BaseDao {
         return datas;
     }
 
+    /**
+     * 登陆
+     * @param Company_Id
+     * @param username
+     * @param pwd
+     * @return
+     */
+    public Integer backlogin(String Company_Id, String username,String pwd) {
+        String sql = "SELECT Id FROM [User] WHERE UserName=? and UserPassword=?";
+        String[] parameters = {username, pwd};
+        return sqlHelper.ExecScalar(Company_Id,sql,parameters)!=null ? (Integer) sqlHelper.ExecScalar(Company_Id,sql,parameters):null;
+    }
+
+
     public Long register(String CompanyId, String username, String password, String DeptId, String RoleId) {
         String sql = "insert into [User] (UserName,UserPassword,DeptId,RoleId) values (?,?,?,?)";
         String[] parameters = {username, password, DeptId, RoleId};

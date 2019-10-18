@@ -20,31 +20,31 @@
         <%--<h1>欢迎登录</h1>--%>
         <form class="logForm layui-form" action="">
             <div class="login-input">
-                <label class="login-label"><i class="layuiusername-icon layui-icon-website" style="font-size: 30px; color: #1E9FFF;"></i>   <span>企业ID</span> </label>
-                <input lay-verify="required" name="CompanyId" type="text" placeholder="请输入您的企业ID" />
+                <label class="login-label"><i class="layui-icon layui-icon-website" style="font-size: 30px; color: #1E9FFF;"></i>   <span>企业ID</span> </label>
+                <input lay-verify="required" name="CompanyId" class="CompanyId" type="text" placeholder="请输入您的企业ID" />
             </div>
             <div class="login-input">
                 <label class="login-label"><i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF;"></i>  <span>用户名</span> </label>
-                <input lay-verify="required" name="username" type="text" placeholder="请输入您的用户名" />
+                <input lay-verify="required" name="username" class="username" type="text" placeholder="请输入您的用户名" />
             </div>
             <div class="login-input">
                 <label class="login-label"><i class="layui-icon layui-icon-password" style="font-size: 30px; color: #1E9FFF;"></i>   <span>密     &nbsp;  码</span> </label>
-                <input lay-verify="required" name="password" type="password" placeholder="请输入您的密码" />
+                <input lay-verify="required" name="password" class="password" type="password" placeholder="请输入您的密码" />
             </div>
             <div class="login-input log-msg">
                     
                 <label class="login-label"><i class="layui-icon layui-icon-vercode" style="font-size: 30px; color: #1E9FFF;"></i>   <span>验证码</span> </label>
-                <input name="massage" type="text" placeholder="请输入您的验证码" style="width: 130px;" />
-                <img alt="验证码" width="70" height="30" id="imagecode" src="<%= request.getContextPath()%>/servlet/ImageServlet"/>
-               <%-- <div class="massage-reload">
-
+                <input name="massage" class="massage" type="text" placeholder="请输入您的验证码" style="width: 130px;" />
+                <img alt="验证码" width="90" height="35" style="border-radius: 5px;" id="imagecode" onclick="changeCode()" class="verifyCode" src="<%= request.getContextPath()%>/servlet/ImageServlet"/>
+             <%--   <div class="massage-reload " style="text-align: right;margin-right: 5%;">
                     <a href="javascript:reloadCode();" style="color: #fff;">看不清楚</a><br>
-                &lt;%&ndash;<input type="submit" value="提交">&ndash;%&gt;
+             &lt;%&ndash;   &lt;%&ndash;<input type="submit" value="提交">&ndash;%&gt;&ndash;%&gt;
                 </div>--%>
             </div>
             <div class="login-button">
-               <%-- <input class="layui-btn login-sub" type="submit" value="登录"/>--%>
-                <button id="login" class="layui-btn login-submit" lay-submit lay-filter="formDemo">登录</button>
+               <%-- <input class="layui-btn login-sub" type="submit" value="登录"/>   lay-submit lay-filter="formDemo"--%>
+                <button id="login" class="layui-btn" type="button" lay-submit lay-filter="formDemo">登录</button>
+
             </div>
         </form>
 

@@ -3,27 +3,23 @@ package servlet;
 import com.google.gson.Gson;
 import common.AccountHelper;
 import common.ApiParser;
+import common.MD5Util;
 import common.SQLHelper;
 import common.utils.CookieHelper;
 import common.utils.SafeString;
 import common.utils.TextUtils;
 import dao.BackLoginDao;
-import dao.BackMarDao;
+import dao.UserDao;
 import page.Page;
-
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public class BackLoginServlet extends BaseServlet {
 
@@ -40,7 +36,7 @@ public class BackLoginServlet extends BaseServlet {
         PrintWriter out = response.getWriter();//输出
         String method=request.getParameter("method");//获取方法
         SQLHelper sqlHelper = new SQLHelper(request);
-        BackMarDao backDao=new BackMarDao(sqlHelper);//创建数据层
+        UserDao userDao=new UserDao(sqlHelper);//创建数据层
 
         if (method.equals("login")){
             int result=0;
@@ -49,11 +45,11 @@ public class BackLoginServlet extends BaseServlet {
             Gson gson=new Gson();
             Map<String,Object> map=new HashMap<String,Object>();
             map=gson.fromJson(ds,map.getClass());
-            String piccode=(String) request.getSession().getAttribute("piccode");
-            String  checkCode= (String) map.get("massage");
+            String piccode=(String) request.getSession().getAttribute("verifyCode");
+            String  checkCode = (String) map.get("massage");
             checkCode = checkCode.toUpperCase();    //把字符全部转换为大写
             System.out.println(checkCode);
-            if (checkCode.equals(piccode)){
+            if (checkCode.equalsIgnoreCase(piccode)){
                 String CompanyId = (String) map.get("CompanyId");
                 int falg=CheckCompanyId(request,CompanyId);
                 result=falg;
@@ -75,6 +71,7 @@ public class BackLoginServlet extends BaseServlet {
                             int roleId = ws.length > 3 ? Integer.parseInt(ws[3]) : 0;
                             HttpSession session=request.getSession();
                             session.setAttribute("userId",userId);
+                            session.setAttribute("userName",userName);
                             session.setAttribute("roleId",roleId);
                             session.setAttribute("CompanyId",CompanyId);
                            // Page.RoleId=roleId;
@@ -91,13 +88,14 @@ public class BackLoginServlet extends BaseServlet {
                                 response.sendRedirect(targetUrl);
                             } else {
                                 //response.sendRedirect("backMar?method=BackHome");
-                                List<Map<String,Object>> menuList=backDao.getMenuLists(CompanyId,String.valueOf(userId));
+                               /* List<Map<String,Object>> menuList=backDao.getMenuLists(CompanyId,String.valueOf(userId));
                                 List<Map<String,Object>> panelList=backDao.getPanelList(CompanyId);
                                 List<Map<String,Object>> panelId=backDao.getPanelId(CompanyId);
                                 request.getSession().setAttribute("menuList",menuList);
                                 request.getSession().setAttribute("panelList",panelList);
-                                request.getSession().setAttribute("getPanelId",panelId);
-                                request.getRequestDispatcher("zTree.jsp").forward(request,response);
+                                request.getSession().setAttribute("getPanelId",panelId);*/
+                                //request.getRequestDispatcher("backMar?method=menuList").forward(request,response);
+                                out.print(result);
                             }
                         }else {
                             CookieHelper.saveCookie(response, "login_fail", "1", true);
@@ -115,8 +113,6 @@ public class BackLoginServlet extends BaseServlet {
                 result=6;
                 out.print(result);
             }
-
-
 
         }
 

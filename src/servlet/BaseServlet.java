@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public abstract class BaseServlet extends HttpServlet {
@@ -30,11 +31,20 @@ public abstract class BaseServlet extends HttpServlet {
 
     public String getCompany_Id() {
         String Company_Id = getParameter("Company_Id");
+        HttpSession session = request.getSession();
+    //    String Company_Ids=(String)session.getAttribute("CompanyId");
         if (!TextUtils.isEmpty(Company_Id)) {
+         session.setAttribute("Company_Id",Company_Id);
             return Company_Id;
+        }else{
+            String Company_Ids=(String)session.getAttribute("CompanyId");
+            if( Company_Ids!=null){
+                return Company_Ids;
+            }
         }
         return APPConfig.COMPANYID;
     }
+
 
     @Override
     public   void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -72,7 +72,7 @@ public class ChatForm extends CustomForm {
             if (filed.get("Name").equals(xy) || filed.get("Name") == xy) {
                 higt.setyTitleText(filed.get("Title").toString());
             }
-            if (strY != null) {
+           /* if (strY != null) {
                 strYTitle = new String[strY.length];
                 for (int i = 0; i < strY.length; i++) {
                     String str = strY[i];
@@ -80,7 +80,7 @@ public class ChatForm extends CustomForm {
                         strYTitle[i] = filed.get("Title").toString();
                     }
                 }
-            }
+            }*/
         }
         if (strY!=null){    //多个列表
             for (int i = 0; i < strY.length ; i++) {
@@ -89,7 +89,6 @@ public class ChatForm extends CustomForm {
         }else {
             statistics(y,x,list,0);
         }
-        higt.setxCategories(strYTitle);
        // higt.setxCategories(xtitle);
         higt.setData(list);
         /*        System.out.println(forms.getTable_name()+"\t"+forms.getXcolumn()+"\t"+forms.getYcolumn());
@@ -154,6 +153,7 @@ public class ChatForm extends CustomForm {
             System.out.println(sql);
             xyDatas = commonDao.getxyByDatas(getCompanyId(), sql);
         }
+        String yTitle = filedDao.getFiledTitleByName(getCompanyId(),getFormName(),y);
         HighCharttwo char12 = new HighCharttwo();
         if (forms.getChatType().contains("pie")) {//饼图
             List<HighChartPie> pieList = new ArrayList<>();
@@ -183,10 +183,10 @@ public class ChatForm extends CustomForm {
                 xtitle[i] = entity.get(x).toString();
                 yDatas[i] = Double.parseDouble(entity.get("sums").toString());
             }
-            char12.setName(y);
+            char12.setName(yTitle);
             char12.setData(yDatas);
             list.add(char12);
-
+            higt.setxCategories(xtitle);
         }
     }
 

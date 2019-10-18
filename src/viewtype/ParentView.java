@@ -122,20 +122,7 @@ public abstract class ParentView {
             }else if ("professionalName".equals(element2.getId())){
                 ListForm form = new ListForm();
                 String professionalName = (String) mDatas.get("professionalName");
-                if (professionalName.equals("1")){
-                    element2.text(form.one);
-                    System.out.println(form.one);
-                }else if (professionalName.equals("2")){
-                    element2.text(form.two);
-                    System.out.println(form.two);
-                }else if (professionalName.equals("3")){
-                    element2.text(form.three);
-                    System.out.println(form.three);
-                }else if (professionalName.equals("4")){
-                    element2.text(form.four);
-                    System.out.println(form.four);
-                }
-                System.out.println("form.one======>"+form.one);
+
             }
 //            if ("homePage".equalsIgnoreCase(getFormName())) {
 //                String state = getData("state");

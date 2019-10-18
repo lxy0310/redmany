@@ -32,7 +32,7 @@ public class CommonServlet extends BaseServlet {
         HttpSession session = request.getSession();
         //获取企业id
         String Company_Id = (String) session.getAttribute("CompanyId");
-        Company_Id = "antmall";
+        //Company_Id = "antmall";
 
         if (method.equals("addForm")){ //   添加 、 修改
             String paramId=request.getParameter("paramId");//获取当前ID参数
@@ -75,8 +75,6 @@ public class CommonServlet extends BaseServlet {
             String TableName=formDao.getTableNameByFormName(Company_Id,hidFormName);
             Integer result=commonDao.delBatch(Company_Id,TableName,id);
             out.print(result);
-        }else if (method.equals("batchList")){ //批量操作
-
         }
 
 

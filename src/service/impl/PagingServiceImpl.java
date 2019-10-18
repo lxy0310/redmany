@@ -19,6 +19,10 @@ public class PagingServiceImpl implements PagingService {
         pageDiv.id("pageDiv");
         pageDiv.attr("width","100%");
         pageDiv.attr("style","text-align:center;padding: 20px 0;");
+        Input input = pageDiv.input("hidden",String.valueOf(page.getPageCount()));//总页数
+        input.id("PageCount");
+        Input input2 = pageDiv.input("hidden",String.valueOf(page.getPageSize()));//当前页数
+        input2.id("PageSize");
 
         Span currentPage= pageDiv.span();
         currentPage.text(page.getPageIndex()+"");
