@@ -332,8 +332,6 @@ public class NewForm extends FreeForm {
             }else {
                 div = layuiRow.div().addCssClass("layui-form-item");
             }
-
-
             Div div1 = div.div().styles("height: 30px;line-height: 30px;" );
             div1.addCssClass("layui-input-block").styles("margin:0px;");
             v = v.replaceAll("<label>","<label class=\"labelRight\">");

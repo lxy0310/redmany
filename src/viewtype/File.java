@@ -1,13 +1,10 @@
 package viewtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
-import com.sangupta.htmlgen.tags.body.forms.Button;
 import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.sections.A;
-import com.sangupta.htmlgen.tags.body.table.TBody;
-import com.sangupta.htmlgen.tags.body.table.THead;
-import com.sangupta.htmlgen.tags.body.table.Table;
+import com.sangupta.htmlgen.tags.body.text.Label;
 
 public class File extends ParentView {
     @Override
@@ -31,7 +28,10 @@ public class File extends ParentView {
                 div.text(text==null?"":text);
                 return div;
             }else{
-                div.text(view.getTitle()==null?"":view.getTitle());
+//                labelRight
+                Label label = div.label(view.getTitle()==null?"":view.getTitle());
+                label.addCssClass("labelRight");
+//                div.text(view.getTitle()==null?"":view.getTitle());
             }
             A a1 = div.a();
             a1.id(getName()+"_btn");
@@ -49,7 +49,14 @@ public class File extends ParentView {
 
             Div divList = div.div();
             divList.id(getName()+"_list");
-
+//            divList.addCssClass("layui-input-block");
+//            divList.style("margin-left","110px");
+//            divList.style("min-height","55px");
+//            divList.style("margin","0px");
+//            divList.style("line-height","30px");
+//            divList.style("height","30px");
+//            margin: 0px;line-height: 30px;height: 30px;
+//            margin-left: 110px; min-height:55px; 没次加30
             Input hidden = div.input("hidden","");
             hidden.id(getName()+"0_hidden");
 

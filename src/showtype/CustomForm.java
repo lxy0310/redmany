@@ -19,11 +19,9 @@ public class CustomForm extends ParentForm {
         if("MDnewForm".equalsIgnoreCase(getPage().getShowType())){
             dataForm.id(formName.split(",")[0]+"Form");
         }else {
-
             dataForm.id(formName+"Form");
         }
-
-
+        dataForm.addCssClass("layui-form");
         dataForm.attr("method","post");
         dataForm.attr("enctype","multipart/form-data");
         Div div =  dataForm.div();
