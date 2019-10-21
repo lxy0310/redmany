@@ -1198,8 +1198,3 @@ table thead {
 
 
 
-/* 分页*/
-#pageDiv >  a:hover{background: none;color: #1963AA;text-decoration: none;}
-#pageDiv > a{display: inline-block !important;color: #1963AA;text-decoration: none;padding: 0 5px;}
-#goText { width: 30px !important;border: none;border-bottom: 1px solid #1963AA;padding: 0;text-align:center;margin: 0 5px;}
-

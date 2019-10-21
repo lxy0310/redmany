@@ -107,8 +107,8 @@ public class SubmitServiceImpl implements SubmitService {
         //替换[userId]
         HttpSession session=request.getSession();
         Integer userid=-1;
-        if(session.getAttribute("userid")!=null){
-            userid=Integer.parseInt(session.getAttribute("userid").toString());
+        if(session.getAttribute("userId")!=null){
+            userid=Integer.parseInt(session.getAttribute("userId").toString());
         }
         if(sql.indexOf("[userid]")>=0){
             sql=sql.replace("[userid]",userid+"");

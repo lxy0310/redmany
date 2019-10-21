@@ -157,6 +157,9 @@ public class Page implements ParentForm.ISQLReplacer {
 
     public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
+        if(this.pageIndex>pageCount){
+            this.pageIndex=this.pageCount;
+        }
     }
 
     public int getDataCount() {
