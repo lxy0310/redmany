@@ -247,6 +247,5 @@ public class CommonDao extends BaseDao {
         return sqlHelper.executeQueryList(Company_Id,sql,parameters)!=null?sqlHelper.executeQueryList(Company_Id,sql,parameters):null;
     }
 
-
     }
 

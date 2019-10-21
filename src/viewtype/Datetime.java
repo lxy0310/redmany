@@ -5,7 +5,6 @@ import com.sangupta.htmlgen.tags.body.forms.Input;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.text.Label;
 import com.sangupta.htmlgen.tags.body.text.Span;
-import com.sangupta.htmlgen.tags.head.Script;
 
 public class Datetime extends ParentView {
     @Override
@@ -23,15 +22,19 @@ public class Datetime extends ParentView {
         String txtName =getDataProvider().getTextName(this,getForm());
         String isEdit =getDataProvider().getTextEdit(this,getForm());
         String color = getDataProvider().getTextColor(this, getForm());
-        Label label = span.label();
-        Input input = span.input();
-        input.addCssClass(getName()+"-val");
-        input.id(getName()); //getName()
-        input.type("text");
-        input.onClick("useLayDateMultiple('"+getName()+"')");
-        input.placeholder("请选择"+getView().getTitle());
 
+
+
+        Input input = span.input();
         if (getView() != null) {
+            Label label = span.label();
+           // Input input = span.input();
+            input.addCssClass(getName()+"-val");
+            input.id(getName()); //getName()
+            input.type("text");
+            input.onClick("useLayDateMultiple('"+getName()+"')");
+            input.placeholder("请选择"+getView().getTitle());
+
             View view=getView();
             if(view.getIsTitle()!=null && "1".equals(view.getIsTitle())) {//不长title
                 span.text(text==null?"":text);

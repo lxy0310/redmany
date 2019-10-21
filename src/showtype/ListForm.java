@@ -84,7 +84,7 @@ public class ListForm extends CustomForm {
         sql = sqlGetMD(mdAssoWord,sql,froms.getReplaceName());
         searchCondition = getPage().getRequestParamter("condition");
         if (searchCondition!=null){
-            sql = sqlSearchCondition(searchCondition,sql,froms.getReplaceName());  //查询
+            sql = sqlSearchCondition(searchCondition,sql,froms.getReplaceName(),froms.getSearch_fields());  //查询
         }
         Menus = menuDao.getMenu(getCompanyId(), getFormName());
         if (Menus != null) {
@@ -141,9 +141,11 @@ public class ListForm extends CustomForm {
         //获取搜索字段
         String search = froms.getSearch_fields();
         if (search!=null && !search.equals("")){
+            search = search.replaceAll("%","");
             List<View> views = getViewLists(search);
             String html = getHtmlTemplate();
             List<String> list = new ArrayList<>();
+
             com.sangupta.htmlgen.tags.body.forms.Form divshow = div.form().addCssClass("layui-form").id("searchCondition");
             Div layuiRow = divshow.div().addCssClass("layui-row").styles("margin-top:10px;");
             for (View view : views) {
@@ -236,6 +238,7 @@ public class ListForm extends CustomForm {
                     //字段内容长度过长，鼠标移入显示
                     if ( after1.length() > 20) {
                         if (v.contains("-val")){
+
                         }else {
                             td.attr("title", after1);
                         }
@@ -244,7 +247,8 @@ public class ListForm extends CustomForm {
                 }
                 Integer Tablestate = (Integer) line.get("state");
                 if (Tablestate != null) {
-                    FormStateOpertionList = commonDao.getFormListOperationShow(getCompanyId(),getPage().getUserId() , getFormName(), Tablestate);
+                    FormStateOpertionList = commonDao.getFormListOperationShow(getCompanyId(),1 , getFormName(), Tablestate);
+                    System.out.println(getPage().getUserId());
                     if (FormStateOpertionList != null) {
                         TableDataCell td = row.td();
                         Span span = td.span().styles("white-space: nowrap;");

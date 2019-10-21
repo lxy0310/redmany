@@ -196,10 +196,7 @@ function gotoPage(target, transferParams) {
                              var a= $("#mdIframe").attr("src").replace("null",data+"");
 
                              document.getElementById('mdIframe').src=a;
-
-
                          }
-
                          layer.msg("操作成功！",{icon:6});
                      }else{
                          layer.msg("操作成功！",{icon:6});
@@ -208,8 +205,6 @@ function gotoPage(target, transferParams) {
 
                        //  window.parent.getElementById('mdIframe').reload();
                      }
-
-
 
                  }else {
                      layer.msg("操作失败！",{icon:5});

@@ -34,7 +34,14 @@ public class CommonServlet extends BaseServlet {
         FormDao formDao = new FormDao(sqlHelper);
         HttpSession session = request.getSession();
         //获取企业id
+
+
         String Company_Id = getCompany_Id();
+        System.out.println(Company_Id);
+       /* String Company_Id = (String) session.getAttribute("CompanyId");*/
+
+        String Company_Id = getCompany_Id();
+
         //Company_Id = "antmall";
 
         if (method.equals("addForm")){ //   添加 、 修改

@@ -25,13 +25,14 @@ public class BackMarServelt extends BaseServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("UTF-8");
+        super.doPost(request,response);
         PrintWriter out = response.getWriter();//输出
         String method=request.getParameter("method");//获取方法
         SQLHelper sqlHelper = new SQLHelper(request);
         BackMarDao backDao=new BackMarDao(sqlHelper);//创建数据层
        // String Company_Id=request.getParameter("gCompany_Id");
         HttpSession session=request.getSession();
-        String Company_Id=(String)session.getAttribute("Company_Id");
+        String Company_Id=getCompany_Id();
        // System.out.println(getCompany_Id());
         Integer uids = (int)session.getAttribute("userId");
         String uid = String.valueOf(uids);

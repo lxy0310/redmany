@@ -132,6 +132,7 @@ public abstract class ParentForm {
 
     public List<View> getViews() {
         List<String> names = getFormFieldNames();
+
         if (names != null && names.size() > 0) {
             List<View> views = new ArrayList<>();
             //List_fields不为空，则按照这个字段的顺序去添加
@@ -448,33 +449,74 @@ public abstract class ParentForm {
     }
 
     //搜索条件 拼接
-    public String sqlSearchCondition(String searchCondition,String sql,String ReplaceName){
+    public String sqlSearchCondition(String searchCondition,String sql,String ReplaceName,String Search_fields){
         sql = sql.toLowerCase();
         System.out.println("searchCondition:\t"+searchCondition);
+        String[] search = Search_fields.split(",");
         if (searchCondition!=null){
             searchCondition = searchCondition.substring(1,searchCondition.length()-1);
             String[] str1 = searchCondition.split(",");
             String con = "";
-            for (int i = 0; i <str1.length ; i++) {
+            Map map = new HashMap() ;
+            for (int i = 0; i < str1.length; i++) {
+                String str2 = str1[i];//UserName:yonghu2
+                String[] ste3=str1[i].split(":");
+                map.put(ste3[0],ste3[1]);
+            }
+
+
+            for (int i = 0; i <search.length ; i++) {
+                String s = search[i];
+                if(map.containsKey(search[i].replace("%",""))) {
+                    con += search[i].replace("%", "") + (s.indexOf("%") > 0 ? " like " : " = ") + (s.indexOf("%") > 0 ? "%" : "") + map.get(search[i].replace("%", "")) + (s.indexOf("%") > 0 ? "%" : "") + " and ";
+                }
+
+            }
+            System.out.println(con);
+            /*for (int i = 0; i <str1.length ; i++) {
                 String str2 = str1[i];
                 String name = StringUtils.substringBefore(str2,":");
                 String value = StringUtils.substringAfter(str2,":");
-                con +=ReplaceName+"."+ name +" like '%"+value+"%' and ";
-            }
+
+                for (int j = 0; j < search.length; j++) {
+                    String names = name;
+                    String key=search[i].replace("%","");
+                    String conditon="";
+                    if ( key==names ||  key.equals(names)){
+                        //con +=ReplaceName+"."+ name +" like '%"+value+"%' and ";
+                        conditon =  name +" like '%"+value+"%' and ";
+
+                        if(search[i].indexOf("%")<0){
+                            conditon=conditon.replace("%","").replace("like ","= ");
+                        }
+                        con+=conditon;
+                        break;
+                    }
+                }
+
+
+
+            }*/
             con = con.substring(0,con.length()-4); //去掉最后的and
-            if (sql.contains("where")){
+            /*if (sql.contains("where")){
                 String before = StringUtils.substringBefore(sql, "where");
                 String after = StringUtils.substringAfter(sql, "where");
                 sql = before + " where " +con +after;
-            }else {
+            }else {*/        /*  if (name.contains("%")){
+                    con +=ReplaceName+"."+ name +" like '%"+value+"%' and ";
+                }else{
+                    con +=ReplaceName+"."+ name +" = "+value+" and ";
+                }*/
                 if(sql.contains("order by")){
                     String after = sql.substring(sql.indexOf("order by"),sql.length());
                     String before = StringUtils.substringBefore(sql, "order by");
-                    sql = before + " where " + con +after;
+                    sql = "select * from ("+before+") "+ReplaceName+" where "+con+after;
+                   // sql = before + " where " + con +after;
                 }else {
-                    sql = sql + " where " + con;
+                    /*sql = sql + " where " + con;*/
+                    sql = "select * from ("+sql+") "+ReplaceName+" where "+con;
                 }
-            }
+           /* }*/
         }
         return  sql;
     }
