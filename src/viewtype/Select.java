@@ -78,9 +78,21 @@ public class Select extends ParentView {
                 Label label = div.label();
                 label.text(view.getTitle());
             }
-            com.sangupta.htmlgen.tags.body.sections.Select select = div.select();
-            select.attr("lay-filter","aihao");//过滤layui的渲染
+
+//            div.addCssClass("layui-inline");
+            div.addCssClass("layui-form-item");
+            Div div1 = div.div();
+            div1.addCssClass("layui-input-block");
+//            div1.addCssClass("layui-input-inline");
+            div1.styles("margin-top: -30px;");
+//            div.addCssClass("layui-input-inline");
+//            Label label = div1.label();
+//            label.text(view.getTitle());
+//            margin-top: -30px;
+            com.sangupta.htmlgen.tags.body.sections.Select select = div1.select();
+
             select.id(getName()+"0");
+            select.attr("lay-filter",getName()+"0");//过滤layui的渲染
             select.name(getName());
             if (view.getWapAttribute() != null) {
                 String str = view.getWapAttribute();//获取下拉框样式

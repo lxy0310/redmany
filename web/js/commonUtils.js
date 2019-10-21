@@ -184,7 +184,7 @@ function delBatch(FormName) {
         success:function(data){
             if (data>0){
                 layer.msg("删除成功！",{icon:6});
-                if (selId<pageSize){
+     /*           if (selId<pageSize){
                     window.parent.location.reload();
                 }else {
                     var getUrl = window.location.href; //获取url
@@ -192,7 +192,8 @@ function delBatch(FormName) {
                     var nowIndex = page-1;//当前页减1 ，删除后的当前页数
                     var nowUrl = getUrl.replace(index,nowIndex);
                     window.location.href = nowUrl;
-                }
+                }*/
+                window.parent.location.reload();
             } else{
                 layer.msg("删除失败！",{icon:5});
             }

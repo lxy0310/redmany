@@ -1018,10 +1018,17 @@ function regMessage() {
 
 //分页跳转
 function pageJump(formName,showType,pageIndex) {
-    var url="queryStudentServlet?copformName="+formName+"&showType="+showType+"&pageIndex="+pageIndex;
+    var pageSize=$("#pageSizeSelect option:selected").val();
+    var url="queryStudentServlet?copformName="+formName+"&showType="+showType+"&pageIndex="+pageIndex+"&pageSize="+pageSize;
+
 
     if(pageIndex=='goText'){
-        url="queryStudentServlet?copformName="+formName+"&showType="+showType+"&pageIndex="+$("#goText").val();
+        url="queryStudentServlet?copformName="+formName+"&showType="+showType+"&pageIndex="+$("#goText").val()+"&pageSize="+pageSize;
     }
     goto(url);
 }
+
+layui.use(['laypage', 'layer'], function() {
+    var laypage = layui.laypage
+        , layer = layui.layer;
+})

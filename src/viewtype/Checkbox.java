@@ -96,7 +96,7 @@ public class Checkbox extends ParentView {
                     String a=arr[i].substring(0,arr[i].indexOf(':'));
                     String b=arr[i].substring(arr[i].indexOf(':')+1);
                     Input input =div.input();
-                    input.attr("lay-skin","primary");
+//                    input.attr("lay-skin","primary");
                     input.attr("title",b);
                     input.id(getName()+i);
                     input.addCssClass(getName()+i);
@@ -124,7 +124,7 @@ public class Checkbox extends ParentView {
                             String value = valueObj.toString();
                             String name = (String) map.get("name");
                             Input input =div.input();
-                            input.attr("lay-skin","primary");
+//                            input.attr("lay-skin","primary");
                             input.attr("title",name);
                             input.id(getName()+i);
                             input.addCssClass(getName()+i);
