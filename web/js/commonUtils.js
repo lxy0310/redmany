@@ -79,10 +79,20 @@ layui.use(['layer','element','form','upload','laydate'],function(){
         location.hash = 'test1='+ $(this).attr('lay-id');
     });
 
+    //同时绑定多个
+    lay('.test-item').each(function(){
+        laydate.render({
+            elem: this
+            ,trigger: 'click'
+        });
+    });
 
 });
 
 $("#reset").on("click",function(){ window.location.reload();}); //重置
+
+
+
 //时间
 function useLayDateMultiple(cls) {
     layui.use('laydate', function() {
@@ -97,8 +107,7 @@ function useLayDateMultiple(cls) {
     });
 }
 
-function searchCondition() {
-
+function searchCondition(url) {
     var d = {};
     //循环获取input的值
     var t=$('form').serializeArray();
@@ -120,8 +129,9 @@ function searchCondition() {
         }
     }
     condition = condition.substring(0,condition.length - 1);//去掉最后一个逗号
-    var getUrl = "queryStudentServlet?copformName=user1&showType=listForm"; //获取url
-    getUrl = getUrl + "&condition='"+ condition+"'";
+    /*var getUrl = url;
+    var getUrl = "queryStudentServlet?copformName=user1&showType=listForm"; *///获取url
+    getUrl = url + "&condition='"+ condition+"'";
     location.href = getUrl;
 
 }

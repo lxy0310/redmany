@@ -150,6 +150,9 @@ public class ListForm extends CustomForm {
             Div layuiRow = divshow.div().addCssClass("layui-row").styles("margin-top:10px;");
             for (View view : views) {
                 view.setIsValue("1");
+                if (view.getType().equalsIgnoreCase("Datetime") ){
+                    view.setIsDouble("1");
+                }
                 html = makeViews(list, view, null, html);
             }
             if (!TextUtils.isEmpty(html)) {
@@ -157,7 +160,12 @@ public class ListForm extends CustomForm {
             }
             for (String v : list) {
                 Div  divs  = layuiRow.div();
-                divs.addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md3");
+
+                if (v.contains("useLayDateMultiple")){
+                    divs.addCssClass("layui-col-xs12 layui-col-sm12 layui-col-md6");
+                }else {
+                    divs.addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md3");
+                }
                 Div div2 = divs.div().addCssClass("layui-form-item");
                 Div div1 = div2.div().styles("height: 30px;line-height: 30px;" );
                 div1.addCssClass("layui-input-block").styles("margin:0px;");
@@ -176,7 +184,8 @@ public class ListForm extends CustomForm {
             searchBtn.italic(i);
             searchBtn.text("搜索");
             searchBtn.id("search");
-            searchBtn.onClick("searchCondition()");
+            String url = "queryStudentServlet?copformName="+formName+"&showType="+getPage().getShowType(); //queryStudentServlet?copformName=user1&showType=listForm
+            searchBtn.onClick("searchCondition('"+url+"')");
         }
     }
 

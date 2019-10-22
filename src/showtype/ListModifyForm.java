@@ -49,6 +49,7 @@ public class ListModifyForm extends CustomForm {
     private FormUtil formUtil;
     private String paramId; //参数 ID
     private String mdAssoWord; //从表
+    private String searchCondition ; //查询条件
     private  Form froms ;//form表信息
     private PagingService pagingService=new PagingServiceImpl();
 
@@ -80,6 +81,10 @@ public class ListModifyForm extends CustomForm {
         sql = sqlGetIDs(paramId,sql,froms.getReplaceName());
         mdAssoWord = getPage().getParameter("mdAssoWord");
         sql = sqlGetMD(mdAssoWord,sql,froms.getReplaceName());
+        searchCondition = getPage().getRequestParamter("condition");
+        if (searchCondition!=null){
+            sql = sqlSearchCondition(searchCondition,sql,froms.getReplaceName(),froms.getSearch_fields());  //查询
+        }
         Menus = menuDao.getMenu(getCompanyId(), getFormName());
         if (Menus != null) {
             isShow = Menus.getIsShow();
@@ -120,7 +125,6 @@ public class ListModifyForm extends CustomForm {
             if (group == 0) {
                 /*List<View> views = getViews();
                 formUtil.showListBack(div,views,mDatas);*/
-                search(div);
                 showBack(div);
 
             } else {
@@ -131,25 +135,64 @@ public class ListModifyForm extends CustomForm {
             listShow(div);
         }
     }
+
     //查询
-    public void search(Div div){
-     /*   Div searchDiv = div.div();
-        Button searchBtn = searchDiv.button();
-        String url = "queryStudentServlet?copformName="+formName+"&showType=SearchForm";
-        searchBtn.onClick("search('"+formName+"','"+ getPage().getShowType()+"')");
-        searchBtn.addCssClass("layui-btn");
-        searchBtn.attr("lay-filter","LAY-user-front-search");
-        Italic i = new Italic();
-        i.addCssClass("layui-icon layui-icon-search layuiadmin-button-btn");
-        searchBtn.italic(i);
-        searchBtn.text("搜索");
-        searchBtn.styles("margin-bottom:7px;margin-top: 10px;");*/
+    public  void  seach(Div div){
+        //获取搜索字段
+        String search = froms.getSearch_fields();
+        if (search!=null && !search.equals("")){
+            search = search.replaceAll("%","");
+            List<View> views = getViewLists(search);
+            String html = getHtmlTemplate();
+            List<String> list = new ArrayList<>();
+
+            com.sangupta.htmlgen.tags.body.forms.Form divshow = div.form().addCssClass("layui-form").id("searchCondition");
+            Div layuiRow = divshow.div().addCssClass("layui-row").styles("margin-top:10px;");
+            for (View view : views) {
+                view.setIsValue("1");
+                if (view.getType().equalsIgnoreCase("Datetime") ){
+                    view.setIsDouble("1");
+                }
+                html = makeViews(list, view, null, html);
+            }
+            if (!TextUtils.isEmpty(html)) {
+                div.text(html);
+            }
+            for (String v : list) {
+                Div  divs  = layuiRow.div();
+
+                if (v.contains("useLayDateMultiple")){
+                    divs.addCssClass("layui-col-xs12 layui-col-sm12 layui-col-md6");
+                }else {
+                    divs.addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md3");
+                }
+                Div div2 = divs.div().addCssClass("layui-form-item");
+                Div div1 = div2.div().styles("height: 30px;line-height: 30px;" );
+                div1.addCssClass("layui-input-block").styles("margin:0px;");
+                v = v.replaceAll("<label>","<label class=\"labelRight\">");
+                div1.text(v);
+            }
+            Div  divbtn1  = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md3");
+            Div divbtn2 = divbtn1.div().addCssClass("layui-form-item");
+            Button searchBtn = divbtn2.button();
+            searchBtn.attr("type","button");
+            searchBtn.addCssClass("layui-btn");
+            searchBtn.styles("margin-left: 120px;");
+            Italic i = new Italic();
+            i.addCssClass("layui-icon ");
+            i.text("&#xe615;");
+            searchBtn.italic(i);
+            searchBtn.text("搜索");
+            searchBtn.id("search");
+            String url = "queryStudentServlet?copformName="+formName+"&showType="+getPage().getShowType(); //queryStudentServlet?copformName=user1&showType=listForm
+            searchBtn.onClick("searchCondition('"+url+"')");
+        }
     }
 
     public void showBack(Div div) {
         if (mDatas != null) {
             List<View> views = getViews();
-
+            seach(div);
             Div head = div.div().addCssClass("layui-table-tool");
             Div temp = head.div().addCssClass("layui-table-tool-temp");
             Div btncontainer = temp.div().addCssClass("layui-btn-container");

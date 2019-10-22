@@ -220,14 +220,7 @@ public class PagingServiceImpl implements PagingService {
         Span skipPage=pageContent.span();
         skipPage.addCssClass("layui-laypage-skip");
         skipPage.text("到第<input type=\"text\" min=\"1\" id=\"goText\" value=\""+page.getPageIndex()+"\" class=\"layui-input\">页<button type=\"button\" onclick=\"pageJump('"+page.getCopformName()+"','"+page.getShowType()+"','goText')\"  class=\"layui-laypage-btn\" >确定</button>");
-        Input goTest=skipPage.input();
-        goTest.type("text");
-        goTest.addCssClass("layui-input");
-        goTest.value("2");
-        Button b=pageContent.button();
-        b.addCssClass("layui-laypage-btn");
-        b.text("测试");
-        b.attr("type","button");
+
         //跳转栏
         /*
         Label goLabel=pageDiv.label();
