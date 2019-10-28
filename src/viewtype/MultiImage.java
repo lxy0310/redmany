@@ -24,7 +24,7 @@ public class MultiImage extends ParentView {
         div.id(getName());
         boolean isShow = isShow(getForm().getPage().getShowType());
         String text = getDataProvider().getText(this, getForm());//input值
-       // text="034dc6fe45e442d8b07f7e6c683cc875.png,071dede250d44fe4a519e7e857ad9e8f.jpg";
+
         if (getView() != null) {
             View view=getView();
             String[] imgs = null;
@@ -32,7 +32,9 @@ public class MultiImage extends ParentView {
                 if(text.indexOf(",")<0){
                     text=text+",";
                 }
-                if (!"1".equals(view.getIsValue())){
+
+                if(!"1".equals(view.getIsValue())){
+
                     imgs = text.split(",");
                 }
             }
@@ -51,7 +53,7 @@ public class MultiImage extends ParentView {
             }else{
                 Label label = div.label();
                 label.text(view.getTitle()==null?"":view.getTitle());
-              //  div.text(view.getTitle()==null?"":view.getTitle());
+
             }
             //旧数据隐藏域
             Input old_input = div.input();

@@ -40,7 +40,6 @@ public class Image extends ParentView {
             }else{
                 Label label = div.label();
                 label.text(view.getTitle()==null?"":view.getTitle());
-//                div.text(view.getTitle()==null?"":view.getTitle());
             }
 
             A a1 = div.a();
@@ -61,7 +60,11 @@ public class Image extends ParentView {
             div2.id(getName()+"_div");
             div2.attr("style","display:inline-block; position:relative;");
 
-            if ("1".equals(view.getIsValue())){
+
+
+
+            if(!"1".equals(view.getIsValue())){
+
                 if(text!=null && PropsUtil.CheckImageSuffixes(text)) {//有值且为图片
                     Img img = div2.img(IMAGE_PRE+text);
                     img.width("50px");
