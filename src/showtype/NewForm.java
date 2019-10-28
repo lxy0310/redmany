@@ -145,7 +145,7 @@ public class NewForm extends FreeForm {
             Button cancelBtn = btnDiv.button();
             cancelBtn.text("取消");
             cancelBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
-            cancelBtn.onClick("javascript:history.go(-1);location.reload();");
+            cancelBtn.onClick("javascript:history.go(-1);");//javascript:history.go(-1);location.reload();
         }else {
             saveBtn.addCssClass("saveBtn");
             saveBtn.text("提交");
@@ -265,7 +265,6 @@ public class NewForm extends FreeForm {
                 System.out.println(line.toString());
                 if ("1".equals(optype)) {    //修改
                     String Modify_fields = formList.getModify_fields();
-
                     for (View view : views) {
                         if (!Modify_fields.contains("view")){
                             view.setWapAttribute("");
@@ -290,14 +289,16 @@ public class NewForm extends FreeForm {
                         div = layuiRow.div().addCssClass("layui-form-item");
                     }
                     Div div1 =div.div();
+
                     String value = map.get(key).toString();
-                    if (!value.contains("type=\"File\"")){
+                    value = value.replaceAll("<label>","<label class=\"labelRight\">");
+                    if (!value.contains("type=\"File\"") && !value.contains("<img src")){
                         div1.styles("height: 30px;line-height: 30px;" );
                     }
 
                  /*   Div div = saveForm.div().addCssClass("layui-form-item");
                     Div div1 = div.div().addCssClass("layui-input-block");*/
-                    key = key.replaceAll("<label>","<label class=\"labelRight\">");
+
                     div1.text(value);
                 }
             }
@@ -315,17 +316,24 @@ public class NewForm extends FreeForm {
             saveForm.text(html);
         }
         for (String v : list) {
-            Div div= null;
-            if (formList.getRow()!=null){
-                Div  divs = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md4");
-                div = divs.div().addCssClass("layui-form-item");
-            }else {
-                div = layuiRow.div().addCssClass("layui-form-item");
+            if (v!=null && !v.equals("")){
+                Div div= null;
+                if (formList.getRow()!=null){
+                    Div  divs = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md4");
+                    div = divs.div().addCssClass("layui-form-item");
+                }
+                else {
+                    div = layuiRow.div().addCssClass("layui-form-item");
+                }
+                Div div1 = div.div().styles("height: 30px;line-height: 30px;" );
+                div1.addCssClass("layui-input-block").styles("margin:0px;");
+                if (!v.contains("type=\"File\"") && !v.contains("<img src")){
+                    div1.styles("height: 30px;line-height: 30px;" );
+                }
+                v = v.replaceAll("<label>","<label class=\"labelRight\">");
+                div1.text(v);
             }
-            Div div1 = div.div().styles("height: 30px;line-height: 30px;" );
-            div1.addCssClass("layui-input-block").styles("margin:0px;");
-            v = v.replaceAll("<label>","<label class=\"labelRight\">");
-            div1.text(v);
+
         }
     }
 

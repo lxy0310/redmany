@@ -171,6 +171,7 @@ public class Text extends ParentView {
                 input.value("");
             }
         }
+
         if(onclick != null){
             div.onClick(onclick);
         }

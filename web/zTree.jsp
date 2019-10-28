@@ -90,7 +90,7 @@
         <!-- 内容主体区域 -->
         <!--     <div style="padding: 15px;">内容主体区域</div> -->
         <div id="page_content">
-            <iframe id="iframe-page-content" src="index.jsp" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight=" 0" scrolling="no" allowtransparency="yes"></iframe>
+            <iframe id="iframe-page-content" src="index.jsp" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight=" 0" scrolling="yes" allowtransparency="yes"></iframe>
 
             <!-- <iframe id="menuFrame" name="menuFrame" src="addHtml.jsp" style="overflow:visible;"
             scrolling="yes" frameborder="no"></iframe> -->

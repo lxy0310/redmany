@@ -60,17 +60,20 @@ public class Image extends ParentView {
             Div div2 = div.div();
             div2.id(getName()+"_div");
             div2.attr("style","display:inline-block; position:relative;");
-            if(text!=null && PropsUtil.CheckImageSuffixes(text)) {//有值且为图片
-                Img img = div2.img(IMAGE_PRE+text);
-                img.width("50px");
-                img.height("50px");
+
+            if ("1".equals(view.getIsValue())){
+                if(text!=null && PropsUtil.CheckImageSuffixes(text)) {//有值且为图片
+                    Img img = div2.img(IMAGE_PRE+text);
+                    img.width("50px");
+                    img.height("50px");
 //                img.onClick("lookPicture('http://oa.redmany.com:50016/Picture.aspx?images=a9f106358f2a46b58d94d60f9332f60f.jpg&num=0')");
-                img.onClick("openImg(this)");
-                A a = div2.a();
-                a.herf("javascript:void(0);");
-                Img delImg = a.img("/redmany/images/delete.jpg");
-                delImg.attr("style","position: absolute; height: 15px;width: 15px;top: 0px; right: 0px; ");
-                delImg.onClick("delFile('"+getName()+"','image')");
+                    img.onClick("openImg(this)");
+                    A a = div2.a();
+                    a.herf("javascript:void(0);");
+                    Img delImg = a.img("/redmany/images/delete.jpg");
+                    delImg.attr("style","position: absolute; height: 15px;width: 15px;top: 0px; right: 0px; ");
+                    delImg.onClick("delFile('"+getName()+"','image')");
+                }
             }
             if (isShow) {
                 input.attr("disabled","disabled");

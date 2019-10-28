@@ -138,7 +138,7 @@ public abstract class ParentForm {
             //List_fields不为空，则按照这个字段的顺序去添加
             int count = names.size();
             for (int i = 0; i < count; i++) {
-                String name = names.get(i);
+                String name = names.get(i).toLowerCase();
                 View view = getViewByName(name);
                 if (view != null) {
                     views.add(view);
@@ -404,17 +404,19 @@ public abstract class ParentForm {
     }
     // sql Id 拼接
     public String sqlGetIDs(String paramId,String sql,String ReplaceName){
-        sql = sql.toLowerCase();
+
         if (paramId!=null){
-            if (sql.contains("where")){
+            String str = sql.toLowerCase();
+         //sql = sql.toLowerCase();
+            if (str.contains("where")){
                 //截取
-                String before = StringUtils.substringBefore(sql, "where");
-                String after = StringUtils.substringAfter(sql, "where");
+                String before = StringUtils.substringBefore(str, "where");
+                String after = StringUtils.substringAfter(str, "where");
                 sql = before + " where "+ReplaceName+".Id="+paramId  +" and "+after;
             }else {
-                if(sql.contains("order by")){
-                    String after = sql.substring(sql.indexOf("order by"),sql.length());
-                    String before = StringUtils.substringBefore(sql, "order by");
+                if(str.contains("order by")){
+                    String after = str.substring(str.indexOf("order by"),str.length());
+                    String before = StringUtils.substringBefore(str, "order by");
                     sql = before +" where "+ReplaceName+".Id= "+paramId +after;
                 }else {
                     sql=sql+" where "+ReplaceName+".Id= "+paramId;
@@ -427,8 +429,9 @@ public abstract class ParentForm {
 
     //双列表 关键字段
     public String sqlGetMD(String mdAssoWord,String sql,String ReplaceName){
-        sql = sql.toLowerCase();
+
         if (mdAssoWord!=null){
+            sql = sql.toLowerCase();
             mdAssoWord = mdAssoWord.replace(":","=");
             if (sql.contains("where")){
                 String before = StringUtils.substringBefore(sql, "where");
