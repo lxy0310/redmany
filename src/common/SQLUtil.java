@@ -23,7 +23,9 @@ public class SQLUtil {
      */
     public  static String getPagingSQL(String sql,Integer pageSize,Integer pageIndex,String replaceName){
               String targetSql="select top "+ pageSize+" * from ( {innerSql}) temp_row where rownumber>(("+pageIndex+"-1)* "+pageSize+")";
+
               int selectIndex=sql.toLowerCase().indexOf("select");
+
               String replace=replaceName==null ?"":(replaceName+".");
               String replaresql="select top 1000 row_number() over(order by "+replace+"Id asc) as rownumber," +sql.substring(selectIndex+6);
                targetSql=targetSql.replace(" {innerSql}",replaresql);

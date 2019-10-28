@@ -17,6 +17,29 @@ public class FormFiledDao extends BaseDao {
         super(pSQLHelper);
     }
 
+    /**
+     * 获取表格顶部按钮
+     * @param CompanyId
+     * @param FormName
+     * @return
+     */
+    public String getListHeadFormFiledStr(String CompanyId, String FormName){
+        String sql ="select * from FormFiled where formname =? and Type='HeadButton' ORDER BY Index_number";
+        String[] parameters = {FormName};
+        List<Map<String, Object>> datas = new ArrayList<>();
+        datas = sqlHelper.executeQueryList(CompanyId, sql, parameters);
+        String filedStr = null;
+        if (datas != null) {
+            for (Map<String, Object> line : datas) {
+                if (filedStr == null){
+                    filedStr = String.valueOf(line.get("Name")) ;
+                }else {
+                    filedStr = filedStr + "," +String.valueOf(line.get("Name"));
+                }
+            }
+        }
+        return filedStr;
+    }
 
     /**
      *  获取formfeild表的Name数据,并排序
@@ -28,7 +51,7 @@ public class FormFiledDao extends BaseDao {
 
        // String sql = "SELECT Name  FROM [FormFiled] WHERE FormName=? order by Index_number";
        // String sql = "SELECT Name FROM [FormFiled] WHERE FormName=? order by case when filedGroup is null then 1 else 0 end ,filedGroup,cast(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)) as int),Index_number";
-       String sql ="SELECT * FROM FormFiled WHERE FormName=?  ORDER BY CONVERT(INT, IsNull(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)),'100')), Index_number";
+       String sql ="SELECT * FROM FormFiled WHERE FormName=? and type!='HeadButton' ORDER BY CONVERT(INT, IsNull(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)),'100')), Index_number";
         String[] parameters = {FormName};
         List<Map<String, Object>> datas = new ArrayList<>();
         datas = sqlHelper.executeQueryList(CompanyId, sql, parameters);

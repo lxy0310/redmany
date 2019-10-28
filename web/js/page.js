@@ -1028,7 +1028,8 @@ function pageJump(formName,showType,pageIndex) {
     goto(url);
 }
 
+/*
 layui.use(['laypage', 'layer'], function() {
     var laypage = layui.laypage
         , layer = layui.layer;
-})
+})*/

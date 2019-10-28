@@ -138,7 +138,7 @@ public abstract class ParentForm {
             //List_fields不为空，则按照这个字段的顺序去添加
             int count = names.size();
             for (int i = 0; i < count; i++) {
-                String name = names.get(i);
+                String name = names.get(i).toLowerCase();
                 View view = getViewByName(name);
                 if (view != null) {
                     views.add(view);
@@ -404,20 +404,22 @@ public abstract class ParentForm {
     }
     // sql Id 拼接
     public String sqlGetIDs(String paramId,String sql,String ReplaceName){
-        sql = sql.toLowerCase();
+
         if (paramId!=null){
-            if (sql.contains("where")){
+            String str = sql.toLowerCase();
+         //sql = sql.toLowerCase();
+            if (str.contains("where")){
                 //截取
-                String before = StringUtils.substringBefore(sql, "where");
-                String after = StringUtils.substringAfter(sql, "where");
+                String before = StringUtils.substringBefore(str, "where");
+                String after = StringUtils.substringAfter(str, "where");
                 sql = before + " where "+ReplaceName+".Id="+paramId  +" and "+after;
             }else {
-                if(sql.contains("order by")){
-                    String after = sql.substring(sql.indexOf("order by"),sql.length());
-                    String before = StringUtils.substringBefore(sql, "order by");
-                    sql = before +" where "+ReplaceName+".Id="+paramId +after;
+                if(str.contains("order by")){
+                    String after = str.substring(str.indexOf("order by"),str.length());
+                    String before = StringUtils.substringBefore(str, "order by");
+                    sql = before +" where "+ReplaceName+".Id= "+paramId +after;
                 }else {
-                    sql=sql+" where "+ReplaceName+".Id="+paramId;
+                    sql=sql+" where "+ReplaceName+".Id= "+paramId;
                 }
 
             }
@@ -427,8 +429,9 @@ public abstract class ParentForm {
 
     //双列表 关键字段
     public String sqlGetMD(String mdAssoWord,String sql,String ReplaceName){
-        sql = sql.toLowerCase();
+
         if (mdAssoWord!=null){
+            sql = sql.toLowerCase();
             mdAssoWord = mdAssoWord.replace(":","=");
             if (sql.contains("where")){
                 String before = StringUtils.substringBefore(sql, "where");
@@ -439,7 +442,7 @@ public abstract class ParentForm {
                 if(sql.contains("order by")){
                     String after = sql.substring(sql.indexOf("order by"),sql.length());
                     String before = StringUtils.substringBefore(sql, "order by");
-                    sql = before +" where "+ReplaceName+"."+mdAssoWord +after;
+                    sql = before +" where "+ReplaceName+"."+mdAssoWord +"  "+after;
                 }else {
                     sql=sql+" where "+ReplaceName+"."+mdAssoWord;
                 }
@@ -449,74 +452,63 @@ public abstract class ParentForm {
     }
 
     //搜索条件 拼接
-    public String sqlSearchCondition(String searchCondition,String sql,String ReplaceName,String Search_fields){
-        sql = sql.toLowerCase();
+    public String sqlSearchCondition(String searchCondition,String sql,String ReplaceName,String Search_fields){ sql = sql.toLowerCase();
         System.out.println("searchCondition:\t"+searchCondition);
         String[] search = Search_fields.split(",");
         if (searchCondition!=null){
             searchCondition = searchCondition.substring(1,searchCondition.length()-1);
             String[] str1 = searchCondition.split(",");
             String con = "";
-            Map map = new HashMap() ;
+            Map<String,Object> map = new HashMap() ;
             for (int i = 0; i < str1.length; i++) {
                 String str2 = str1[i];//UserName:yonghu2
-                String[] ste3=str1[i].split(":");
-                map.put(ste3[0],ste3[1]);
+                String name = str2.substring(0,str2.indexOf(":"));
+                String value = str2.substring(str2.indexOf(":")+1,str2.length());
+                map.put(name,value);
             }
-
 
             for (int i = 0; i <search.length ; i++) {
                 String s = search[i];
-                if(map.containsKey(search[i].replace("%",""))) {
+             /*   if(map.containsKey(search[i].replace("%",""))) {
                     con += search[i].replace("%", "") + (s.indexOf("%") > 0 ? " like " : " = ") + (s.indexOf("%") > 0 ? "%" : "") + map.get(search[i].replace("%", "")) + (s.indexOf("%") > 0 ? "%" : "") + " and ";
+                }*/
+                List<View> views = getViewLists(Search_fields.replaceAll("%",""));
+                if (views!=null && views.size()>0){
+                    for (View view : views) {
+                        if (s.equalsIgnoreCase(view.getName()) && view.getType().equalsIgnoreCase("Datetime") ){
+                            String date  = s + "1";
+                            if(map.containsKey(date)) {
+                                con += "DATEDIFF(SECOND," + s + ",'" + map.get(s + "1") + "')<0 AND DATEDIFF(SECOND," + s + ",'" + map.get(s + "2") + "') > 0 and ";
+                            }
+                        }else if (view.getName().equalsIgnoreCase(s.replace("%","")) ){
+                            if(map.containsKey(search[i].replace("%",""))) {
+                                con += search[i].replace("%", "") + (s.indexOf("%") > 0 ? " like " : " = ") +
+                                        (s.indexOf("%") > 0 ? "'%" : "") + map.get(search[i].replace("%", "")) +
+                                        (s.indexOf("%") > 0 ? "%'" : "") + " and ";
+                            }
+                        }
+                    }
+                }else {
+                    System.out.println(search[i].replace("%",""));
+                    if(map.containsKey(search[i].replace("%",""))) {
+                        con += search[i].replace("%", "") + (s.indexOf("%") > 0 ? " like " : " = ") +
+                                (s.indexOf("%") > 0 ? "'%" : "") + map.get(search[i].replace("%", "")) +
+                                (s.indexOf("%") > 0 ? "%'" : "") + " and ";
+                    }
                 }
 
             }
             System.out.println(con);
-            /*for (int i = 0; i <str1.length ; i++) {
-                String str2 = str1[i];
-                String name = StringUtils.substringBefore(str2,":");
-                String value = StringUtils.substringAfter(str2,":");
-
-                for (int j = 0; j < search.length; j++) {
-                    String names = name;
-                    String key=search[i].replace("%","");
-                    String conditon="";
-                    if ( key==names ||  key.equals(names)){
-                        //con +=ReplaceName+"."+ name +" like '%"+value+"%' and ";
-                        conditon =  name +" like '%"+value+"%' and ";
-
-                        if(search[i].indexOf("%")<0){
-                            conditon=conditon.replace("%","").replace("like ","= ");
-                        }
-                        con+=conditon;
-                        break;
-                    }
-                }
-
-
-
-            }*/
-            con = con.substring(0,con.length()-4); //去掉最后的and
-            /*if (sql.contains("where")){
-                String before = StringUtils.substringBefore(sql, "where");
-                String after = StringUtils.substringAfter(sql, "where");
-                sql = before + " where " +con +after;
-            }else {*/        /*  if (name.contains("%")){
-                    con +=ReplaceName+"."+ name +" like '%"+value+"%' and ";
-                }else{
-                    con +=ReplaceName+"."+ name +" = "+value+" and ";
-                }*/
+            if (con!=null && !con.equals("")){
+                con = con.substring(0,con.length()-4); //去掉最后的and
                 if(sql.contains("order by")){
                     String after = sql.substring(sql.indexOf("order by"),sql.length());
-                    String before = StringUtils.substringBefore(sql, "order by");
+                    String before = StringUtils.substringBefore(sql, " order by ");
                     sql = "select * from ("+before+") "+ReplaceName+" where "+con+after;
-                   // sql = before + " where " + con +after;
                 }else {
-                    /*sql = sql + " where " + con;*/
                     sql = "select * from ("+sql+") "+ReplaceName+" where "+con;
                 }
-           /* }*/
+            }
         }
         return  sql;
     }

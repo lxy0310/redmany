@@ -47,13 +47,11 @@ public class ListForm extends CustomForm {
     private List<Map<String, Object>> FormStateOpertionList;
     private List<Map<String, Object>> formStateOperation;
     private int group;  //判断是否有分组
-    private FormUtil formUtil;
     private String paramId; //参数 ID
     private String mdAssoWord; //从表
     private String searchCondition ; //查询条件
     private  Form froms ;//form表信息
     private PagingService pagingService=new PagingServiceImpl();
-
 
 
     @Override
@@ -71,8 +69,6 @@ public class ListForm extends CustomForm {
         commonDao = new CommonDao(pSQLHelper);
         formDao = new FormDao(pSQLHelper);
         filedDao = new FormFiledDao(pSQLHelper);
-        formUtil = new FormUtil();
-
     }
 
     @Override
@@ -103,14 +99,15 @@ public class ListForm extends CustomForm {
         if (platform.equals("0")) {
             sql = sql + " where u.Id=" + getPage().getUserId();
         }
-        //获取总的条数
+        System.out.println("没分页前\t"+sql);
+       //获取总的条数
         Integer dataCount=(Integer) getPage().getSQLHelper().ExecScalar(companyId, SQLUtil.getCountSql(sql),null);
         if(dataCount!=null&& dataCount>0){
             getPage().setDataCount(dataCount);
         }
         //获取到分页后的url
         sql= SQLUtil.getPagingSQL(sql,getPage().getPageSize(),getPage().getPageIndex(),getFormData().getReplaceName());
-        System.out.println(sql);
+        System.out.println("没分页后\t"+sql);
 
         super.loadData(sql);
 
@@ -150,6 +147,9 @@ public class ListForm extends CustomForm {
             Div layuiRow = divshow.div().addCssClass("layui-row").styles("margin-top:10px;");
             for (View view : views) {
                 view.setIsValue("1");
+                if (view.getType().equalsIgnoreCase("Datetime") ){
+                    view.setIsDouble("1");
+                }
                 html = makeViews(list, view, null, html);
             }
             if (!TextUtils.isEmpty(html)) {
@@ -157,12 +157,20 @@ public class ListForm extends CustomForm {
             }
             for (String v : list) {
                 Div  divs  = layuiRow.div();
-                divs.addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md3");
-                Div div2 = divs.div().addCssClass("layui-form-item");
-                Div div1 = div2.div().styles("height: 30px;line-height: 30px;" );
-                div1.addCssClass("layui-input-block").styles("margin:0px;");
-                v = v.replaceAll("<label>","<label class=\"labelRight\">");
-                div1.text(v);
+
+                if (!"".equals(v) && v!=null){
+                    if (v.contains("useLayDateMultiple")){
+                        divs.addCssClass("layui-col-xs12 layui-col-sm12 layui-col-md6");
+                    }else {
+                        divs.addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md3");
+                    }
+                    Div div2 = divs.div().addCssClass("layui-form-item");
+                    Div div1 = div2.div().styles("height: 30px;line-height: 30px;" );
+                    div1.addCssClass("layui-input-block").styles("margin:0px;");
+                    v = v.replaceAll("<label>","<label class=\"labelRight\">");
+                    div1.text(v);
+                }
+
             }
             Div  divbtn1  = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md3");
             Div divbtn2 = divbtn1.div().addCssClass("layui-form-item");
@@ -176,7 +184,33 @@ public class ListForm extends CustomForm {
             searchBtn.italic(i);
             searchBtn.text("搜索");
             searchBtn.id("search");
-            searchBtn.onClick("searchCondition()");
+            String url = "queryStudentServlet?copformName="+formName+"&showType="+getPage().getShowType(); //queryStudentServlet?copformName=user1&showType=listForm
+            searchBtn.onClick("searchCondition('"+url+"')");
+        }
+    }
+
+    //表格顶部按钮
+    public void headTableButton(Div btncontainer){
+        String headDate = filedDao.getListHeadFormFiledStr(getCompanyId(),formName);
+        System.out.println("表格顶部按钮："+headDate);
+        Span span = btncontainer.span();
+        String html1 = getHtmlTemplate();
+        List<String> list1 = new ArrayList<String>();
+       if (headDate!=null){
+           List<View> views1 = getViewLists(headDate);
+           for (View view : views1) {
+               view.setIsTitle("1");
+               html1 = makeViews(list1, view, null, html1);
+           }
+           if (!TextUtils.isEmpty(html1)) {
+               btncontainer.text(html1);
+           }
+       }
+        for (String v : list1) {
+            if (v!=null && !"".equals(v)){
+                String after1 = StringUtils.substringAfter(v, "<button");
+                span.text("<button class=\"layui-btn layui-btn-sm\""+after1);
+            }
         }
     }
 
@@ -185,8 +219,16 @@ public class ListForm extends CustomForm {
             List<View> views = getViews();
             seach(div);
             Div head = div.div().addCssClass("layui-table-tool");
-            Div temp = head.div().addCssClass("layui-table-tool-temp");
-            Div btncontainer = temp.div().addCssClass("layui-btn-container");
+            Div left =head.div();
+            left.styles("    display: inline-block;");
+            Div right = head.div();
+            right.styles("    float: right;\n" +
+                    "    display: inline-block;\n" +
+                    "    text-align: right;");
+          /*  Div temp = head.div().addCssClass("layui-table-tool-temp");
+            Div btncontainer = temp.div().addCssClass("layui-btn-container");*/
+
+
             //Button add = btncontainer.button().addCssClass("layui-btn layui-btn-sm layui-btn-normal").text("添加");
             // Button del = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text("删除").onClick("del('" + getFormName() + "')");;
             //生成批量操作按钮
@@ -198,13 +240,17 @@ public class ListForm extends CustomForm {
             THead thead = table.thead();
             TableRow rowTh = new TableRow();  //表头
 
-            Div sel = rowTh.td().div().addCssClass("layui-input-inline");
-            // sel.styles("white-space: nowrap;");
+            //Div sel = rowTh.td().div().addCssClass("layui-input-inline");
+            TableDataCell th1 = rowTh.td();
+            th1.addCssClass("tableFirstCheckbox");
+            Div sel = th1.div().addCssClass("layui-input-inline");
             Span selAll = sel.span().id("as").text("全选");
             Input checkbox = sel.input();
             checkbox.id("box");
             checkbox.type("checkbox");
             checkbox.onClick("my()");
+            checkbox.addCssClass("tableCheckbox");
+            checkbox.styles("margin:0px;");
 
             for (View view : views) {
                 rowTh.td(view.getTitle());
@@ -219,7 +265,11 @@ public class ListForm extends CustomForm {
                 List<String> list = new ArrayList<String>();
                 TableRow row = tBody.tr();
 
-                Input check = row.td().input().type("checkbox");
+               // Input check = row.td().input().type("checkbox").addCssClass("tableCheckbox");
+                TableDataCell td1 = row.td();
+                td1.addCssClass("tableFirstCheckbox");
+                Input check = td1.input().type("checkbox").addCssClass("tableCheckbox");
+
                 check.name("box1");
                 check.value(line.get("Id") != null ? line.get("Id").toString() : line.get("id").toString());
 
@@ -237,17 +287,19 @@ public class ListForm extends CustomForm {
                     String after1 = StringUtils.substringAfter(before, ">");
                     //字段内容长度过长，鼠标移入显示
                     if ( after1.length() > 20) {
-                        if (v.contains("-val")){
+                        if (v.contains("-val") || v.contains("<img src")){
 
                         }else {
                             td.attr("title", after1);
                         }
                     }
-                    td.onClick("tableShow('" + getFormName() + "'," + line.get("Id") + ");");
+                    //ondblclick
+                    //td.onClick("tableShow('" + getFormName() + "'," + line.get("Id") + ");");
+                    td.attr("ondblclick","tableShow('" + getFormName() + "'," + line.get("Id") + ");");
                 }
-                Integer Tablestate = (Integer) line.get("state");
+                Integer Tablestate = line.get("state") != null ? (Integer) line.get("state") : (Integer)line.get("State");
                 if (Tablestate != null) {
-                    FormStateOpertionList = commonDao.getFormListOperationShow(getCompanyId(),1 , getFormName(), Tablestate);
+                    FormStateOpertionList = commonDao.getFormListOperationShow(getCompanyId(),getPage().getUserId() , getFormName(), Tablestate);
                     System.out.println(getPage().getUserId());
                     if (FormStateOpertionList != null) {
                         TableDataCell td = row.td();
@@ -281,7 +333,7 @@ public class ListForm extends CustomForm {
                                 a1.styles("white-space: nowrap;background-color: #1E9FFF;color: white;padding: 5px;border-radius: 3px;margin-right: 5px;" +
                                         "text-decoration: none;");
                                 /*  批量操作按钮  */
-                                if (btnList.get("Batch") == "1" || "1".equals(btnList.get("Batch"))) {
+                                if (btnList.get("Batch") == "1" || "1".equals(btnList.get("Batch"))  ) {
                                     //batch.put(btnList.get("OperationName").toString(),btnList.get("OperationName").toString());
                                     // batch.add(btnList.get("OperationName").toString());
                                     batch.put(btnList.get("OperationName").toString(), btnList.get("OperationType").toString());
@@ -291,9 +343,10 @@ public class ListForm extends CustomForm {
                     }
                 }
             }
+
             //去重
             for (String key : batch.keySet()) {
-                Button batchOperation = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text(key);//.onClick("batchList(" + getFormName() + ")")
+                Button batchOperation = left.button().addCssClass("layui-btn layui-btn-sm").text(key);//.onClick("batchList(" + getFormName() + ")")
                 String str = batch.get(key).toString();
                 if ("_del".equals(str) || "_del" == str) { //如果是删除
                     batchOperation.onClick("delBatch('" + getFormName() + "')");
@@ -301,6 +354,18 @@ public class ListForm extends CustomForm {
                     batchOperation.onClick("batchList('" + getFormName() + "')");
                 }
             }
+            //如果没有批量操作，就把全选隐藏
+            if(batch.size()==0){
+                table.add(new Script().text("" +
+                        "$(function(){\n" +
+                        " $(\"table tr>td:first-child\").hide();" +
+                        "});" +
+                        ""));
+            }
+
+            //表格顶部动态配置按钮
+            headTableButton(right);
+
         }else {
             Div div1 = div.div();
             H3 h3 = new H3();
@@ -308,6 +373,7 @@ public class ListForm extends CustomForm {
             div1.h3(h3);
         }
     }
+
 
     //手机端没分组
     public void listShow(Div div) {
