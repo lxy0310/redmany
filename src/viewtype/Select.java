@@ -84,7 +84,10 @@ public class Select extends ParentView {
             Div div1 = div.div();
             div1.addCssClass("layui-input-block");
 //            div1.addCssClass("layui-input-inline");
+            div1.styles("width: 182px;");
             div1.styles("margin-top: -30px;");
+            div1.styles("margin-left: 123px;");
+            div1.styles("margin-right: 73px;");
 //            div.addCssClass("layui-input-inline");
 //            Label label = div1.label();
 //            label.text(view.getTitle());
