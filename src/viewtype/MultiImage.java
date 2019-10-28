@@ -31,7 +31,6 @@ public class MultiImage extends ParentView {
                 if(text.indexOf(",")<0){
                     text=text+",";
                 }
-//                if(isShow){
                 if(!"1".equals(view.getIsValue())){
                     imgs = text.split(",");
                 }
