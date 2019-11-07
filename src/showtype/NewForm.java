@@ -131,11 +131,15 @@ public class NewForm extends FreeForm {
         Button saveBtn=btnDiv.button();  //保存
         if (optype!=null){ //参数
             Input input=btnDiv.input("hidden",getFormName()).addCssClass("optype").value(optype);
+            input.attr("name","optype");
         }
         if ("1".equals(optype)){    //修改
             Input input=btnDiv.input("hidden",getFormName()).addCssClass("paramId").value(paramId);
+            input.attr("name","Id");
         } else if ("2".equals(optype)){     //查看
             saveBtn.styles(" pointer-events:none;");//禁止鼠标事件
+            // disabled="disabled"
+            saveBtn.attr("disabled","disabled");
         }
         if (mdAssoWord!=null){
             saveBtn.addCssClass("mdsaveBtn");
@@ -156,6 +160,7 @@ public class NewForm extends FreeForm {
             cancelBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
             cancelBtn.onClick("javascript:history.go(-1);location.reload();");
         }
+
         saveBtn.attr("type","button");
     }
 
@@ -265,10 +270,22 @@ public class NewForm extends FreeForm {
                 System.out.println(line.toString());
                 if ("1".equals(optype)) {    //修改
                     String Modify_fields = formList.getModify_fields();
+                    //    color: #939192;
+                    //    background: #f5f5f5!important;
+                    //    border: 1px solid;
+                    String[] str = Modify_fields.split(",");
                     for (View view : views) {
-                        if (!Modify_fields.contains("view")){
-                            view.setWapAttribute("");
+                        if (!Modify_fields.contains(view.getName())){
+                            view.setIsReadonly("1");
                         }
+                       /* for (int i = 0; i < str.length; i++) {
+                           if (str[i] == view.getName() || str[i].equals(view.getName())){
+
+                           }else{
+                               view.setIsReadonly("1");
+                               break;
+                           }
+                        }*/
                         html = addMakeViewMap(map, view, line, html);
                     }
                 }else{ //查看
@@ -318,7 +335,7 @@ public class NewForm extends FreeForm {
         for (String v : list) {
             if (v!=null && !v.equals("")){
                 Div div= null;
-                if (formList.getRow()!=null){
+                if (formList!=null && formList.getRow()!=null){
                     Div  divs = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md4");
                     div = divs.div().addCssClass("layui-form-item");
                 }

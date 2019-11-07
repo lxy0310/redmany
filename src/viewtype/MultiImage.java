@@ -22,9 +22,8 @@ public class MultiImage extends ParentView {
     protected HtmlBodyElement<?> create() {
         Div div = new Div();
         div.id(getName());
-        boolean isShow = isShow(getForm().getPage().getShowType());
+        String optype = getPage().getParameter("optype");//修改1查看2
         String text = getDataProvider().getText(this, getForm());//input值
-       // text="034dc6fe45e442d8b07f7e6c683cc875.png,071dede250d44fe4a519e7e857ad9e8f.jpg";
         if (getView() != null) {
             View view=getView();
             String[] imgs = null;
@@ -87,7 +86,7 @@ public class MultiImage extends ParentView {
                     img.id(getName()+i);
                     img.width("30px");
                     img.height("30px");
-                    if(!isShow){
+                    if(optype!=null){
                         A a = div2.a();
                         a.herf("javascript:void(0);");
                         Img delImg = a.img("/redmany/images/delete.jpg");
@@ -96,7 +95,7 @@ public class MultiImage extends ParentView {
                     }
                 }
             }
-            if (isShow) {
+            if(optype!=null && "2".equals(optype)){
                 input.attr("disabled","disabled");
                 input.attr("color","transparent");
                 return div;

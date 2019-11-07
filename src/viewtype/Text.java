@@ -165,7 +165,10 @@ public class Text extends ParentView {
                 input.value(text);
             }
             if(optype!=null && "2".equals(optype)){
-                input.attr("readonly","readonly");
+                input.attr("readonly","false");
+            }else if (view.getIsReadonly()=="1"){
+                input.attr("readonly","false");
+                input.styles("color: #939192;background: #f5f5f5!important;border: 1px solid;");
             }
             if (view.getShowState()!=null){
                 input.value("");

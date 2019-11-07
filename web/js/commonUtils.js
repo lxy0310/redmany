@@ -173,9 +173,9 @@ function delBatch(FormName) {
     $('input[name="box1"]:checked').each(function(){
         s+=$(this).val()+','; //遍历得到所有checkbox的value
        /* $("table tr>td:first-child").hide();*/
-        var trList = $(this).parent().parent().find("td:eq(0)").text();//获取点击行的某一列
-        console.log(trList);
-        alert(trList);
+       // var trList = $(this).parent().parent().find("td:eq(0)").text();//获取点击行的某一列
+      //  console.log(trList);
+       // alert(trList);
     });
 
     if (s.length > 0) {

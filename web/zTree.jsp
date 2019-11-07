@@ -12,14 +12,22 @@
     <script type="text/javascript" src="js/jquery-1.8.1.js"></script>
     <script type="text/javascript" src="layui/layui.js"></script>
     <link rel="stylesheet" href="layui/css/layui.css">
-
+    <link rel="stylesheet" href="css/z-tree.css">
+    <style>
+        .layui-nav-tree .layui-nav-item a:hover{
+            background-color: red;
+        }
+    </style>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
-        <div class="layui-logo">红森林公众号后台</div>
+    <div class="layui-header" style="background-color: #fff;color: #000;">
+        <div class="layui-logo">
+            <img width="25px" src="images/log_logo.png"/>
+            <span style="color: #000;">红森林企业平台</span>
+        </div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
-        <ul class="layui-nav layui-layout-left">
+       <%-- <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"><a href="javascript:;" class="con-demo-active" dataUrl="addHtmls.jsp" >添加页面</a></li>
             <li class="layui-nav-item"><a href="addHtml.jsp">商品管理</a></li>
             <li class="layui-nav-item"><a href="javascript:;" onclick="menuClick(addHtml.jsp)">用户</a></li>
@@ -31,13 +39,28 @@
                     <dd><a href="">授权管理</a></dd>
                 </dl>
             </li>
-        </ul>
+        </ul>--%>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
+                <a>
+                    <img width="20px;" src="images/主页@2x.png">
+                </a>
+            </li>
+            <li class="layui-nav-item">
+                <a>
+                    <img width="20px;" src="images/组 21@2x.png">
+                </a>
+            </li>
+            <li class="layui-nav-item">
+                <a>
+                    <img width="20px;" src="images/我的@2x.png">
+                </a>
+            </li>
+            <li class="layui-nav-item">
                 <a href="javascript:;">
-
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    ${sessionScope.realName}
+                    Readmany
+                   <%-- ${sessionScope.RealName}--%>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -45,23 +68,70 @@
                     <dd><a href="login?out=1&url=backLogin.jsp">登出</a></dd>
                 </dl>
             </li>
+            <li class="layui-nav-item">
+                <a href="login?out=1&url=backLogin.jsp">
+                    <img width="20px;" src="images/out@2x.png">
+                </a>
+            </li>
             <!-- <li class="layui-nav-item"><a href="">退了</a></li> -->
         </ul>
     </div>
-
-    <div class="layui-side layui-bg-black">
+<%--    <div class="layui-side-scroll">
+        <ul>
+            <li class="menu-left" onclick="btn_toggle();">
+                <div class="menu-left-divimg" >
+                    <img class="menu-left-div-img" src="img/1@2x.png" />
+                </div>
+                <div class="menu-left-text" >
+                    <img class="menu-show-icon" src="img/椭圆 4@2x.png" />
+                    <a class="menu-left-text-t">首页</a>
+                </div>
+            </li>
+            <li class="menu-left" >
+                <div class="menu-left-divimg" >
+                    <img class="menu-left-div-img" src="img/1@2x.png" />
+                </div>
+                <div class="menu-left-text" >
+                    <a class="menu-left-text-t">首页</a>
+                </div>
+            </li>
+            <li class="menu-left" >
+                <div class="menu-left-divimg" >
+                    <img class="menu-left-div-img" src="img/1@2x.png" />
+                </div>
+                <div class="menu-left-text" >
+                    <a class="menu-left-text-t">首页</a>
+                </div>
+            </li>
+        </ul>
+    </div>--%>
+    <div class="layui-side ">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree" lay-shrink="all" lay-filter="demo" >
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" lay-filter="demo" style="background-color: #006bff;">
+                <li class="layui-nav-item layui-nav-itemed" id="speardIcon" style="display: inline-block;position: absolute;right: 20px;top: 10px;">
+                    <div style="display: inline-block;" class="menu-icon"><img src="images/组 21@2x(1).png" width="20px"/></div>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="index.jsp">
+                        <div style="display: inline-block;" class="menu-icon"><img src="images/1@2x.png" width="20px"/></div>
+                        <cite class="menu-cite">主页</cite>
+                    </a>
+                </li>
                     <c:forEach items="${sessionScope.panelList}" var="p">
                         <li class="layui-nav-item layui-nav-itemed">
-                            <a class="" href="javascript:;" target="menuFrame">${p.PanelName}</a>
+                            <a class="" href="javascript:;">
+<%--                                <div><img src="images/log_logo.png" width="25px"/></div>   target="menuFrame"--%>
+                                <div style="display: inline-block;"><img src="http://oa.redmany.com:50003/document/2@2x.png" width="20px"/></div>
+                                <cite class="menu-cite">${p.PanelName}</cite>
+                            </a>
                             <dl class="layui-nav-child">
                                 <c:forEach items="${sessionScope.menuList }" var="m">
                                     <c:if test="${m.panel==p.ID }">
                                         <c:if test="${m.ParentMenu==0 }">
                                             <dd>
-                                                <a href="javascript:;" class="con-left-active" lay-id="${m.Id}" dataUrl="queryStudentServlet?copformName=${m.FormName}&showType=${m.ShowType}">${m.MenuName }</a>
+                                                <a href="javascript:;" class="con-left-active" lay-id="${m.Id}" dataUrl="queryStudentServlet?copformName=${m.FormName}&showType=${m.ShowType}">
+                                                        ${m.MenuName }</a>
                                                 <c:if test="${sessionScope.getPanelId!=null}">
                                                    <c:forEach items="${sessionScope.getPanelId}" var="panel">
                                                         <c:if test="${m.Id==panel.ParentMenu}">
@@ -142,6 +212,31 @@
             var b='/WEB-INF/jsp/'+a;
             $("#iframe-page-content").attr("src",a);
           //  alert(a);
+        });
+        var falg = true;
+
+        $('#speardIcon').on('click',function(){
+            if(falg){
+               /* $(".menu-left-text").css("display","none");
+                $(".menu-left").css("width","40px");
+                $(".layui-body").css("left","40px");*/
+               $(".layui-nav-tree").css("width","60px");
+               $(".layui-nav-tree .layui-nav-child").css("display","none");
+               $(".menu-icon").css("display","none");
+                $(".layui-nav-tree .layui-nav-more").css("display","none");
+                $(".menu-cite").css("display","none");
+                falg =false;
+            }else{
+                $(".layui-nav-tree").css("width","200px");
+                $(".layui-nav-tree .layui-nav-child").css("display","inline-block");
+                $(".menu-icon").css("display","inline-block");
+                $(".layui-nav-tree .layui-nav-more").css("display","inline-block");
+                $(".menu-cite").css("display","inline-block");
+               /* $(".menu-left-text").css("display","inline-block");
+                $(".menu-left").css("width","240px");
+                $(".layui-body").css("left","200px");*/
+                falg =true;
+            }
         });
 
     });
