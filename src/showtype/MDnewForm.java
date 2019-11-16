@@ -105,7 +105,7 @@ public class MDnewForm extends CustomForm {
         Div body = panel.div().addCssClass("layui-card-body");
         Form saveForm=body.form().addCssClass("layui-form");
         saveForm.id("mdAddForm");
-        String filedStr = filedDao.getFormFiledStr(getCompanyId(),formName);  //获取formfiled表的数据
+        String filedStr = filedDao.getFormFiledStr(getCompanyId(),formName,getPage().getShowType());  //获取formfiled表的数据
         List<View> views = getViewLists(filedStr);
         String html = getHtmlTemplate();
         List<String> list = new ArrayList<>();

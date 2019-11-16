@@ -139,10 +139,6 @@ function gotoPage(target, transferParams) {
     }*/
 
     if (target.indexOf('submit:') >= 0 ) {
-
-
-
-
         //{Id}在生成的页面的java，替换好
       var strs = target.split('[^]');
         var submit = strs[0];
@@ -176,6 +172,7 @@ function gotoPage(target, transferParams) {
             formData.set("formName",formName);
             formData.set("showType",showType);
             //alert(formData);
+            var optype=$("#optype").val();
             $.ajax({
                url:"submit",
                type:"post",
@@ -198,14 +195,16 @@ function gotoPage(target, transferParams) {
                              document.getElementById('mdIframe').src=a;
                          }
                          layer.msg("操作成功！",{icon:6});
-                     }else{
+                     }else if (optype!=null){
+                         layer.msg("操作成功！",{icon:6});
+                         location.reload();
+                     }
+                     else{
                          layer.msg("操作成功！",{icon:6});
                          document.getElementById(formName+"Form").reset();
                          window.parent.document.getElementById('mdIframe').contentWindow.location.reload();
-
                        //  window.parent.getElementById('mdIframe').reload();
                      }
-
                  }else {
                      layer.msg("操作失败！",{icon:5});
                      window.location.reload();

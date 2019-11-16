@@ -147,7 +147,7 @@ public class ListModifyForm extends CustomForm {
             List<String> list = new ArrayList<>();
 
             com.sangupta.htmlgen.tags.body.forms.Form divshow = div.form().addCssClass("layui-form").id("searchCondition");
-            Div layuiRow = divshow.div().addCssClass("layui-row").styles("margin-top:10px;");
+            Div layuiRow = divshow.div().addCssClass("layui-row").styles("margin-top:10px;font-size:12px;");
             for (View view : views) {
                 view.setIsValue("1");
                 if (view.getType().equalsIgnoreCase("Datetime") ){
@@ -177,10 +177,11 @@ public class ListModifyForm extends CustomForm {
             Button searchBtn = divbtn2.button();
             searchBtn.attr("type","button");
             searchBtn.addCssClass("layui-btn");
-            searchBtn.styles("margin-left: 120px;");
+            searchBtn.styles("margin-left: 120px;font-size: 12px;");
             Italic i = new Italic();
             i.addCssClass("layui-icon ");
             i.text("&#xe615;");
+            i.styles("font-size: 16px;");
             searchBtn.italic(i);
             searchBtn.text("搜索");
             searchBtn.id("search");
@@ -205,7 +206,7 @@ public class ListModifyForm extends CustomForm {
             btncontainer.text(html1);
         }
         for (String v : list1) {
-            if (v!=null){
+            if (v!=null && !"".equals(v) && headDate!=null){
                 String after1 = StringUtils.substringAfter(v, "<button");
                 span.text("<button class=\"layui-btn layui-btn-sm\""+after1);
             }
@@ -322,7 +323,18 @@ public class ListModifyForm extends CustomForm {
                                     a1.text(btnList.get("OperationName").toString());
                                     String TemplatePage = commonDao.getTemplatePageByOperationId(getCompanyId(), (Integer) btnList.get("OperationId"));
                                     a1.herf(TemplatePage + "?FormName=" + getFormName() + "&id=" + Id + "&NeedState=" + Tablestate);
-                                } else {   //其他的操作按钮
+                                }else if ("_goto".equals(btnList.get("OperationType").toString())){
+                                    a1.text(btnList.get("OperationName").toString());
+                                    String transfer = btnList.get("transferParams").toString();
+                                    for (String filed: line.keySet()) { //formfiled
+                                        if(transfer.indexOf("{"+filed+"}")>=0){
+                                            transfer=transfer.replace("{"+filed+"}", line.get(filed).toString());
+                                            System.out.println(transfer);
+                                        }
+                                    }
+                                    a1.onClick("gotoPage('"+btnList.get("target").toString()+"','"+transfer+"');");
+                                }
+                                else {   //其他的操作按钮
                                     // Button del1 = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text(btnList.get("OperationName").toString()).id("elDelete").onClick("del("+getFormName()+")");
                                     a1.text(btnList.get("OperationName").toString());
                                     a1.herf("javascript:void(0);").onClick("updateListBtn(" + Id + ",'" + getFormName() + "','" + btnList.get("AfterProcessState") + "'" + ");");

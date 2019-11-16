@@ -17,11 +17,22 @@
         .layui-nav-tree .layui-nav-item a:hover{
             background-color: red;
         }
+        .iframe-body{
+            margin: 5px;
+        }
     </style>
 </head>
+<%--<c:if test="${sessionScope.realName eq null}">
+    <script>
+        $(function () {
+            window.location.href = "backLogin.jsp";
+        });
+    </script>
+</c:if>--%>
 <body class="layui-layout-body">
+
 <div class="layui-layout layui-layout-admin">
-    <div class="layui-header" style="background-color: #fff;color: #000;">
+    <div class="layui-header" style="background-color: #fff;color: #000;box-shadow: 0px 0.1px 8px #898989">
         <div class="layui-logo">
             <img width="25px" src="images/log_logo.png"/>
             <span style="color: #000;">红森林企业平台</span>
@@ -41,7 +52,7 @@
             </li>
         </ul>--%>
         <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item">
+            <%--<li class="layui-nav-item">
                 <a>
                     <img width="20px;" src="images/主页@2x.png">
                 </a>
@@ -55,11 +66,11 @@
                 <a>
                     <img width="20px;" src="images/我的@2x.png">
                 </a>
-            </li>
+            </li>--%>
             <li class="layui-nav-item">
-                <a href="javascript:;">
+                <a href="javascript:;" style="color: #898989">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    Readmany
+                    ${sessionScope.realName}
                    <%-- ${sessionScope.RealName}--%>
                 </a>
                 <dl class="layui-nav-child">
@@ -105,7 +116,7 @@
             </li>
         </ul>
     </div>--%>
-    <div class="layui-side ">
+    <div class="layui-side " style="box-shadow: 3px 0px 3px #898989;">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-shrink="all" lay-filter="demo" style="background-color: #006bff;">
@@ -113,7 +124,7 @@
                     <div style="display: inline-block;" class="menu-icon"><img src="images/组 21@2x(1).png" width="20px"/></div>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="index.jsp">
+                    <a href="javascript:;" class="con-left-active" lay-id="01" dataUrl="queryStudentServlet?copformName=backIndex&showType=copForm">
                         <div style="display: inline-block;" class="menu-icon"><img src="images/1@2x.png" width="20px"/></div>
                         <cite class="menu-cite">主页</cite>
                     </a>
@@ -159,9 +170,9 @@
     <div class="layui-body main-body">
         <!-- 内容主体区域 -->
         <!--     <div style="padding: 15px;">内容主体区域</div> -->
-        <div id="page_content">
-            <iframe id="iframe-page-content" src="index.jsp" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight=" 0" scrolling="yes" allowtransparency="yes"></iframe>
-
+        <div id="page_content" style="background: #f2f2f2;">
+            <iframe id="iframe-page-content" class="iframe-body" src="index.jsp" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight=" 0" scrolling="yes" ></iframe>
+            <%--  allowtransparency="true"  --%>
             <!-- <iframe id="menuFrame" name="menuFrame" src="addHtml.jsp" style="overflow:visible;"
             scrolling="yes" frameborder="no"></iframe> -->
         </div>

@@ -10,6 +10,7 @@ import dao.FormDao;
 import dao.FormFiledDao;
 import dao.OaAttributeDao;
 import model.Form;
+import model.FormFiled;
 import model.OaAttribute;
 import org.apache.commons.lang.StringUtils;
 import page.Page;
@@ -55,6 +56,7 @@ public abstract class ParentForm {
     protected List<View> mViews;
     protected View view;
     private List<String> mViewNames;
+
     /**
      * Get_data_sql
      */
@@ -120,6 +122,8 @@ public abstract class ParentForm {
         return mViewNames;
     }
 
+
+
     public List<String> getFormFieldNames(String mFormDate) {
         if (mViewNames == null) {
             mViewNames = DataHelper.toList(mFormDate);
@@ -127,12 +131,8 @@ public abstract class ParentForm {
         return mViewNames;
     }
 
-
-
-
     public List<View> getViews() {
         List<String> names = getFormFieldNames();
-
         if (names != null && names.size() > 0) {
             List<View> views = new ArrayList<>();
             //List_fields不为空，则按照这个字段的顺序去添加
@@ -140,7 +140,8 @@ public abstract class ParentForm {
             for (int i = 0; i < count; i++) {
                 String name = names.get(i).toLowerCase();
                 View view = getViewByName(name);
-                if (view != null) {
+                boolean flag = getFormFiledByName(name);
+                if (view != null && flag) {
                     views.add(view);
                 }
             }
@@ -150,6 +151,9 @@ public abstract class ParentForm {
         }
     }
 
+
+
+
     public List<View> getViewLists(String ListFeilds) {
         // mFormData=sFormDao.getForm(companyId, formNames);
         List<String> names = DataHelper.toList(ListFeilds);
@@ -158,7 +162,7 @@ public abstract class ParentForm {
             //List_fields不为空，则按照这个字段的顺序去添加
             int count = names.size();
             for (int i = 0; i < count; i++) {
-                String name = names.get(i);
+                String name = names.get(i);  //.toLowerCase()
                 View view = getViewByName(name);
                 if (view != null) {
                     views.add(view);
@@ -221,8 +225,6 @@ public abstract class ParentForm {
         String formName = getFormName();
         //获取Form表的实体对象
         mFormData = sFormDao.getForm(companyId, formName);
-
-
 //        System.out.println(getFormName() + " form:" + mFormData);
         //获取FormFiled表的数据集mViews
         if (getFormName().contains(",")){   //双列表
@@ -230,7 +232,8 @@ public abstract class ParentForm {
             mViews = sFormFiledDao.getFormContorl(companyId, fFormCloumn, null);
             mFormData = sFormDao.getForm(companyId, fFormCloumn);
         }else{
-            mViews = sFormFiledDao.getFormContorl(companyId, getFormName(), null);
+
+           mViews = sFormFiledDao.getFormContorl(companyId, getFormName(), null);
         }
         if (mViews != null) {
             //循环mViews获取相应的样式配置
@@ -322,22 +325,24 @@ public abstract class ParentForm {
     }
     public abstract HtmlBodyElement<?> createViews();
     public  HtmlBodyElement createView() {
+
         HtmlBodyElement<?> element = createViews();
 
         if(element!=null){
             if(sAttrs==null){
-                /* sAttrs = oaAttributeDao.getOaAttribute(companyId,formName);*/
+                 /*sAttrs = oaAttributeDao.getOaAttribute(companyId,formName);
                 if(sAttrs!=null){
                     String wapAttrs = sAttrs.getWapAttribute();
                     Map<String,String> map =parseAttribute(wapAttrs);
                     if(wapAttrs!=null){
 
+
                     }
-                }
-//            if (onclick!=null){element.styles(map.get("style"));
+                }*/
+
             }
-//                element.onClick(onclick);
-//            }
+
+
 
         }
         return element;
@@ -407,16 +412,16 @@ public abstract class ParentForm {
 
         if (paramId!=null){
             String str = sql.toLowerCase();
-         //sql = sql.toLowerCase();
+           // sql = sql.toLowerCase();
             if (str.contains("where")){
                 //截取
-                String before = StringUtils.substringBefore(str, "where");
-                String after = StringUtils.substringAfter(str, "where");
+                String before = StringUtils.substringBefore(sql, "where");
+                String after = StringUtils.substringAfter(sql, "where");
                 sql = before + " where "+ReplaceName+".Id="+paramId  +" and "+after;
             }else {
                 if(str.contains("order by")){
                     String after = str.substring(str.indexOf("order by"),str.length());
-                    String before = StringUtils.substringBefore(str, "order by");
+                    String before = StringUtils.substringBefore(sql, "order by");
                     sql = before +" where "+ReplaceName+".Id= "+paramId +after;
                 }else {
                     sql=sql+" where "+ReplaceName+".Id= "+paramId;
@@ -431,17 +436,18 @@ public abstract class ParentForm {
     public String sqlGetMD(String mdAssoWord,String sql,String ReplaceName){
 
         if (mdAssoWord!=null){
-            sql = sql.toLowerCase();
+            String str =  sql.toLowerCase();
+          //  sql = sql.toLowerCase();
             mdAssoWord = mdAssoWord.replace(":","=");
-            if (sql.contains("where")){
-                String before = StringUtils.substringBefore(sql, "where");
-                String after = StringUtils.substringAfter(sql, "where");
+            if (str.contains("where")){
+                String before = StringUtils.substringBefore(str, "where");
+                String after = StringUtils.substringAfter(str, "where");
                 // " where "+ReplaceName+".Id="
                 sql = before + " where "+ReplaceName+"."+mdAssoWord  +" and "+after;
             }else {
-                if(sql.contains("order by")){
-                    String after = sql.substring(sql.indexOf("order by"),sql.length());
-                    String before = StringUtils.substringBefore(sql, "order by");
+                if(str.contains("order by")){
+                    String after = str.substring(str.indexOf("order by"),sql.length());
+                    String before = StringUtils.substringBefore(str, "order by");
                     sql = before +" where "+ReplaceName+"."+mdAssoWord +"  "+after;
                 }else {
                     sql=sql+" where "+ReplaceName+"."+mdAssoWord;
@@ -538,7 +544,21 @@ public abstract class ParentForm {
         }
         return null;
     }
-    public View getViewByNames(String name) {
+
+    public boolean getFormFiledByName(String name){
+        List<FormFiled> formFileds = sFormFiledDao.getFormFiledContorl(companyId, getFormName(), mPage.getShowType());
+        if (formFileds == null) return false;
+        for (FormFiled view : formFileds) {
+            if (name.equalsIgnoreCase(view.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+/*    public View getViewByNames(String name) {
         if (mViews == null) return null;
         for (View view : mViews) {
             if (name.equalsIgnoreCase(view.getName())) {
@@ -546,7 +566,7 @@ public abstract class ParentForm {
             }
         }
         return null;
-    }
+    }*/
 
     /**
      * 根据type反射

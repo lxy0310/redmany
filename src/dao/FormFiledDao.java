@@ -47,12 +47,12 @@ public class FormFiledDao extends BaseDao {
      * @param FormName
      * @return
      */
-    public String getFormFiledStr (String CompanyId, String FormName){
+    public String getFormFiledStr (String CompanyId, String FormName,String ShowType){
 
        // String sql = "SELECT Name  FROM [FormFiled] WHERE FormName=? order by Index_number";
        // String sql = "SELECT Name FROM [FormFiled] WHERE FormName=? order by case when filedGroup is null then 1 else 0 end ,filedGroup,cast(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)) as int),Index_number";
-       String sql ="SELECT * FROM FormFiled WHERE FormName=? and type!='HeadButton' ORDER BY CONVERT(INT, IsNull(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)),'100')), Index_number";
-        String[] parameters = {FormName};
+       String sql ="SELECT * FROM FormFiled WHERE FormName=? and (showtype=? or showtype is NULL or showtype = '') and type!='HeadButton' ORDER BY CONVERT(INT, IsNull(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)),'100')), Index_number";
+        String[] parameters = {FormName,ShowType};
         List<Map<String, Object>> datas = new ArrayList<>();
         datas = sqlHelper.executeQueryList(CompanyId, sql, parameters);
       //  List<String> names = new ArrayList<>();
@@ -229,6 +229,12 @@ public class FormFiledDao extends BaseDao {
             sb.append(" where FormFiled.FormName='" + formName + "'");
         }
         return sqlHelper.executeQueryList(Company_Id, sb.toString(), null, View.class);
+    }
+
+    public List<FormFiled> getFormFiledContorl(String Company_Id, String formName, String showType){
+        String sql ="SELECT * FROM FormFiled WHERE FormName=? and (showtype=? or showtype is NULL or showtype = '') and type!='HeadButton' ORDER BY CONVERT(INT, IsNull(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)),'100')), Index_number";
+        String[] parameters = {formName,showType};
+        return sqlHelper.executeQueryList(Company_Id,sql,parameters,FormFiled.class);
     }
 
     public List<View> getFormList(String Company_Id, String formName, String showType) {

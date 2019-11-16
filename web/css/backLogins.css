@@ -103,7 +103,11 @@ html {
     border-left: 0px;
     border-right: 0px;
     border-bottom: 1px solid #898989;
+    color: #006bff;
+    background:transparent;
+   /* -webkit-box-shadow: 0 0 0px 1000px white inset;*/
 }
+
 
 .log-msg input{
     width: 120px;

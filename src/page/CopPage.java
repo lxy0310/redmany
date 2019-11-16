@@ -7,6 +7,7 @@ import commandCenter.CommandCenter;
 import common.utils.DataHelper;
 import common.utils.TextUtils;
 import dao.OaCopModelDao;
+import model.ReplaceModel;
 import servlet.StudentServlet;
 import showtype.ParentForm;
 
@@ -19,9 +20,13 @@ import java.util.List;
  */
 public class CopPage extends Page {
 
+    private ReplaceModel replaceModel;
+
     protected List<HomeForm> getForms() {
         return mainDao.getForm(getCompany_Id(), getCopformName(), getShowType());//获取配置模板
     }
+
+   /* protected List<>*/
 
     private OaCopModelDao mOaCopModelDao;
 
@@ -55,7 +60,11 @@ public class CopPage extends Page {
 
     protected void writeForms(HtmlBodyElement<?> body) {
         List<String> views = new ArrayList<>();
-        String html = mainDao.getTemplateControl(getCompany_Id(), getCopformName());
+        replaceModel = mainDao.getFormMenuHtml(getCompany_Id(),getCopformName());
+        String html = null;
+        if (replaceModel!=null){
+            html = replaceModel.getHtml_template();
+        }
         List<HomeForm> datas = getForms();//获取配置模板
         if (Page.LOG) {
             System.out.println(getCopformName() + "/" + getShowType() + "=" + datas);

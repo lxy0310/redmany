@@ -136,6 +136,13 @@ function searchCondition(url) {
 
 }
 
+//返回上一页
+function goUrl(){
+    var url = document.referrer;
+    window.location.href=url;
+
+}
+
 //点击td跳转到修改页面
 function tableUpdate(formname,Id) {
     location.href = "queryStudentServlet?copformName="+formname+"&showType=newForm&optype=2&ParamId="+Id;
@@ -217,30 +224,6 @@ function delBatch(FormName) {
         }
     });
 
-   /* layer.confirm('您确定要删除吗？', {
-        btn: ['忍心删除','在想想'] //按钮
-    }, function(){
-        alert(s);
-        s="common?method='delBatch'&hidFormName="+hidFormName+"&id="+s+"";
-        alert(s)
-        $("#elDelete").attr('href',s);
-
-        $.ajax({
-            url:"common",
-            data:{"method":"delBatch","gCompany_Id":gCompany_Id,"hidFormName":hidFormName,"id":s},
-            type:"POST",
-            success:function(data){
-                if (data>0){
-                    layer.msg("删除成功！",{icon:6});
-                    window.parent.location.reload();
-                } else{
-                    layer.msg("删除失败！",{icon:6});
-                }
-            },error:function(){
-                layer.msg("服务异常暂时无法删除,请及时联系工作人员！",{icon:5});
-            }
-        });
-    });*/
 }
 
 //批量操作
@@ -283,7 +266,7 @@ function updateListBtn(listId,FormName,AfterProcessState){
     alert(AfterProcessState);*/
     $.ajax({
         url:"common",
-        data:{"method":"updateListBtn","listId":listId,"FormName":FormName,"AfterProcessState":AfterProcessState},
+        data:{"method":"batchList","listId":listId,"FormName":FormName,"AfterProcessState":AfterProcessState},
         type:"POST",
         success:function(data){
             if (data>0){
@@ -293,10 +276,13 @@ function updateListBtn(listId,FormName,AfterProcessState){
                 layer.msg("操作失败！",{icon:5});
             }
         },error:function(){
-            layer.msg("服务异常暂时无法删除,请及时联系工作人员！",{icon:5});
+            layer.msg("服务异常暂时无法操作,请及时联系工作人员！",{icon:5});
         }
     });
 }
+
+
+
 
 //删除
 function delListForm(id,hidFormName) {

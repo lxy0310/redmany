@@ -142,7 +142,6 @@ public class ListForm extends CustomForm {
             List<View> views = getViewLists(search);
             String html = getHtmlTemplate();
             List<String> list = new ArrayList<>();
-
             com.sangupta.htmlgen.tags.body.forms.Form divshow = div.form().addCssClass("layui-form").id("searchCondition");
             Div layuiRow = divshow.div().addCssClass("layui-row").styles("margin-top:10px;");
             for (View view : views) {
@@ -157,7 +156,6 @@ public class ListForm extends CustomForm {
             }
             for (String v : list) {
                 Div  divs  = layuiRow.div();
-
                 if (!"".equals(v) && v!=null){
                     if (v.contains("useLayDateMultiple")){
                         divs.addCssClass("layui-col-xs12 layui-col-sm12 layui-col-md6");
@@ -170,14 +168,17 @@ public class ListForm extends CustomForm {
                     v = v.replaceAll("<label>","<label class=\"labelRight\">");
                     div1.text(v);
                 }
-
             }
             Div  divbtn1  = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md3");
             Div divbtn2 = divbtn1.div().addCssClass("layui-form-item");
+            //Button reset = btnDiv.button().text("重置").addCssClass("layui-btn").id("reset");
+            Button resetBtn = divbtn2.button().text("重置").addCssClass("layui-btn").id("reset");
+            resetBtn.attr("type","reset");
+            resetBtn.styles("margin-left: 120px;");
+            //搜索
             Button searchBtn = divbtn2.button();
             searchBtn.attr("type","button");
             searchBtn.addCssClass("layui-btn");
-            searchBtn.styles("margin-left: 120px;");
             Italic i = new Italic();
             i.addCssClass("layui-icon ");
             i.text("&#xe615;");
@@ -237,6 +238,7 @@ public class ListForm extends CustomForm {
             Table table = div.table().addCssClass("layui-table");
 //        table.attr("lay-skin","line");
             table.styles("margin:0px auto;");
+            table.attr("lay-skin","line");
             THead thead = table.thead();
             TableRow rowTh = new TableRow();  //表头
 
@@ -282,17 +284,22 @@ public class ListForm extends CustomForm {
                 }
                 for (String v : list) {
                     TableDataCell td = row.td();
-                    td.text(v);
+
                     String before = StringUtils.substringBefore(v, "</div>");
                     String after1 = StringUtils.substringAfter(before, ">");
+                    int strlen = TextUtils.length(after1);
                     //字段内容长度过长，鼠标移入显示
-                    if ( after1.length() > 20) {
+                    if (strlen > 20) {
                         if (v.contains("-val") || v.contains("<img src")){
 
                         }else {
+                            v = v.replace("<div","<div class=\"tableOverflow\"");
+                            //td.text(v);
                             td.attr("title", after1);
                         }
                     }
+                        td.text(v);
+
                     //ondblclick
                     //td.onClick("tableShow('" + getFormName() + "'," + line.get("Id") + ");");
                     td.attr("ondblclick","tableShow('" + getFormName() + "'," + line.get("Id") + ");");
@@ -325,7 +332,19 @@ public class ListForm extends CustomForm {
                                     a1.text(btnList.get("OperationName").toString());
                                     String TemplatePage = commonDao.getTemplatePageByOperationId(getCompanyId(), (Integer) btnList.get("OperationId"));
                                     a1.herf(TemplatePage + "?FormName=" + getFormName() + "&id=" + Id + "&NeedState=" + Tablestate);
-                                } else {   //其他的操作按钮
+                                    //goto
+                                }else if ("_goto".equals(btnList.get("OperationType").toString())){
+                                    a1.text(btnList.get("OperationName").toString());
+                                    String transfer = btnList.get("transferParams").toString();
+                                    for (String filed: line.keySet()) { //formfiled
+                                        if(transfer.indexOf("{"+filed+"}")>=0){
+                                           transfer=transfer.replace("{"+filed+"}", line.get(filed).toString());
+                                            System.out.println(transfer);
+                                        }
+                                    }
+                                    a1.onClick("gotoPage('"+btnList.get("target").toString()+"','"+transfer+"');");
+                                }
+                                else {   //其他的操作按钮
                                     // Button del1 = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text(btnList.get("OperationName").toString()).id("elDelete").onClick("del("+getFormName()+")");
                                     a1.text(btnList.get("OperationName").toString());
                                     a1.herf("javascript:void(0);").onClick("updateListBtn(" + Id + ",'" + getFormName() + "','" + btnList.get("AfterProcessState") + "'" + ");");

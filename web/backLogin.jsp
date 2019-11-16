@@ -26,7 +26,7 @@
                     <img class="label-img" src="images/login_1.png"/>
                     <span class="label-text">请输入企业ID</span>
                 </div>
-                <input lay-verify="required" name="CompanyId" class="CompanyId" type="text"  />
+                <input lay-verify="required" name="CompanyId" class="CompanyId" type="text"  autocomplete="off"  />
             </div>
             <div class="login-input">
                 <div>
