@@ -124,7 +124,7 @@
                     <div style="display: inline-block;" class="menu-icon"><img src="images/组 21@2x(1).png" width="20px"/></div>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;" class="con-left-active" lay-id="01" dataUrl="queryStudentServlet?copformName=backIndex&showType=copForm">
+                    <a href="javascript:;" class="con-left-active" lay-id="01" dataUrl="queryStudentServlet?copformName=homecp_index&showType=copForm">
                         <div style="display: inline-block;" class="menu-icon"><img src="images/1@2x.png" width="20px"/></div>
                         <cite class="menu-cite">主页</cite>
                     </a>
@@ -171,7 +171,7 @@
         <!-- 内容主体区域 -->
         <!--     <div style="padding: 15px;">内容主体区域</div> -->
         <div id="page_content" style="background: #f2f2f2;">
-            <iframe id="iframe-page-content" class="iframe-body" src="index.jsp" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight=" 0" scrolling="yes" ></iframe>
+            <iframe id="iframe-page-content" class="iframe-body" src="queryStudentServlet?copformName=homecp_index&showType=copForm" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight=" 0" scrolling="yes" ></iframe>
             <%--  allowtransparency="true"  --%>
             <!-- <iframe id="menuFrame" name="menuFrame" src="addHtml.jsp" style="overflow:visible;"
             scrolling="yes" frameborder="no"></iframe> -->
