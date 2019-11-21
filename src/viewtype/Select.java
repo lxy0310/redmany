@@ -20,7 +20,7 @@ public class Select extends ParentView {
     protected HtmlBodyElement<?> create() {
         Div div = new Div();
         div.id(getName());
-//        div.attr("class","layui-input-block");
+        div.addCssClass("layui-form-item");
         String optype = getPage().getParameter("optype");//修改1查看2
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
@@ -76,30 +76,21 @@ public class Select extends ParentView {
                 return div;
             }else{
                 Label label = div.label();
-                label.text(view.getTitle());
+                label.text(view.getTitle()==null?"":view.getTitle());
             }
 
-//            div.addCssClass("layui-inline");
-            div.addCssClass("layui-form-item");
             Div div1 = div.div();
             div1.addCssClass("layui-input-block");
-//            div1.addCssClass("layui-input-inline");
-
             div1.styles("margin-top: -30px;margin-left:123px;margin-right:73px;width: 182px;");
-
             div1.styles("width: 182px;");
             div1.styles("margin-top: -30px;");
             div1.styles("margin-left: 123px;");
             div1.styles("margin-right: 73px;");
 
-//            div.addCssClass("layui-input-inline");
-//            Label label = div1.label();
-//            label.text(view.getTitle());
-//            margin-top: -30px;
             com.sangupta.htmlgen.tags.body.sections.Select select = div1.select();
 
             select.id(getName()+"0");
-            select.attr("lay-filter",getName()+"0");//过滤layui的渲染
+            select.attr("lay-filter",getName()+"0");
             select.name(getName());
             if (view.getWapAttribute() != null) {
                 String str = view.getWapAttribute();//获取下拉框样式
