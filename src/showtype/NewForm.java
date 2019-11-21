@@ -1,5 +1,6 @@
 package showtype;
 
+import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.body.forms.Button;
 import com.sangupta.htmlgen.tags.body.forms.Form;
 import com.sangupta.htmlgen.tags.body.forms.Input;
@@ -58,7 +59,7 @@ public class NewForm extends FreeForm {
         System.out.println(sql);
         sql = sqlGetIDs(paramId,sql,formList.getReplaceName());  //拼接参数ID
         mdAssoWord = getPage().getParameter("mdAssoWord");
-        System.out.println(mdAssoWord);
+       /* System.out.println(mdAssoWord);*/
         sql = sqlGetMD(mdAssoWord,sql,formList.getReplaceName());
         System.err.println(sql);
         List<Map<String, Object>> formFeildList=filedDao.getFormFeildList(getCompanyId(),formName);
@@ -75,10 +76,9 @@ public class NewForm extends FreeForm {
         }else {
           //   forms =formDao.getForm(getCompanyId(),formName);
         }
-
-
         //TableName = forms.getTable_name();
         super.loadData(sql);
+        System.out.println(sql);
     }
 
     protected void make(Div div) {
@@ -96,8 +96,8 @@ public class NewForm extends FreeForm {
             mdAssoWords.value(t[1]);
         }
 //        Input mdAssoWords =saveForm.input("hidden",mdAssoWord).addCssClass("mdAssoWords");  //双列表的子表关联字段
-        String filedStr = filedDao.getFormFiledStr(getCompanyId(),formName);
-        List<View> views = getViewLists(filedStr);
+        String filedStr = filedDao.getFormFiledStr(getCompanyId(),formName,getPage().getShowType());
+        List<View> views = getViewLists(filedStr); //getViewLists(filedStr)
         String html = getHtmlTemplate();
         List<String> list = new ArrayList<>();
 
@@ -131,11 +131,15 @@ public class NewForm extends FreeForm {
         Button saveBtn=btnDiv.button();  //保存
         if (optype!=null){ //参数
             Input input=btnDiv.input("hidden",getFormName()).addCssClass("optype").value(optype);
+            input.attr("name","optype");
         }
         if ("1".equals(optype)){    //修改
             Input input=btnDiv.input("hidden",getFormName()).addCssClass("paramId").value(paramId);
+            input.attr("name","Id");
         } else if ("2".equals(optype)){     //查看
             saveBtn.styles(" pointer-events:none;");//禁止鼠标事件
+            // disabled="disabled"
+            saveBtn.attr("disabled","disabled");
         }
         if (mdAssoWord!=null){
             saveBtn.addCssClass("mdsaveBtn");
@@ -143,9 +147,10 @@ public class NewForm extends FreeForm {
             saveBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
             saveBtn.onClick("gotoPage('submit:"+getFormName()+",newForm',null);");
             Button cancelBtn = btnDiv.button();
+            cancelBtn.attr("type","button");
             cancelBtn.text("取消");
             cancelBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
-            cancelBtn.onClick("javascript:history.go(-1);");//javascript:history.go(-1);location.reload();
+            cancelBtn.onClick("goUrl();");//javascript:history.go(-1);location.reload();
         }else {
             saveBtn.addCssClass("saveBtn");
             saveBtn.text("提交");
@@ -153,9 +158,11 @@ public class NewForm extends FreeForm {
             saveBtn.onClick("gotoPage('submit:"+getFormName()+",newForm',null);");
             Button cancelBtn = btnDiv.button();
             cancelBtn.text("取消");
+            cancelBtn.attr("type","button");
             cancelBtn.styles("background-color: #1E9FFF;border-radius: 2px;padding: 5px 10px;color:#fff;");
-            cancelBtn.onClick("javascript:history.go(-1);location.reload();");
+            cancelBtn.onClick("goUrl();");
         }
+
         saveBtn.attr("type","button");
     }
 
@@ -265,10 +272,22 @@ public class NewForm extends FreeForm {
                 System.out.println(line.toString());
                 if ("1".equals(optype)) {    //修改
                     String Modify_fields = formList.getModify_fields();
+                    //    color: #939192;
+                    //    background: #f5f5f5!important;
+                    //    border: 1px solid;
+                    String[] str = Modify_fields.split(",");
                     for (View view : views) {
-                        if (!Modify_fields.contains("view")){
-                            view.setWapAttribute("");
+                        if (!Modify_fields.contains(view.getName())){
+                            view.setIsReadonly("1");
                         }
+                       /* for (int i = 0; i < str.length; i++) {
+                           if (str[i] == view.getName() || str[i].equals(view.getName())){
+
+                           }else{
+                               view.setIsReadonly("1");
+                               break;
+                           }
+                        }*/
                         html = addMakeViewMap(map, view, line, html);
                     }
                 }else{ //查看
@@ -295,10 +314,8 @@ public class NewForm extends FreeForm {
                     if (!value.contains("type=\"File\"") && !value.contains("<img src")){
                         div1.styles("height: 30px;line-height: 30px;" );
                     }
-
                  /*   Div div = saveForm.div().addCssClass("layui-form-item");
                     Div div1 = div.div().addCssClass("layui-input-block");*/
-
                     div1.text(value);
                 }
             }
@@ -318,7 +335,7 @@ public class NewForm extends FreeForm {
         for (String v : list) {
             if (v!=null && !v.equals("")){
                 Div div= null;
-                if (formList.getRow()!=null){
+                if (formList!=null && formList.getRow()!=null){
                     Div  divs = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md4");
                     div = divs.div().addCssClass("layui-form-item");
                 }

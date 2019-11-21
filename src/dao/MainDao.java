@@ -3,11 +3,14 @@ package dao;
 
 import common.SQLHelper;
 import common.utils.DataHelper;
+import model.ReplaceModel;
 import page.HomeForm;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static dao.ReplacerDao.ObjIsNull;
 
 /**
  * Created by cxy on 2017/6/12.
@@ -55,8 +58,10 @@ public class MainDao extends BaseDao {
 //        System.out.println("getForm sql:" + sb.toString());
 //        return sqlHelper.executeQueryList(Company_Id, sb.toString(), null, HomeForm.class);
 //
-        return getFormNoMenu(Company_Id, formName);
+        return getFormToMenu(Company_Id, formName);
     }
+
+
 
     public List<HomeForm> getFormNoMenu(String Company_Id, String formName) {
         StringBuilder sb = new StringBuilder("");
@@ -65,6 +70,43 @@ public class MainDao extends BaseDao {
 //        System.out.println("sql:" + sb.toString());
         return sqlHelper.executeQueryList(Company_Id, sb.toString(), null, HomeForm.class);
     }
+
+    public List<HomeForm> getFormToMenu(String Company_Id, String formName) {
+        String sql = "select Id from ReplaceModel_b where compoundName='" + formName + "'";
+        Integer copFormId =sqlHelper.ExecScalar(Company_Id,sql,null)!=null?(Integer)sqlHelper.ExecScalar(Company_Id,sql,null):null;
+        StringBuilder sb = new StringBuilder("");
+        sb.append("SELECT OaCopModel_b.copFormName,OaCopModel_b.showType FROM OaCopModel_b WHERE OaCopModel_b.compoundName='" + copFormId + "'");
+        sb.append(" ORDER BY CAST(OaCopModel_b.Index_number AS DECIMAL);");
+        return sqlHelper.executeQueryList(Company_Id, sb.toString(), null, HomeForm.class);
+    }
+
+    public ReplaceModel getFormMenuHtml(String Company_Id, String formName) {
+        String sql = "select * from ReplaceModel_b where compoundName=?";
+        String[] parameters = {formName};
+        return find(Company_Id, sql, parameters, ReplaceModel.class);
+
+      /*  String[] parameters = {formName};
+        List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>();
+        datas = sqlHelper.executeQueryList(Company_Id, sql, parameters);
+        ReplaceModel model = new ReplaceModel();
+        if (datas != null && datas.size() > 0) {
+            Map<String, Object> map = datas.get(0);
+            model = toModel(map);
+        }
+        return model;*/
+    }
+
+    public ReplaceModel toModel(Map<String, Object> map) {
+        ReplaceModel model = new ReplaceModel();
+        if (map != null && map.size() > 0) {
+            model.setId(Integer.parseInt(ObjIsNull(map.get("id"), "0")));
+            model.setCompoundName(ObjIsNull(map.get("compoundName"), ""));
+            model.setHtml_template(ObjIsNull(map.get("html_template"), ""));
+
+        }
+        return model;
+    }
+
 
     public String getTemplateControl(String CompanyId, String copFormname) {
         //template_contorl
@@ -78,4 +120,6 @@ public class MainDao extends BaseDao {
         }
         return null;
     }
+
+
 }

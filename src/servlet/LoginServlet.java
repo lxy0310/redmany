@@ -126,9 +126,9 @@ public class LoginServlet extends BaseServlet {
                             if(userPassword.equals(md5Password)){
                                 HttpSession session = req.getSession();
                                 session.setAttribute("realName",user.get("RealName").toString());
+                                session.setAttribute("headImg",user.get("headImg").toString());
                                 AccountHelper accountHelper = new AccountHelper(req, resp);
                                 boolean falg = accountHelper.onLogin(user,pwd,false);
-
                                 loginMsg="success";
                             }else{
                                 loginMsg="账号或者密码错误";
@@ -149,8 +149,6 @@ public class LoginServlet extends BaseServlet {
                         out.println(loginResult);
                         return;
                     }
-
-
                 }else{
                     out.print(results);
                 }

@@ -558,8 +558,6 @@ public class Page implements ParentForm.ISQLReplacer {
         if (hasMenu) {
             menuForm.setPage(this);
             HtmlBodyElement element = getHtml(menuForm);
-
-
             if (element != null) {
                 body.add(element);
             }

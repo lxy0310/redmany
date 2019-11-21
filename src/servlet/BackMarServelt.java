@@ -45,9 +45,13 @@ public class BackMarServelt extends BaseServlet {
             request.getSession().setAttribute("menuList",menuList);
             request.getSession().setAttribute("panelList",panelList);
             request.getSession().setAttribute("getPanelId",panelId);
-            System.out.println("menuList"+menuList.toString());
+            String realName = session.getAttribute("realName").toString();
+            request.getSession().setAttribute("realName",realName);
+            String headImg = session.getAttribute("headImg").toString();
+            request.getSession().setAttribute("headImg",headImg);
+           /* System.out.println("menuList"+menuList.toString());
             System.out.println("panelList"+panelList.toString());
-            System.out.println("getPanelId"+panelId.toString());
+            System.out.println("getPanelId"+panelId.toString());*/
             request.getRequestDispatcher("zTree.jsp").forward(request,response);
         }
         else if (method.equals("addNewForm")){ //newForm   添加

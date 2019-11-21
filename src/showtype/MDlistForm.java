@@ -170,17 +170,27 @@ public class MDlistForm extends CustomForm {
                             a1.herf("queryStudentServlet?copformName="+getFormName()+"&showType=MDnewForm&optype=1&ParamId="+line.get("Id"));
                         }else if ("_look".equals(btnList.get("OperationType").toString())){ //查看
                             a1.text(btnList.get("OperationName").toString());
-                            a1.herf("queryStudentServlet?copformName="+getFormName()+"&showType=newForm&optype=2&ParamId="+line.get("Id"));
+                            a1.herf("queryStudentServlet?copformName="+getFormName()+"&showType=MDnewForm&optype=2&ParamId="+line.get("Id"));
                         }else if ("_del".equals(btnList.get("OperationType").toString())){    //删除
                             a1.text(btnList.get("OperationName").toString());
                             a1.herf("javascript:void(0);").onClick("delListForm("+line.get("Id")+",'"+getFormName()+"');");
                         }else if ("_add".equals(btnList.get("OperationType").toString())){  //添加
                             a1.text(btnList.get("OperationName").toString());
-                            a1.herf("queryStudentServlet?copformName="+getFormName()+"&showType=newForm&optype=2&ParamId="+line.get("Id"));
+                            a1.herf("queryStudentServlet?copformName="+getFormName()+"&showType=MDnewForm&optype=2&ParamId="+line.get("Id"));
                         }else if ("_select".equals(btnList.get("OperationType").toString())){ //跳转到自定义页面
                             a1.text(btnList.get("OperationName").toString());
                             String TemplatePage=commonDao.getTemplatePageByOperationId(getCompanyId(),(Integer) btnList.get("OperationId"));
                             a1.herf(TemplatePage+"?FormName="+getFormName()+"&id="+line.get("Id")+"&NeedState="+Tablestate);
+                        }else if ("_goto".equals(btnList.get("OperationType").toString())){
+                            a1.text(btnList.get("OperationName").toString());
+                            String transfer = btnList.get("transferParams").toString();
+                            for (String filed: line.keySet()) { //formfiled
+                                if(transfer.indexOf("{"+filed+"}")>=0){
+                                    transfer=transfer.replace("{"+filed+"}", line.get(filed).toString());
+                                    System.out.println(transfer);
+                                }
+                            }
+                            a1.onClick("gotoPage('"+btnList.get("target").toString()+"','"+transfer+"');");
                         }
                         else{
                             a1.text(btnList.get("OperationName").toString());

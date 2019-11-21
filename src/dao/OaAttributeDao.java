@@ -31,11 +31,11 @@ public class OaAttributeDao  extends BaseDao {
        return datas;
    }
 
-//    public OaAttribute getOaAttribute(String CompanyId, String FormName){
-//        String sql = "SELECT * FROM [OaAttribute_b] WHERE name=?";
-//        String[] parameters = {FormName};
-//        return find(CompanyId, sql, parameters, OaAttribute.class);
-//    }
+  /*  public OaAttribute getOaAttribute(String CompanyId, String FormName){
+        String sql = "SELECT * FROM [OaAttribute_b] WHERE name=?";
+        String[] parameters = {FormName};
+        return find(CompanyId, sql, parameters, OaAttribute.class);
+    }*/
 
 
     public String getAttributeById(String CompanyId, Integer id){

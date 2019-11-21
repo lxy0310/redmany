@@ -30,6 +30,14 @@ public class CustomForm extends ParentForm {
         return dataForm;
     }
 
+    public void  formStyle(String styles){
+        Div div =  new Div();
+        div.styles(styles);
+        div.id(formName);
+
+
+    }
+
     protected void make(Div div) {
 
     }
@@ -52,14 +60,11 @@ public class CustomForm extends ParentForm {
 
         //判断生成的页面元素是否有{}的形式,进行相应的替换
         if( parentView !=null && parentView.getDatas()!=null && parentView.getDatas().size()>0){
-            for (String filed:
-                    parentView.getDatas().keySet()) {
+            for (String filed: parentView.getDatas().keySet()) { //formfile
                 if(childView.indexOf("{"+filed+"}")>=0){
                     childView=childView.replace("{"+filed+"}", parentView.getDatas().get(filed).toString());
                 }
             }
-
-
         }else if(parentView !=null && parentView.getForm() !=null && parentView.getForm().getDatas()!=null && parentView.getForm().getDatas().size()>0 && parentView.getForm().getDatas().get(0)!=null&& parentView.getForm().getDatas().get(0).size()>0){
 
         }else if(parentView !=null && parentView.getForm() !=null && parentView.getForm().getDatas()!=null && parentView.getForm().getDatas().size()>0 && parentView.getForm().getDatas().get(0)!=null && parentView.getForm().getDatas().get(0).size()>0){
@@ -72,9 +77,17 @@ public class CustomForm extends ParentForm {
            }
 
         }
+       /* if (html!=null){
+
+        }*/
         list.add(childView);
         return null;
     }
+
+
+
+
+
     protected String makeView(View view, Map<String, Object> datas, String html) {
         if (view == null) return null;
         ParentView parentView = makeType(view);

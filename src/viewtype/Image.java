@@ -22,7 +22,7 @@ public class Image extends ParentView {
     protected HtmlBodyElement<?> create() {
         Div div = new Div();
         div.id(getName());
-        boolean isShow = isShow(getForm().getPage().getShowType());
+        String optype = getPage().getParameter("optype");//修改1查看2
         String text = getDataProvider().getText(this, getForm());//input值
         if (getView() != null) {
             View view=getView();
@@ -41,6 +41,7 @@ public class Image extends ParentView {
                 Label label = div.label();
                 label.text(view.getTitle()==null?"":view.getTitle());
             }
+
 
             A a1 = div.a();
             a1.id(getName()+"_btn");
@@ -61,11 +62,16 @@ public class Image extends ParentView {
             div2.attr("style","display:inline-block; position:relative;");
 
 
+//            if ("1".equals(view.getIsValue())){
+                if(text!=null && PropsUtil.CheckImageSuffixes(text) && optype!=null) {//有值且为图片
+
+
 
 
             if(!"1".equals(view.getIsValue())){
 
                 if(text!=null && PropsUtil.CheckImageSuffixes(text)) {//有值且为图片
+
                     Img img = div2.img(IMAGE_PRE+text);
                     img.width("50px");
                     img.height("50px");
@@ -77,8 +83,8 @@ public class Image extends ParentView {
                     delImg.attr("style","position: absolute; height: 15px;width: 15px;top: 0px; right: 0px; ");
                     delImg.onClick("delFile('"+getName()+"','image')");
                 }
-            }
-            if (isShow) {
+//            }
+            if(optype!=null && "2".equals(optype)){
                 input.attr("disabled","disabled");
                 input.attr("color","transparent");
                 return div;

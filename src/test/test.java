@@ -1,54 +1,37 @@
 package test;
 
-import org.apache.commons.lang.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 public class test {
 
     public static void main(String[] args) {
+        String s = "华南师范大学附属小学";
+        int a = length(s);
+        System.out.println(a);
+    }
 
-        String sql = "select * from [User] u ";
-        String re = "u";
-       // String http://localhost:8080/redmany/queryStudentServlet?copformName=user1&showType=listForm&conditon=UserName=yong
-        //UserName:yong,RealName:测
-        String str = "UserName:yong,RealName:测";
-        String[] str1 = str.split(",");
-        String con = "";
-        for (int i = 0; i <str1.length ; i++) {
-            String str2 = str1[i];
-            String name = StringUtils.substringBefore(str2,":");
-            String value = StringUtils.substringAfter(str2,":");
-            con += name +" like '%"+value+"%' and ";
+    /**
+     * 获取字符串的长度，如果有中文，则每个中文字符计为2位
+     *
+     * @param value 指定的字符串
+     * @return 字符串的长度
+     */
+    public static int length(String value) {
+        int valueLength = 0;
+        String chinese = "[\u0391-\uFFE5]";
+        /* 获取字段值的长度，如果含中文字符，则每个中文字符长度为2，否则为1 */
+        for (int i = 0; i < value.length(); i++) {
+            /* 获取一个字符 */
+            String temp = value.substring(i, i + 1);
+            /* 判断是否为中文字符 */
+            if (temp.matches(chinese)) {
+                /* 中文字符长度为2 */
+                valueLength += 2;
+            } else {
+                /* 其他字符长度为1 */
+                valueLength += 1;
+            }
         }
-        con = con.substring(0,con.length()-4);
-        sql = sql + "where " +con;
-        System.out.println(sql);
-      //  String after = StringUtils.substringAfter()
-
-       /* String str = "<div><label></label><div>";
-        int index=str.indexOf("label");
-        String a = str.substring(str.indexOf("label"),str.length());
-        //str.insert(index,"131");
-       str =  str.replace("<label>","<label class=\"labelRight\">");
-
-        System.out.println(str);*/
-
-        /*String str = "SELECT * FROM FormFiled ORDER BY CONVERT(INT, IsNull(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)),'100')), Index_number\n";
-        if(str.toLowerCase().contains("order by")){
-            str = str.toLowerCase();
-            String after = StringUtils.substringAfter(str,"order by");
-
-            System.out.println(after);
-            String a = str.substring(str.indexOf("order by"),str.length());
-            System.out.println(a);
-
-            String before = StringUtils.substringBefore(str, "order by");
-            System.out.println(before);
-        }*/
-
+        return valueLength;
     }
 
 }
+
