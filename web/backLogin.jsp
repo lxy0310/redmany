@@ -13,28 +13,40 @@
 <script src="js/backLogin.js"></script>
 <div class="wrap">
     <div class="company-name">
-        <div class="com-logo"></div>
-        <div class="com-name"><h3>红森林软件</h3></div>
+        <%--<div class="com-logo"></div>
+        <div class="com-name"><h3>红森林软件</h3></div>--%>
+        <h3 class="com-welcom">欢迎登陆</h3>
     </div>
     <div class="log-con">
         <%--<h1>欢迎登录</h1>--%>
         <form class="logForm layui-form" action="">
             <div class="login-input">
-                <label class="login-label"><i class="layui-icon layui-icon-website" style="font-size: 30px; color: #1E9FFF;"></i>   <span>企业ID</span> </label>
-                <input lay-verify="required" name="CompanyId" class="CompanyId" type="text" placeholder="请输入您的企业ID" />
+                <div>
+              <%--  <label class="login-label"><i class="layui-icon layui-icon-website" style="font-size: 30px; color: #1E9FFF;"></i>   <span>企业ID</span> </label>--%>
+                    <img class="label-img" src="images/login_1.png"/>
+                    <span class="label-text">请输入企业ID</span>
+                </div>
+                <input lay-verify="required" name="CompanyId" class="CompanyId" type="text"  autocomplete="off"  />
             </div>
             <div class="login-input">
-                <label class="login-label"><i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF;"></i>  <span>用户名</span> </label>
-                <input lay-verify="required" name="username" class="username" type="text" placeholder="请输入您的用户名" />
+                <div>
+                <%-- <label class="login-label"><i class="layui-icon layui-icon-username" style="font-size: 30px; color: #1E9FFF;"></i>  <span>用户名</span> </label>--%>
+                    <img class="label-img" src="images/login_2.png"/>
+                    <span class="label-text">请输入账号</span>
+                </div>
+                <input lay-verify="required" name="username" class="username" type="text"  />
             </div>
-            <div class="login-input">
-                <label class="login-label"><i class="layui-icon layui-icon-password" style="font-size: 30px; color: #1E9FFF;"></i>   <span>密     &nbsp;  码</span> </label>
-                <input lay-verify="required" name="password" class="password" type="password" placeholder="请输入您的密码" />
+            <div class="login-input" style="width: 37%;margin-left: 10%;margin-right: 25px;display: inline-block;background-color: white;">
+                <div>
+                 <%--   <label class="login-label"><i class="layui-icon layui-icon-password" style="font-size: 30px; color: #1E9FFF;"></i>   <span>密     &nbsp;  码</span> </label>--%>
+                    <img class="label-img" src="images/login_3.png"/>
+                    <span class="label-text">请输入密码</span>
+                </div>
+                <input lay-verify="required" name="password" class="password" type="password" />
             </div>
-            <div class="login-input log-msg">
-                    
-                <label class="login-label"><i class="layui-icon layui-icon-vercode" style="font-size: 30px; color: #1E9FFF;"></i>   <span>验证码</span> </label>
-                <input name="massage" class="massage" type="text" placeholder="请输入您的验证码" style="width: 130px;" />
+            <div class="login-input log-msg" style="width: 40%;margin-left: 1%;display: inline-block;background-color: white;">
+           <%--     <label class="login-label"><i class="layui-icon layui-icon-vercode" style="font-size: 30px; color: #1E9FFF;"></i>   <span>验证码</span> </label>--%>
+                <input name="massage" class="massage" type="text"  style="width: 75px;" />
                 <img alt="验证码" width="90" height="35" style="border-radius: 5px;" id="imagecode" onclick="changeCode()" class="verifyCode" src="<%= request.getContextPath()%>/servlet/ImageServlet"/>
              <%--   <div class="massage-reload " style="text-align: right;margin-right: 5%;">
                     <a href="javascript:reloadCode();" style="color: #fff;">看不清楚</a><br>
@@ -45,6 +57,9 @@
                <%-- <input class="layui-btn login-sub" type="submit" value="登录"/>   lay-submit lay-filter="formDemo"--%>
                 <button id="login" class="layui-btn" type="button" lay-submit lay-filter="formDemo">登录</button>
 
+            </div>
+            <div style="margin-top: 40px;text-align: center;font-size: 10px;">
+                <span style="color: #898989;">版权所有：广州红森林信息科技有限公司</span>
             </div>
         </form>
 

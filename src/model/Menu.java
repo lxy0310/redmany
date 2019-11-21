@@ -30,6 +30,7 @@ public class Menu implements Serializable {
     private String pageicon;
     private String loadWay;
     private String transferParams;
+    private String target;
     private String showPage;
     private String isShow;
 
@@ -233,6 +234,46 @@ public class Menu implements Serializable {
         this.isShow = isShow;
     }
 
+    public String getTarget() {
+        return target;
+    }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "Id=" + Id +
+                ", MenuName='" + MenuName + '\'' +
+                ", FormName='" + FormName + '\'' +
+                ", ShowType='" + ShowType + '\'' +
+                ", TemplateFrom='" + TemplateFrom + '\'' +
+                ", ParentMenu=" + ParentMenu +
+                ", Icon='" + Icon + '\'' +
+                ", Publish='" + Publish + '\'' +
+                ", State=" + State +
+                ", index_number=" + index_number +
+                ", MenuConds='" + MenuConds + '\'' +
+                ", IsTips='" + IsTips + '\'' +
+                ", GoName='" + GoName + '\'' +
+                ", GoType='" + GoType + '\'' +
+                ", Param='" + Param + '\'' +
+                ", NeedState='" + NeedState + '\'' +
+                ", MenuType='" + MenuType + '\'' +
+                ", confirm='" + confirm + '\'' +
+                ", panel=" + panel +
+                ", shortcut=" + shortcut +
+                ", pageicon='" + pageicon + '\'' +
+                ", loadWay='" + loadWay + '\'' +
+                ", transferParams='" + transferParams + '\'' +
+                ", target='" + target + '\'' +
+                ", showPage='" + showPage + '\'' +
+                ", isShow='" + isShow + '\'' +
+                '}';
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
     public String toLongString() {
         return "Menu{" +
                 "id=" + Id +
@@ -262,34 +303,4 @@ public class Menu implements Serializable {
                 '}';
     }
 
-    @Override
-    public String toString() {
-        return "Menu{" +
-                "Id=" + Id +
-                ", MenuName='" + MenuName + '\'' +
-                ", FormName='" + FormName + '\'' +
-                ", ShowType='" + ShowType + '\'' +
-                ", TemplateFrom='" + TemplateFrom + '\'' +
-                ", ParentMenu=" + ParentMenu +
-                ", Icon='" + Icon + '\'' +
-                ", Publish='" + Publish + '\'' +
-                ", State=" + State +
-                ", index_number=" + index_number +
-                ", MenuConds='" + MenuConds + '\'' +
-                ", IsTips='" + IsTips + '\'' +
-                ", GoName='" + GoName + '\'' +
-                ", GoType='" + GoType + '\'' +
-                ", Param='" + Param + '\'' +
-                ", NeedState='" + NeedState + '\'' +
-                ", MenuType='" + MenuType + '\'' +
-                ", confirm='" + confirm + '\'' +
-                ", panel=" + panel +
-                ", shortcut=" + shortcut +
-                ", pageicon='" + pageicon + '\'' +
-                ", loadWay='" + loadWay + '\'' +
-                ", transferParams='" + transferParams + '\'' +
-                ", showPage='" + showPage + '\'' +
-                ", isShow='" + isShow + '\'' +
-                '}';
-    }
 }

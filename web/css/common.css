@@ -1138,7 +1138,43 @@ table thead {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+/*  input checkbox */
+.tableCheckbox{
+    -webkit-appearance: none;
+    vertical-align:middle;
+    margin-top:0;
+    background:#fff;
+    border:#999 solid 1px;
+    border-radius: 3px;
+    min-height: 16px;
+    min-width: 16px;
+    position: relative;
+}
+.tableCheckbox:checked {
+    background: #3190e8;
+    border: none;
+}
+.tableCheckbox:checked::after{
+    content: '';
+    top: 4px;
+    left: 4px;
+    position: absolute;
+    background: transparent;
+    border: #fff solid 2px;
+    border-top: none;
+    border-right: none;
+    height: 5px;
+    width: 8px;
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
 
+.tableFirstCheckbox{
+    text-align: center;
+    width: 80px;
+}
 
 /*文件颜色：*/
 /* #D0EEFF;浅蓝*/
@@ -1179,6 +1215,9 @@ table thead {
     margin-right: 20px;
 }
 
+
+
+
 @media only screen and (min-width: 768px){
     .hovertable td {
         background-color: white;
@@ -1192,9 +1231,18 @@ table thead {
         cursor: default;
     }
 
-
-
 }
 
 
-
+/*顶部导航栏 li*/
+#navigationTopConent	li{
+    display: inline-block;
+    height: 60px;
+    line-height:60px ;
+    margin-left: 90px;
+}
+#navigationTopConent button{
+    background-color:transparent;
+    border-style:none;
+    color: red;
+}

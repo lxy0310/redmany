@@ -30,9 +30,12 @@ public abstract class BaseServlet extends HttpServlet {
     protected abstract void doHtml(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 
     public String getCompany_Id() {
-      String Company_Id = getParameter("Company_Id");
+
+       // String Company_Id = getParameter("Company_Id");
+
+        String Company_Id = getParameter("Company_Id");
+
         HttpSession session = request.getSession();
-    //    String Company_Ids=(String)session.getAttribute("CompanyId");
         if (!TextUtils.isEmpty(Company_Id)) {
          session.setAttribute("Company_Id",Company_Id);
             return Company_Id;
@@ -42,7 +45,7 @@ public abstract class BaseServlet extends HttpServlet {
                 return Company_Ids;
             }
         }
-        return APPConfig.COMPANYID;
+       return APPConfig.COMPANYID;
     }
 
 

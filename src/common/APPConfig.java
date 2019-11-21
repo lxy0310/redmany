@@ -21,7 +21,7 @@ public interface APPConfig {
     //百度定位
     String BAIDU_KEY = "8EKE5OcQz2LlyAQtSPzrduxeP6f6Cg37";
 
-    String hosts = "120.78.15.108";
+    String hosts = "193.112.244.24";
     //数据库
 //    String URL_BZ5155 = "jdbc:sqlserver://iZjr5omeqdh7qsZ;DatabaseName=redmany_[CompanyId];useunicode=true;characterEncoding=UTF-8";
     String URL_BZ5155 = "jdbc:sqlserver://"+hosts+";DatabaseName=redmany_[CompanyId];useunicode=true;characterEncoding=UTF-8";
@@ -29,7 +29,7 @@ public interface APPConfig {
     String PASSWORD = "g_z38248269_";
 
     //测试数据库
-    String URL_LOCAL = "jdbc:sqlserver://120.78.15.108;DatabaseName=redmany_[CompanyId];useunicode=true;characterEncoding=UTF-8";
+    String URL_LOCAL = "jdbc:sqlserver://193.112.244.24;DatabaseName=redmany_[CompanyId];useunicode=true;characterEncoding=UTF-8";
     String USERNAME_DEBUG = "sa";
     String PASSWORD_DEBUG = "g_z38248269_";
 //28516D
@@ -37,5 +37,5 @@ public interface APPConfig {
     String COP_FORM_NAME = "copformName";
     String SHOW_TYPE = "showType";
     //文件上传路劲
-    String DOCUMENT="E:\\备份\\后台";
+    String DOCUMENT="E:\\redmany\\redmany_ram0831\\redmany_ram\\document"; //http://oa.redmany.com:50003/document/  E:\备份\后台
 }

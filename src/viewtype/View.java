@@ -46,6 +46,9 @@ public class View {
     private String data_replacer;
     private String isTitle="0"; //是否传标题   默认长标题0 ，不长1
     private String isValue="0"; //是否有value   默认有value 0 ，没有value 1
+    private String isDouble="0"; // 默认为0显示一个  1 显示两个
+    private String isReadonly = "0";//默认为0 可以编辑，1 不可以编辑
+
 
     public String getIsValue() {
         return isValue;
@@ -53,6 +56,9 @@ public class View {
 
     public void setIsValue(String isValue) {
         this.isValue = isValue;
+    }
+
+    public View() {
     }
 
     @Override
@@ -83,11 +89,26 @@ public class View {
                 ", data_replacer='" + data_replacer + '\'' +
                 ", isTitle='" + isTitle + '\'' +
                 ", isValue='" + isValue + '\'' +
+                ", isDouble='" + isDouble + '\'' +
+                ", isReadonly='" + isReadonly + '\'' +
                 ", filedGroup='" + filedGroup + '\'' +
                 '}';
     }
 
-    public View() {
+    public String getIsReadonly() {
+        return isReadonly;
+    }
+
+    public void setIsReadonly(String isReadonly) {
+        this.isReadonly = isReadonly;
+    }
+
+    public String getIsDouble() {
+        return isDouble;
+    }
+
+    public void setIsDouble(String isDouble) {
+        this.isDouble = isDouble;
     }
 
     public String getIsTitle() {

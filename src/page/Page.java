@@ -44,8 +44,8 @@ public class Page implements ParentForm.ISQLReplacer {
     public static final String COMPANYID = APPConfig.COMPANYID;
 
 
-    private String isPc="0";  //是否是Pc端,0-手机 1-PC，默认为0
-    public static String platform = "1";//前后端 0-前端，1-后端，默认为0
+    private String isPc="1";  //是否是Pc端,0-手机 1-PC，默认为0
+    public static String platform = "0";//前后端 0-前端，1-后端，默认为0
     private String theme=COMPANYID; //主题。默认为COMPANYID
     private int pageIndex=1; //当前页码
     private int pageSize=5;//每页条数
@@ -558,8 +558,6 @@ public class Page implements ParentForm.ISQLReplacer {
         if (hasMenu) {
             menuForm.setPage(this);
             HtmlBodyElement element = getHtml(menuForm);
-
-
             if (element != null) {
                 body.add(element);
             }

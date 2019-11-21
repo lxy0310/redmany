@@ -36,7 +36,7 @@ public class Checkbox extends ParentView {
                 String replacerStr = view.getData_replacer();
                 CommonHelperDao dao = new CommonHelperDao();
                 String sql = "Select * from Replacer where Replacername='"+replacerStr+"'";
-                Replacer replacer = dao.getReplacerBySql(sql);
+                Replacer replacer = dao.getReplacerBySql(getPage().getCompany_Id(),sql);
                 if(replacer!=null){
                     Txtsource =  replacer.getTxtsource();
                     Datasql =  replacer.getDatasql();
@@ -67,7 +67,7 @@ public class Checkbox extends ParentView {
                         }
                     }else if (Datasql!=null && Datasql.length()>0){
                         CommonHelperDao dao = new CommonHelperDao();
-                        List<Map<String, Object>> list = dao.getDataBySql(Datasql);
+                        List<Map<String, Object>> list = dao.getDataBySql(getPage().getCompany_Id(),Datasql);
                         if(list!=null && list.size()>0){
                             for(int i=0;i<list.size();i++){
                                 Map map = list.get(i);
@@ -116,7 +116,7 @@ public class Checkbox extends ParentView {
             }else{
                 if (Datasql!=null && Datasql.length()>0){
                     CommonHelperDao dao = new CommonHelperDao();
-                    List<Map<String, Object>> list = dao.getDataBySql(Datasql);
+                    List<Map<String, Object>> list = dao.getDataBySql(getPage().getCompany_Id(),Datasql);
                     if(list!=null && list.size()>0){
                         for(int i=0;i<list.size();i++){
                             Map map = list.get(i);

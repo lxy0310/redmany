@@ -20,6 +20,7 @@ import page.Page;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hy on 2017/11/3.
@@ -62,6 +63,7 @@ public class Text extends ParentView {
         String placeholder =getDataProvider().getHintContent(this,getForm());//提示
         String color = getDataProvider().getTextColor(this, getForm());
         String onclick = getDataProvider().getOnClick(getForm(),this, getView().getTarget(), getView().getTransferParams());
+
         if (getView()!=null){
             View view=getView();
             String textStyle = "";
@@ -161,16 +163,24 @@ public class Text extends ParentView {
                 }
                 input.placeholder("请输入"+num);
             }
+
             if (text!=null && optype!=null){
+
                 input.value(text);
-            }
+            }/*else if (view.getValue()!=null && optype!=null ){
+                input.value(view.getValue());
+            }*/
             if(optype!=null && "2".equals(optype)){
-                input.attr("readonly","readonly");
+                input.attr("readonly","false");
+            }else if (view.getIsReadonly()=="1"){
+                input.attr("readonly","false");
+                input.styles("color: #939192;background: #f5f5f5!important;border: 1px solid;");
             }
             if (view.getShowState()!=null){
                 input.value("");
             }
         }
+
         if(onclick != null){
             div.onClick(onclick);
         }

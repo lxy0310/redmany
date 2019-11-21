@@ -20,8 +20,9 @@ public class ImageNoTitle extends ParentView {
         Img img = new Img();
         img.id(getName());
         img.src(getDataProvider().getImageUrl(this, getForm()));
-
-        String styles = getDataProvider().getStyles(this, getForm());
+        getView().getWapAttribute();
+      //  String styles = getDataProvider().getStyles(this, getForm());
+        String styles =  getView().getWapAttribute();
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
         String color = getDataProvider().getTextColor(this, getForm());

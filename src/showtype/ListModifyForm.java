@@ -49,6 +49,7 @@ public class ListModifyForm extends CustomForm {
     private FormUtil formUtil;
     private String paramId; //参数 ID
     private String mdAssoWord; //从表
+    private String searchCondition ; //查询条件
     private  Form froms ;//form表信息
     private PagingService pagingService=new PagingServiceImpl();
 
@@ -80,6 +81,10 @@ public class ListModifyForm extends CustomForm {
         sql = sqlGetIDs(paramId,sql,froms.getReplaceName());
         mdAssoWord = getPage().getParameter("mdAssoWord");
         sql = sqlGetMD(mdAssoWord,sql,froms.getReplaceName());
+        searchCondition = getPage().getRequestParamter("condition");
+        if (searchCondition!=null){
+            sql = sqlSearchCondition(searchCondition,sql,froms.getReplaceName(),froms.getSearch_fields());  //查询
+        }
         Menus = menuDao.getMenu(getCompanyId(), getFormName());
         if (Menus != null) {
             isShow = Menus.getIsShow();
@@ -120,7 +125,6 @@ public class ListModifyForm extends CustomForm {
             if (group == 0) {
                 /*List<View> views = getViews();
                 formUtil.showListBack(div,views,mDatas);*/
-                search(div);
                 showBack(div);
 
             } else {
@@ -131,28 +135,97 @@ public class ListModifyForm extends CustomForm {
             listShow(div);
         }
     }
+
     //查询
-    public void search(Div div){
-     /*   Div searchDiv = div.div();
-        Button searchBtn = searchDiv.button();
-        String url = "queryStudentServlet?copformName="+formName+"&showType=SearchForm";
-        searchBtn.onClick("search('"+formName+"','"+ getPage().getShowType()+"')");
-        searchBtn.addCssClass("layui-btn");
-        searchBtn.attr("lay-filter","LAY-user-front-search");
-        Italic i = new Italic();
-        i.addCssClass("layui-icon layui-icon-search layuiadmin-button-btn");
-        searchBtn.italic(i);
-        searchBtn.text("搜索");
-        searchBtn.styles("margin-bottom:7px;margin-top: 10px;");*/
+    public  void  seach(Div div){
+        //获取搜索字段
+        String search = froms.getSearch_fields();
+        if (search!=null && !search.equals("")){
+            search = search.replaceAll("%","");
+            List<View> views = getViewLists(search);
+            String html = getHtmlTemplate();
+            List<String> list = new ArrayList<>();
+
+            com.sangupta.htmlgen.tags.body.forms.Form divshow = div.form().addCssClass("layui-form").id("searchCondition");
+            Div layuiRow = divshow.div().addCssClass("layui-row").styles("margin-top:10px;font-size:12px;");
+            for (View view : views) {
+                view.setIsValue("1");
+                if (view.getType().equalsIgnoreCase("Datetime") ){
+                    view.setIsDouble("1");
+                }
+                html = makeViews(list, view, null, html);
+            }
+            if (!TextUtils.isEmpty(html)) {
+                div.text(html);
+            }
+            for (String v : list) {
+                Div  divs  = layuiRow.div();
+
+                if (v.contains("useLayDateMultiple")){
+                    divs.addCssClass("layui-col-xs12 layui-col-sm12 layui-col-md6");
+                }else {
+                    divs.addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md3");
+                }
+                Div div2 = divs.div().addCssClass("layui-form-item");
+                Div div1 = div2.div().styles("height: 30px;line-height: 30px;" );
+                div1.addCssClass("layui-input-block").styles("margin:0px;");
+                v = v.replaceAll("<label>","<label class=\"labelRight\">");
+                div1.text(v);
+            }
+            Div  divbtn1  = layuiRow.div().addCssClass("layui-col-xs6 layui-col-sm6 layui-col-md3");
+            Div divbtn2 = divbtn1.div().addCssClass("layui-form-item");
+            Button searchBtn = divbtn2.button();
+            searchBtn.attr("type","button");
+            searchBtn.addCssClass("layui-btn");
+            searchBtn.styles("margin-left: 120px;font-size: 12px;");
+            Italic i = new Italic();
+            i.addCssClass("layui-icon ");
+            i.text("&#xe615;");
+            i.styles("font-size: 16px;");
+            searchBtn.italic(i);
+            searchBtn.text("搜索");
+            searchBtn.id("search");
+            String url = "queryStudentServlet?copformName="+formName+"&showType="+getPage().getShowType(); //queryStudentServlet?copformName=user1&showType=listForm
+            searchBtn.onClick("searchCondition('"+url+"')");
+        }
     }
 
+    //表格顶部按钮
+    public void headTableButton(Div btncontainer){
+        String headDate = filedDao.getListHeadFormFiledStr(getCompanyId(),formName);
+        System.out.println("表格顶部按钮："+headDate);
+        Span span = btncontainer.span();
+        List<View> views1 = getViewLists(headDate);
+        String html1 = getHtmlTemplate();
+        List<String> list1 = new ArrayList<String>();
+        for (View view : views1) {
+            view.setIsTitle("1");
+            html1 = makeViews(list1, view, null, html1);
+        }
+        if (!TextUtils.isEmpty(html1)) {
+            btncontainer.text(html1);
+        }
+        for (String v : list1) {
+            if (v!=null && !"".equals(v) && headDate!=null){
+                String after1 = StringUtils.substringAfter(v, "<button");
+                span.text("<button class=\"layui-btn layui-btn-sm\""+after1);
+            }
+        }
+    }
+   //后台
     public void showBack(Div div) {
         if (mDatas != null) {
             List<View> views = getViews();
-
+            seach(div);
             Div head = div.div().addCssClass("layui-table-tool");
-            Div temp = head.div().addCssClass("layui-table-tool-temp");
-            Div btncontainer = temp.div().addCssClass("layui-btn-container");
+           /* Div temp = head.div().addCssClass("layui-table-tool-temp");
+            Div btncontainer = temp.div().addCssClass("layui-btn-container");*/
+            Div left =head.div();
+            left.styles("    display: inline-block;");
+            Div right = head.div();
+            right.styles("    float: right;\n" +
+                    "    display: inline-block;\n" +
+                    "    text-align: right;");
 
             //Button add = btncontainer.button().addCssClass("layui-btn layui-btn-sm layui-btn-normal").text("添加");
             // Button del = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text("删除").onClick("del('" + getFormName() + "')");;
@@ -164,14 +237,18 @@ public class ListModifyForm extends CustomForm {
             table.styles("margin:0px auto;");
             THead thead = table.thead();
             TableRow rowTh = new TableRow();  //表头
-
-            Div sel = rowTh.td().div().addCssClass("layui-input-inline");
+            TableDataCell th1 = rowTh.td();
+            th1.addCssClass("tableFirstCheckbox");
+            Div sel = th1.div().addCssClass("layui-input-inline");
+          /*  Div sel = rowTh.td().div().addCssClass("layui-input-inline");*/
             // sel.styles("white-space: nowrap;");
             Span selAll = sel.span().id("as").text("全选");
             Input checkbox = sel.input();
             checkbox.id("box");
             checkbox.type("checkbox");
             checkbox.onClick("my()");
+            checkbox.addCssClass("tableCheckbox");
+            checkbox.styles("margin:0px;");
 
             for (View view : views) {
 
@@ -186,8 +263,10 @@ public class ListModifyForm extends CustomForm {
                 String html = getHtmlTemplate();
                 List<String> list = new ArrayList<String>();
                 TableRow row = tBody.tr();
-
-                Input check = row.td().input().type("checkbox");
+                TableDataCell td1 = row.td();
+                td1.addCssClass("tableFirstCheckbox");
+                Input check = td1.input().type("checkbox").addCssClass("tableCheckbox");
+                //Input check = row.td().input().type("checkbox");
                 check.name("box1");
                 check.value(line.get("Id") != null ? line.get("Id").toString() : line.get("id").toString());
 
@@ -215,9 +294,10 @@ public class ListModifyForm extends CustomForm {
                     }
                     td.onClick("tableUpdate('" + getFormName() + "'," + line.get("Id") + ");");
                 }
-                Integer Tablestate = (Integer) line.get("state");
+
+                Integer Tablestate = line.get("state") != null ? (Integer) line.get("state") : (Integer)line.get("State");
                 if (Tablestate != null) {
-                    FormStateOpertionList = commonDao.getFormListOperationShow(getCompanyId(), 1, getFormName(), Tablestate);
+                    FormStateOpertionList = commonDao.getFormListOperationShow(getCompanyId(), getPage().getUserId(), getFormName(), Tablestate);
                     if (FormStateOpertionList != null) {
                         TableDataCell td = row.td();
                         Span span = td.span().styles("white-space: nowrap;");
@@ -243,7 +323,18 @@ public class ListModifyForm extends CustomForm {
                                     a1.text(btnList.get("OperationName").toString());
                                     String TemplatePage = commonDao.getTemplatePageByOperationId(getCompanyId(), (Integer) btnList.get("OperationId"));
                                     a1.herf(TemplatePage + "?FormName=" + getFormName() + "&id=" + Id + "&NeedState=" + Tablestate);
-                                } else {   //其他的操作按钮
+                                }else if ("_goto".equals(btnList.get("OperationType").toString())){
+                                    a1.text(btnList.get("OperationName").toString());
+                                    String transfer = btnList.get("transferParams").toString();
+                                    for (String filed: line.keySet()) { //formfiled
+                                        if(transfer.indexOf("{"+filed+"}")>=0){
+                                            transfer=transfer.replace("{"+filed+"}", line.get(filed).toString());
+                                            System.out.println(transfer);
+                                        }
+                                    }
+                                    a1.onClick("gotoPage('"+btnList.get("target").toString()+"','"+transfer+"');");
+                                }
+                                else {   //其他的操作按钮
                                     // Button del1 = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text(btnList.get("OperationName").toString()).id("elDelete").onClick("del("+getFormName()+")");
                                     a1.text(btnList.get("OperationName").toString());
                                     a1.herf("javascript:void(0);").onClick("updateListBtn(" + Id + ",'" + getFormName() + "','" + btnList.get("AfterProcessState") + "'" + ");");
@@ -265,7 +356,7 @@ public class ListModifyForm extends CustomForm {
             }
             //去重
             for (String key : batch.keySet()) {
-                Button batchOperation = btncontainer.button().addCssClass("layui-btn layui-btn-sm").text(key);//.onClick("batchList(" + getFormName() + ")")
+                Button batchOperation = left.button().addCssClass("layui-btn layui-btn-sm").text(key);//.onClick("batchList(" + getFormName() + ")")
                 String str = batch.get(key).toString();
                 if ("_del".equals(str) || "_del" == str) { //如果是删除
                     batchOperation.onClick("del('" + getFormName() + "')");
@@ -273,6 +364,18 @@ public class ListModifyForm extends CustomForm {
                     batchOperation.onClick("batchList('" + getFormName() + "')");
                 }
             }
+            //如果没有批量操作，就把全选隐藏
+            if(batch.size()==0){
+                table.add(new Script().text("" +
+                        "$(function(){\n" +
+                        " $(\"table tr>td:first-child\").hide();" +
+                        "});" +
+                        ""));
+            }
+
+            //表格顶部动态配置按钮
+            headTableButton(right);
+
         }else {
             Div div1 = div.div();
             H3 h3 = new H3();

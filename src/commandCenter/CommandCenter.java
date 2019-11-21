@@ -31,7 +31,7 @@ public class CommandCenter {
             parentForm = (ParentForm) clazz.newInstance();
 
         } catch (Exception e) {
-            //
+            String t=e.getMessage();
         }
         return parentForm;
     }

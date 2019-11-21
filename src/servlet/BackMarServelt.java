@@ -25,13 +25,14 @@ public class BackMarServelt extends BaseServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("UTF-8");
+        super.doPost(request,response);
         PrintWriter out = response.getWriter();//输出
         String method=request.getParameter("method");//获取方法
         SQLHelper sqlHelper = new SQLHelper(request);
         BackMarDao backDao=new BackMarDao(sqlHelper);//创建数据层
        // String Company_Id=request.getParameter("gCompany_Id");
         HttpSession session=request.getSession();
-        String Company_Id=(String)session.getAttribute("Company_Id");
+        String Company_Id=getCompany_Id();
        // System.out.println(getCompany_Id());
         Integer uids = (int)session.getAttribute("userId");
         String uid = String.valueOf(uids);
@@ -44,9 +45,13 @@ public class BackMarServelt extends BaseServlet {
             request.getSession().setAttribute("menuList",menuList);
             request.getSession().setAttribute("panelList",panelList);
             request.getSession().setAttribute("getPanelId",panelId);
-            System.out.println("menuList"+menuList.toString());
+            String realName = session.getAttribute("realName").toString();
+            request.getSession().setAttribute("realName",realName);
+            String headImg = session.getAttribute("headImg").toString();
+            request.getSession().setAttribute("headImg",headImg);
+           /* System.out.println("menuList"+menuList.toString());
             System.out.println("panelList"+panelList.toString());
-            System.out.println("getPanelId"+panelId.toString());
+            System.out.println("getPanelId"+panelId.toString());*/
             request.getRequestDispatcher("zTree.jsp").forward(request,response);
         }
         else if (method.equals("addNewForm")){ //newForm   添加

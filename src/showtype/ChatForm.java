@@ -155,7 +155,9 @@ public class ChatForm extends CustomForm {
         }
         String yTitle = filedDao.getFiledTitleByName(getCompanyId(),getFormName(),y);
         HighCharttwo char12 = new HighCharttwo();
-        if (forms.getChatType().contains("pie")) {//饼图
+        String chatType = forms.getChatType();
+
+        if (chatType !=null && chatType.contains("pie")) {//饼图
             List<HighChartPie> pieList = new ArrayList<>();
             for (int i = 0; i < xyDatas.size(); i++) {
                 HighChartPie pie = new HighChartPie();
@@ -186,6 +188,7 @@ public class ChatForm extends CustomForm {
             char12.setName(yTitle);
             char12.setData(yDatas);
             list.add(char12);
+
             higt.setxCategories(xtitle);
         }
     }

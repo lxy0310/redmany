@@ -79,10 +79,20 @@ layui.use(['layer','element','form','upload','laydate'],function(){
         location.hash = 'test1='+ $(this).attr('lay-id');
     });
 
+    //同时绑定多个
+    lay('.test-item').each(function(){
+        laydate.render({
+            elem: this
+            ,trigger: 'click'
+        });
+    });
 
 });
 
 $("#reset").on("click",function(){ window.location.reload();}); //重置
+
+
+
 //时间
 function useLayDateMultiple(cls) {
     layui.use('laydate', function() {
@@ -97,8 +107,7 @@ function useLayDateMultiple(cls) {
     });
 }
 
-function searchCondition() {
-
+function searchCondition(url) {
     var d = {};
     //循环获取input的值
     var t=$('form').serializeArray();
@@ -120,9 +129,17 @@ function searchCondition() {
         }
     }
     condition = condition.substring(0,condition.length - 1);//去掉最后一个逗号
-    var getUrl = "queryStudentServlet?copformName=user1&showType=listForm"; //获取url
-    getUrl = getUrl + "&condition='"+ condition+"'";
+    /*var getUrl = url;
+    var getUrl = "queryStudentServlet?copformName=user1&showType=listForm"; *///获取url
+    getUrl = url + "&condition='"+ condition+"'";
     location.href = getUrl;
+
+}
+
+//返回上一页
+function goUrl(){
+    var url = document.referrer;
+    window.location.href=url;
 
 }
 
@@ -162,7 +179,12 @@ function delBatch(FormName) {
     var s='';
     $('input[name="box1"]:checked').each(function(){
         s+=$(this).val()+','; //遍历得到所有checkbox的value
+       /* $("table tr>td:first-child").hide();*/
+       // var trList = $(this).parent().parent().find("td:eq(0)").text();//获取点击行的某一列
+      //  console.log(trList);
+       // alert(trList);
     });
+
     if (s.length > 0) {
         //删除多出来的“，”
         s = s.substring(0,s.length - 1);
@@ -202,30 +224,6 @@ function delBatch(FormName) {
         }
     });
 
-   /* layer.confirm('您确定要删除吗？', {
-        btn: ['忍心删除','在想想'] //按钮
-    }, function(){
-        alert(s);
-        s="common?method='delBatch'&hidFormName="+hidFormName+"&id="+s+"";
-        alert(s)
-        $("#elDelete").attr('href',s);
-
-        $.ajax({
-            url:"common",
-            data:{"method":"delBatch","gCompany_Id":gCompany_Id,"hidFormName":hidFormName,"id":s},
-            type:"POST",
-            success:function(data){
-                if (data>0){
-                    layer.msg("删除成功！",{icon:6});
-                    window.parent.location.reload();
-                } else{
-                    layer.msg("删除失败！",{icon:6});
-                }
-            },error:function(){
-                layer.msg("服务异常暂时无法删除,请及时联系工作人员！",{icon:5});
-            }
-        });
-    });*/
 }
 
 //批量操作
@@ -247,13 +245,13 @@ function batchList(FormName) {
         type:"POST",
         success:function(data){
             if (data>0){
-                layer.msg("删除成功！",{icon:6});
+                layer.msg("操作成功！",{icon:6});
                 window.parent.location.reload();
             } else{
-                layer.msg("删除失败！",{icon:6});
+                layer.msg("操作失败！",{icon:6});
             }
         },error:function(){
-            layer.msg("服务异常暂时无法删除,请及时联系工作人员！",{icon:5});
+            layer.msg("服务异常暂时无法进行操作,请及时联系工作人员！",{icon:5});
         }
     });
 
@@ -268,7 +266,7 @@ function updateListBtn(listId,FormName,AfterProcessState){
     alert(AfterProcessState);*/
     $.ajax({
         url:"common",
-        data:{"method":"updateListBtn","listId":listId,"FormName":FormName,"AfterProcessState":AfterProcessState},
+        data:{"method":"batchList","listId":listId,"FormName":FormName,"AfterProcessState":AfterProcessState},
         type:"POST",
         success:function(data){
             if (data>0){
@@ -278,10 +276,13 @@ function updateListBtn(listId,FormName,AfterProcessState){
                 layer.msg("操作失败！",{icon:5});
             }
         },error:function(){
-            layer.msg("服务异常暂时无法删除,请及时联系工作人员！",{icon:5});
+            layer.msg("服务异常暂时无法操作,请及时联系工作人员！",{icon:5});
         }
     });
 }
+
+
+
 
 //删除
 function delListForm(id,hidFormName) {
@@ -290,7 +291,7 @@ function delListForm(id,hidFormName) {
     }, function(){
         $.ajax({
             url:"common",
-            data:{"method":"delListForm","gCompany_Id":gCompany_Id,"hidFormName":hidFormName,"id":id},
+            data:{"method":"delBatch","gCompany_Id":gCompany_Id,"hidFormName":hidFormName,"id":id},
             type:"POST",
             success:function(data){
                 if (data>0){
@@ -417,7 +418,7 @@ function uploadMultiImg(e,id){
         $("#"+id).append(div2);
         var fr = new FileReader();
         fr.onload = function(){
-            var img = '<img id=\''+idStr+'_img\' src=\''+this.result+'\' alt="查看图片" width="50" height="50">';
+            var img = '<img id=\''+idStr+'_img\' src=\''+this.result+'\' alt="查看图片" width="50" height="30">';
             $("#"+idStr+"_div").append(img);
             var a = '<a id=\''+idStr+'_a\' href="javascript:void(0);"></a>';
             $("#"+idStr+"_div").append(a);
@@ -470,7 +471,7 @@ function uploadImg(e,id){
         var fr = new FileReader();
         fr.onload = function(){
             img.width = 50;
-            img.height = 50;
+            img.height = 30;
             img.src=this.result;
             div.appendChild(img);
             a.href="javascript:void(0);";

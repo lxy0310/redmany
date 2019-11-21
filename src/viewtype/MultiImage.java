@@ -22,9 +22,8 @@ public class MultiImage extends ParentView {
     protected HtmlBodyElement<?> create() {
         Div div = new Div();
         div.id(getName());
-        boolean isShow = isShow(getForm().getPage().getShowType());
+        String optype = getPage().getParameter("optype");//修改1查看2
         String text = getDataProvider().getText(this, getForm());//input值
-        text="034dc6fe45e442d8b07f7e6c683cc875.png,071dede250d44fe4a519e7e857ad9e8f.jpg";
         if (getView() != null) {
             View view=getView();
             String[] imgs = null;
@@ -32,7 +31,9 @@ public class MultiImage extends ParentView {
                 if(text.indexOf(",")<0){
                     text=text+",";
                 }
-                imgs = text.split(",");
+                if (!"1".equals(view.getIsValue())){
+                    imgs = text.split(",");
+                }
             }
             if(view.getIsTitle()!=null && "1".equals(view.getIsTitle())) {//不长title
                 if(imgs!=null && imgs.length>0){
@@ -47,7 +48,9 @@ public class MultiImage extends ParentView {
                 }
                 return div;
             }else{
-                div.text(view.getTitle()==null?"":view.getTitle());
+                Label label = div.label();
+                label.text(view.getTitle()==null?"":view.getTitle());
+              //  div.text(view.getTitle()==null?"":view.getTitle());
             }
             //旧数据隐藏域
             Input old_input = div.input();
@@ -81,9 +84,9 @@ public class MultiImage extends ParentView {
                     div2.attr("style","display:inline-block; position:relative;");
                     Img img = div2.img(IMAGE_PRE+imgs[i]);
                     img.id(getName()+i);
-                    img.width("50px");
-                    img.height("50px");
-                    if(!isShow){
+                    img.width("30px");
+                    img.height("30px");
+                    if(optype!=null){
                         A a = div2.a();
                         a.herf("javascript:void(0);");
                         Img delImg = a.img("/redmany/images/delete.jpg");
@@ -92,7 +95,7 @@ public class MultiImage extends ParentView {
                     }
                 }
             }
-            if (isShow) {
+            if(optype!=null && "2".equals(optype)){
                 input.attr("disabled","disabled");
                 input.attr("color","transparent");
                 return div;

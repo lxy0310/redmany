@@ -9,6 +9,8 @@ public class Operation {
     private String TemplatePage;
     private int state;
     private String Batch;
+    private String target;
+    private String transferParams;
 
     public int getId() {
         return Id;
@@ -62,6 +64,22 @@ public class Operation {
         return Batch;
     }
 
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public String getTransferParams() {
+        return transferParams;
+    }
+
+    public void setTransferParams(String transferParams) {
+        this.transferParams = transferParams;
+    }
+
     @Override
     public String toString() {
         return "Operation{" +
@@ -72,6 +90,8 @@ public class Operation {
                 ", TemplatePage='" + TemplatePage + '\'' +
                 ", state=" + state +
                 ", Batch='" + Batch + '\'' +
+                ", target='" + target + '\'' +
+                ", transferParams='" + transferParams + '\'' +
                 '}';
     }
 

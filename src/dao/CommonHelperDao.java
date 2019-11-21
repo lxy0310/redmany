@@ -13,9 +13,9 @@ dao层公共帮助类
 public class CommonHelperDao {
 
     //根据sql语句查询数据
-    public List<Map<String, Object>> getDataBySql(String sql){
+    public List<Map<String, Object>> getDataBySql(String Company_Id,String sql){
         SQLHelper sqlHelper = new SQLHelper(false);
-        List<Map<String, Object>> datas = sqlHelper.executeQueryList(APPConfig.COMPANYID, sql, null);
+        List<Map<String, Object>> datas = sqlHelper.executeQueryList(Company_Id, sql, null);
         if(datas!=null && datas.size()>0){
             return datas;
         }
@@ -23,10 +23,10 @@ public class CommonHelperDao {
     }
 
     //根据替换器名称获取替换器信息
-    public Replacer getReplacerBySql(String sql){
+    public Replacer getReplacerBySql(String Company_Id,String sql){
         Replacer replacer = null;
         SQLHelper sqlHelper = new SQLHelper(false);
-        List<Map<String, Object>> datas = sqlHelper.executeQueryList(APPConfig.COMPANYID, sql, null);
+        List<Map<String, Object>> datas = sqlHelper.executeQueryList(Company_Id, sql, null);
         if(datas!=null && datas.size()>0){
             replacer = new Replacer();
             replacer.setID(datas.get(0).get("ID")==null ? 0 : Integer.parseInt(datas.get(0).get("ID").toString()));

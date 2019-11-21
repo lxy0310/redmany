@@ -63,7 +63,7 @@ public class LinkageSelect extends ParentView {
                 String replacerStr = view.getData_replacer();
                 CommonHelperDao dao = new CommonHelperDao();
                 String sql = "Select * from Replacer where Replacername='"+replacerStr+"'";
-                Replacer replacer = dao.getReplacerBySql(sql);
+                Replacer replacer = dao.getReplacerBySql(getPage().getCompany_Id(),sql);
                 if(replacer!=null){
                     myReplacer.setID(replacer.getID());
                     myReplacer.setTxtsource(replacer.getTxtsource());
@@ -87,7 +87,7 @@ public class LinkageSelect extends ParentView {
                         }
                     }else if (myReplacer.getDatasql() != null && myReplacer.getDatasql().length() > 0) {
                         CommonHelperDao dao = new CommonHelperDao();
-                        List<Map<String, Object>> list = dao.getDataBySql(myReplacer.getDatasql());
+                        List<Map<String, Object>> list = dao.getDataBySql(getPage().getCompany_Id(),myReplacer.getDatasql());
                         if(list!=null && list.size()>0){
                             for(int i=0;i<list.size();i++){
                                 Map map = list.get(i);
@@ -145,7 +145,7 @@ public class LinkageSelect extends ParentView {
                     } else {
                         if (myReplacer.getDatasql() != null && myReplacer.getDatasql().length() > 0) {
                             CommonHelperDao dao = new CommonHelperDao();
-                            List<Map<String, Object>> list = dao.getDataBySql(myReplacer.getDatasql());
+                            List<Map<String, Object>> list = dao.getDataBySql(getPage().getCompany_Id(),myReplacer.getDatasql());
                             if (list != null && list.size() > 0) {
                                 for (int i = 0; i < list.size(); i++) {
                                     Map map = list.get(i);
@@ -175,7 +175,7 @@ public class LinkageSelect extends ParentView {
                     } else {
                         if (myReplacer.getDatasql() != null && myReplacer.getDatasql().length() > 0) {
                             CommonHelperDao dao = new CommonHelperDao();
-                            List<Map<String, Object>> list = dao.getDataBySql(myReplacer.getDatasql());
+                            List<Map<String, Object>> list = dao.getDataBySql(getPage().getCompany_Id(),myReplacer.getDatasql());
                             if (list != null && list.size() > 0) {
                                 for (int i = 0; i < list.size(); i++) {
                                     Map map = list.get(i);
@@ -198,7 +198,7 @@ public class LinkageSelect extends ParentView {
                     String childIds = "";
                     CommonHelperDao dao = new CommonHelperDao();
                     String sql = "Select * from Replacer where fid ='"+myReplacer.getID()+"'";
-                    List<Map<String, Object>> childList = dao.getDataBySql(sql);
+                    List<Map<String, Object>> childList = dao.getDataBySql(getPage().getCompany_Id(),sql);
                     if(childList!=null && childList.size()>0){
                         for(int i=0;i<childList.size();i++){
                             String childRname = childList.get(i).get("Replacername").toString();//子级替换器名
