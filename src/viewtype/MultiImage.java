@@ -24,6 +24,10 @@ public class MultiImage extends ParentView {
         div.id(getName());
         String optype = getPage().getParameter("optype");//修改1查看2
         String text = getDataProvider().getText(this, getForm());//input值
+
+
+
+
         if (getView() != null) {
             View view=getView();
             String[] imgs = null;
@@ -31,7 +35,9 @@ public class MultiImage extends ParentView {
                 if(text.indexOf(",")<0){
                     text=text+",";
                 }
-                if (!"1".equals(view.getIsValue())){
+
+                if(!"1".equals(view.getIsValue())){
+
                     imgs = text.split(",");
                 }
             }
@@ -50,7 +56,7 @@ public class MultiImage extends ParentView {
             }else{
                 Label label = div.label();
                 label.text(view.getTitle()==null?"":view.getTitle());
-              //  div.text(view.getTitle()==null?"":view.getTitle());
+
             }
             //旧数据隐藏域
             Input old_input = div.input();
