@@ -67,6 +67,92 @@ public class Form implements Serializable {
     private String isScroll;
     private String isShowAll;
     private String isHasTopOrBottomEvent;
+    private String chatType;
+    private String row;
+
+    @Override
+    public String toString() {
+        return "Form{" +
+                "Id=" + Id +
+                ", FormName='" + FormName + '\'' +
+                ", Title='" + Title + '\'' +
+                ", List_fields='" + List_fields + '\'' +
+                ", Sort_fields='" + Sort_fields + '\'' +
+                ", Search_fields='" + Search_fields + '\'' +
+                ", Modify_fields='" + Modify_fields + '\'' +
+                ", Getter='" + Getter + '\'' +
+                ", Putter='" + Putter + '\'' +
+                ", Modifyer='" + Modifyer + '\'' +
+                ", conn_str='" + conn_str + '\'' +
+                ", Get_data_sql='" + Get_data_sql + '\'' +
+                ", ReplaceName='" + ReplaceName + '\'' +
+                ", Get_data_proc_name='" + Get_data_proc_name + '\'' +
+                ", Get_data_proc_params='" + Get_data_proc_params + '\'' +
+                ", Put_data_proc_name='" + Put_data_proc_name + '\'' +
+                ", Put_data_proc_params='" + Put_data_proc_params + '\'' +
+                ", Modify_data_proc_name='" + Modify_data_proc_name + '\'' +
+                ", Modify_data_proc_params='" + Modify_data_proc_params + '\'' +
+                ", Put_data_sql_set_field='" + Put_data_sql_set_field + '\'' +
+                ", Put_data_sql_set_value='" + Put_data_sql_set_value + '\'' +
+                ", Table_name='" + Table_name + '\'' +
+                ", DataDepFieldName='" + DataDepFieldName + '\'' +
+                ", DataOwneFieldName='" + DataOwneFieldName + '\'' +
+                ", Key_field='" + Key_field + '\'' +
+                ", Key_field_type='" + Key_field_type + '\'' +
+                ", MenuType='" + MenuType + '\'' +
+                ", State=" + State +
+                ", last_modify_time='" + last_modify_time + '\'' +
+                ", submit_url='" + submit_url + '\'' +
+                ", dataRefreshInterval='" + dataRefreshInterval + '\'' +
+                ", get_data_sql_where='" + get_data_sql_where + '\'' +
+                ", insert_op_type='" + insert_op_type + '\'' +
+                ", get_dataset_dealer='" + get_dataset_dealer + '\'' +
+                ", UsersWhere='" + UsersWhere + '\'' +
+                ", ExportToExcel=" + ExportToExcel +
+                ", xcolumn='" + xcolumn + '\'' +
+                ", ycolumn='" + ycolumn + '\'' +
+                ", xycolumn='" + xycolumn + '\'' +
+                ", bFormColumn='" + bFormColumn + '\'' +
+                ", html_template='" + html_template + '\'' +
+                ", doc_template='" + doc_template + '\'' +
+                ", push_message='" + push_message + '\'' +
+                ", template_type='" + template_type + '\'' +
+                ", returnCode='" + returnCode + '\'' +
+                ", returnCodeLMF='" + returnCodeLMF + '\'' +
+                ", searchparams='" + searchparams + '\'' +
+                ", trueName='" + trueName + '\'' +
+                ", resultFunc='" + resultFunc + '\'' +
+                ", isupdate='" + isupdate + '\'' +
+                ", loadWay='" + loadWay + '\'' +
+                ", target='" + target + '\'' +
+                ", showPage='" + showPage + '\'' +
+                ", transferParams='" + transferParams + '\'' +
+                ", dataCounts='" + dataCounts + '\'' +
+                ", columnCount='" + columnCount + '\'' +
+                ", rowCount='" + rowCount + '\'' +
+                ", isScroll='" + isScroll + '\'' +
+                ", isShowAll='" + isShowAll + '\'' +
+                ", isHasTopOrBottomEvent='" + isHasTopOrBottomEvent + '\'' +
+                ", chatType='" + chatType + '\'' +
+                ", row='" + row + '\'' +
+                '}';
+    }
+
+    public String getRow() {
+        return row;
+    }
+
+    public void setRow(String row) {
+        this.row = row;
+    }
+
+    public String getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(String chatType) {
+        this.chatType = chatType;
+    }
 
     public Integer getId() {
         return Id;
@@ -549,14 +635,4 @@ public class Form implements Serializable {
     }
 
 
-    @Override
-    public String toString() {
-        return "Form{" +
-                "FormName='" + FormName + '\'' +
-                ", Title='" + Title + '\'' +
-                ", List_fields='" + List_fields + '\'' +
-                ", Get_data_sql='" + Get_data_sql + '\'' +
-                ", get_data_sql_where='" + get_data_sql_where + '\'' +
-                '}';
-    }
 }

@@ -2,6 +2,7 @@
 
 
 function gotoPage(target, transferParams) {
+
     if(target.indexOf('goto:ServiceDetailsPage,Cus_ServiceDetailsForm')>=0){
         alert("相关功能还在持续优化升级中，敬请关注！");
         return;
@@ -43,13 +44,107 @@ function gotoPage(target, transferParams) {
         alert("相关功能还在持续优化升级中，敬请关注！");
         return;
     }
+
+    //登出处理
     if (target.indexOf('logout:') >= 0) {
-         goto('login?out=1&url=' + escape(genUrl('goto:OaLoginHM,LoginForm', null)));
+        //登出注销
+         //获取后面的是否配置了goto事件
+         if(target.indexOf('[^]') > 0){
+             var strs = target.split('[^]');
+             if(strs.length>=2){
+                 var gotoStr=strs[1];
+                 if(gotoStr.indexOf('goto:') >=0){
+                     goto('login?out=1&url=' + escape(genUrl(gotoStr, null)));
+                     return;
+                 }
+                 //没有配置goto
+                 goto('login?out=1&url=' + escape(genUrl('goto:OaLoginHM,LoginForm', null)));
+             }
+
+
+         }else{
+             goto('login?out=1&url=' + escape(genUrl('goto:OaLoginHM,LoginForm', null)));
+         }
+
         return;
     }
-    if (target.indexOf('submit:') >= 0 && target.indexOf('[^]') > 0) {
+
+    //登录事件
+    if(target.indexOf('login:') >= 0){
+        var loginAfterUrl=null;
+        if(target.indexOf('[^]') > 0){
+            var strs = target.split('[^]');
+            if(strs.length>=2){
+                var gotoStr=strs[1];
+                if(gotoStr.indexOf('goto:') >=0){
+                    loginAfterUrl=""+genUrl(gotoStr, null);
+
+                }
+
+             }
+
+        }
+        if(loginAfterUrl==null){
+            //没有设置goto情况下，跳到默认界面
+            loginAfterUrl=""+genUrl('goto:OaLoginHM,LoginForm', null);
+         }
+         //ajax
+         //获取账号密码
+         var UserName=$("#UserName0").val();
+        //alert(UserName);
+        var password=$("#password0").val();
+        //alert(password);
+     /*   $.ajax({
+            url:'login',
+            type:"post",
+            data:{"userName":UserName,"password":password},
+            dataType:"json",
+            success:function (data) {
+                alert(1);
+            }
+
+        });*/
+        $.post("login",{"userName":UserName,"password":password},function (data) {
+                var result=data.toString();
+                if(result=="success"){
+                    goto(loginAfterUrl);
+                }else{
+                    alert(data);
+                }
+        },"json");
+        return;
+    /*    $.ajax({
+            url:"login",
+            type:"post",
+            data:{"userName":UserName,"password":password},
+            dataType:"json",
+            success:function(result){
+                var flag = result.flag;
+                if(flag==true){
+                    //如果登录成功则跳转到成功页面
+                    window.location.href="<%=basePath%>/pages/front/success.jsp";
+                }else{
+                    //跳回到Index.jsp登录页面，同时在登录页面给用户一个友好的提示
+                    $(".tip").text("您输入的用户名或者密码不正确");
+                }
+            }
+
+        });*/
+
+    }
+
+   //刷新事件
+  /*  if(target.indexOf('refresh:') >= 0){
+        location.reload();
+    }*/
+
+    if (target.indexOf('submit:') >= 0 ) {
+
+
+
+
         //{Id}在生成的页面的java，替换好
-        var strs = target.split('[^]');
+      var strs = target.split('[^]');
         var submit = strs[0];
         if (strs[0].length > 0) {
             if(submit=="isNeedLogin:1"){
@@ -66,11 +161,60 @@ function gotoPage(target, transferParams) {
             }
             var formName = submit1s[0];
             var showType = submit1s[1];
+            //alert(formName);
+           // alert(showType);
             //参数 itemProvideId={Id}╗price={totalPrice}
             var subparam="Company_Id=" + gCompany_Id + "&userid=" + gUesrId;
+            //获取表单参数集
+            //获取sumit formName
+            //var formParam=    $("#"+formName+"Form").serialize();
+            //alert( formParam);
+           // $("#"+formName+"Form").attr("action","submit?formName="+formName+"&showType="+showType);
+            //$("#"+formName+"Form").submit();
+            var form=document.getElementById(formName+"Form");
+            var formData=new FormData(form);
+            formData.set("formName",formName);
+            formData.set("showType",showType);
+            //alert(formData);
+            $.ajax({
+               url:"submit",
+               type:"post",
+                data:formData,
+                contentType:false,
+                processData:false,
+                cache:false,
+                success:function (data) {
+
+                 if(data>0){
+                     if(showType=="MDnewForm"  ){
+                         if($("#mdID").val()==""){
+                             $("#mdID").val(data);
+
+                             var a= $("#mdAddIframe").attr("onclick").replace("null",data+"");
+                              $("#mdAddIframe").attr("onclick",a);
+
+                             var a= $("#mdIframe").attr("src").replace("null",data+"");
+
+                             document.getElementById('mdIframe').src=a;
+                         }
+                         layer.msg("操作成功！",{icon:6});
+                     }else{
+                         layer.msg("操作成功！",{icon:6});
+                         document.getElementById(formName+"Form").reset();
+                         window.parent.document.getElementById('mdIframe').contentWindow.location.reload();
+
+                       //  window.parent.getElementById('mdIframe').reload();
+                     }
+
+                 }else {
+                     layer.msg("操作失败！",{icon:5});
+                     window.location.reload();
+                 }
 
 
-           for (var t=1;t<submitArr.length;t++) {
+                }
+            });
+       /*    for (var t=1;t<submitArr.length;t++) {
 
                if (submitArr[t].indexOf("╗") >= 0) {
                    // var subparam = submitArr[1].replace('╗', '&') + "Company_Id=" + gCompany_Id + "&userid=" + gUesrId;
@@ -87,65 +231,74 @@ function gotoPage(target, transferParams) {
                    subparam += "&" + subparam4;
                }
             }
-            console.log(subparam);
+            console.log(subparam);*/
           //  alert(subparam);
 
             //  submitArr循环
 
-            for (var j = 2; submit1s.length > j; j++) {
+         /*   for (var j = 2; submit1s.length > j; j++) {
                 subparam += "&" + submit1s[j];
              //   alert(submit1s[j])
             }
 
-             var submitUrl = SumbitUrl+'formName=' + formName + '&showType=' + showType + '&' + subparam;
+             var submitUrl = SumbitUrl+'formName=' + formName + '&showType=' + showType + '&' + subparam;*/
 
             //支付后跳转页面
             //strs[1]=goto:payFormBuyingService,freeForm
-            var refresh = strs[1].indexOf('refresh:') >= 0;
-            if (!refresh) {
-                if (strs[1].indexOf('pay') >= 0) {
-                    var url = genUrl(strs[1], transferParams);
-                    payUrl = "wxpay?url=" + escape(url) + "&" + subparam;
-                } else {
-                    payUrl = genUrl(strs[1], transferParams);
-                }
-            } else {
-                payUrl = null;
-            }
-            $.ajax({
-                type: 'post',
-                url: submitUrl,
-                success: function (data) {
-                        //goto(submitUrl);
-                    /*    alert(data)
-                    alert("注册成功");
-                    window.location.href="http://localhost:8080/queryStudentServlet?copformName=Service_mainPage&showType=copForm";*/
-                   /* var temp = 'qwerrreqwqwqw';
-                    alert(data.indexOf("success"));
-                    alert(temp.indexOf("success"));*/
-                     /* if (data.indexOf("success") != -1 ){
-                            window.location.href="http://localhost:8080/queryStudentServlet?copformName=OaLoginHM&showType=LoginForm";
-                            alert("注册成功");
-                        }*/
-                }
-            });
+            // var refresh = strs[1].indexOf('refresh:') >= 0;
+            // if (!refresh) {
+            //     if (strs[1].indexOf('pay') >= 0) {
+            //         var url = genUrl(strs[1], transferParams);
+            //         payUrl = "wxpay?url=" + escape(url) + "&" + subparam;
+            //     } else {
+            //         payUrl = genUrl(strs[1], transferParams);
+            //     }
+            // } else {
+            //     payUrl = null;
+            // }
+            // $.ajax({
+            //     type: 'post',
+            //     url: submitUrl,
+            //     success: function (data) {
+            //             //goto(submitUrl);
+            //         /!*    alert(data)
+            //         alert("注册成功");
+            //         window.location.href="http://localhost:8080/queryStudentServlet?copformName=Service_mainPage&showType=copForm";*!/
+            //        /!* var temp = 'qwerrreqwqwqw';
+            //         alert(data.indexOf("success"));
+            //         alert(temp.indexOf("success"));*!/
+            //          /!* if (data.indexOf("success") != -1 ){
+            //                 window.location.href="http://localhost:8080/queryStudentServlet?copformName=OaLoginHM&showType=LoginForm";
+            //                 alert("注册成功");
+            //             }*!/
+            //     }
+            // });
 
         }
-        return;
+        if(target.indexOf("[^]")>=0){
 
-    } else if (target.indexOf('finish:') >= 0) {
+        }else{
+            return false;
+        }
+
+
+    }
+    else if (target.indexOf('finish:') >= 0) {
         window.history.back();
         return;
-    } else if (target == 'changepwd:') {
+    }
+    else if (target == 'changepwd:') {
         var url = genUrl('goto:修改密码deformname,修改密码showtype', transferParams);
         goto(url);
         return;
-    } else if(target.indexOf('wxpay:') >= 0 && target.indexOf('[^]') > 0){
+    }
+    else if(target.indexOf('wxpay:') >= 0 && target.indexOf('[^]') > 0){
         var nstr = target.split('[^]');
         if (nstr[0].indexOf('wxpay') >= 0) {
            goto('wxpay');
         }
-    }else if (target.indexOf('goto:') < 0) {
+    }
+    else if (target.indexOf('goto:') < 0) {
        // alert(transferParams);
         postdo(target, transferParams);
 
@@ -861,3 +1014,22 @@ function regMessage() {
         $("#label-code").text("请输入用户名");
     }
 }
+
+
+//分页跳转
+function pageJump(formName,showType,pageIndex) {
+    var pageSize=$("#pageSizeSelect option:selected").val();
+    var url="queryStudentServlet?copformName="+formName+"&showType="+showType+"&pageIndex="+pageIndex+"&pageSize="+pageSize;
+
+
+    if(pageIndex=='goText'){
+        url="queryStudentServlet?copformName="+formName+"&showType="+showType+"&pageIndex="+$("#goText").val()+"&pageSize="+pageSize;
+    }
+    goto(url);
+}
+
+/*
+layui.use(['laypage', 'layer'], function() {
+    var laypage = layui.laypage
+        , layer = layui.layer;
+})*/

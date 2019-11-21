@@ -17,4 +17,5 @@ public class NoData extends ParentView {
     protected HtmlBodyElement<?> create() {
         return null;
     }
+
 }

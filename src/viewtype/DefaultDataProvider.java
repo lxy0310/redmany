@@ -2,6 +2,7 @@ package viewtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 import common.BaiduLocation;
+import common.DataUtil;
 import common.utils.DataHelper;
 import common.utils.SafeString;
 import common.utils.TextUtils;
@@ -285,7 +286,7 @@ public class DefaultDataProvider implements IDataProvider {
         }else {
             String[] params = transferParams.split("\\[\\^\\]");
             for (String str : params) {
-                String p=str;
+                String p = str;
                 /*if(p.indexOf("Medical_getDoctorData:m.state=?")>=0){
                     if(p.equals("Medical_getDoctorData:m.state=?")){
                        p= p.replace("Medical_getDoctorData:m.state=?","");
@@ -298,21 +299,21 @@ public class DefaultDataProvider implements IDataProvider {
                         transferParams = transferParams.replace("Medical_MyCoupon:cc.state=?", "");
                     }
                 }*/
-                if(!p.equals("")){
-                    String val="";
-                    boolean   flag = p.contains(":");
-                    if(flag){
-                        String[] strs= p.split(":");
-                        if(strs.length>1){
-                            val=strs[1];
+                if (!p.equals("")) {
+                    String val = "";
+                    boolean flag = p.contains(":");
+                    if (flag) {
+                        String[] strs = p.split(":");
+                        if (strs.length > 1) {
+                            val = strs[1];
                         }
-                    }else{
-                        val=p;
+                    } else {
+                        val = p;
                     }
-                    if(val!=null){
-                        int oldFlag=val.indexOf("$");
-                        if(oldFlag>0){
-                            val=val.split("\\$")[0];
+                    if (val != null) {
+                        int oldFlag = val.indexOf("$");
+                        if (oldFlag > 0) {
+                            val = val.split("\\$")[0];
                         }
                         int i = val.indexOf("=");
                         if (i > 0) {
@@ -324,13 +325,23 @@ public class DefaultDataProvider implements IDataProvider {
             for (Map.Entry<String, String> e : oldParams.entrySet()) {
                 String key = e.getKey();
                 String oldVal = e.getValue();
-                if (oldVal.equals("{cacheId}")){
+                if (oldVal.equals("{cacheId}")) {
                     transferParams = transferParams.replace("{cacheId}", "" + baseForm.getPage().getUserId());
                 }
-                if(newParams!=null){
-                    for (Map.Entry<String, String> m : newParams.entrySet()) {
+                if (newParams != null) {
+                    //判断是否替换上个页面的transferParams的参数
+                    if (DataUtil.hasInnerKeyIgnoreCase(newParams, baseForm.getFormName(), key)) {
+                        String val = DataUtil.getInnerParamIgnoreCase(newParams, baseForm.getFormName(), key);
+                        if(val!=null){
+                            transferParams = transferParams.replace(oldVal, val);
+                        }
+                    }
+
+
+               /*     for (Map.Entry<String, String> m : newParams.entrySet()) {
                         String nkey = m.getKey();
                         String val = DataHelper.toString(m.getValue(), "");
+
                         if(nkey.equals("mro.id")){
                             if(oldVal.equals("{doctorId}")){
                                 transferParams = transferParams.replace(oldVal, val);
@@ -339,7 +350,19 @@ public class DefaultDataProvider implements IDataProvider {
                         if(nkey.equalsIgnoreCase(key)){
                             transferParams = transferParams.replace(oldVal, val);
                         }
+                    }*/
+                }
+
+                if (globalVar != null) {
+                    //判断是否需要替换全局变量
+                    if (oldVal.indexOf("fromGlobal_") >= 0) {
+                        String val = DataUtil.getInnerParam(globalVar, baseForm.getFormName(), oldVal.substring(1, oldVal.length()-1));
+                        if(val!=null){
+                            transferParams = transferParams.replace(oldVal, val);
+                        }
+
                     }
+
                 }
             }
         }

@@ -18,13 +18,80 @@ public class FormFiledDao extends BaseDao {
     }
 
     /**
+     * 获取表格顶部按钮
+     * @param CompanyId
+     * @param FormName
+     * @return
+     */
+    public String getListHeadFormFiledStr(String CompanyId, String FormName){
+        String sql ="select * from FormFiled where formname =? and Type='HeadButton' ORDER BY Index_number";
+        String[] parameters = {FormName};
+        List<Map<String, Object>> datas = new ArrayList<>();
+        datas = sqlHelper.executeQueryList(CompanyId, sql, parameters);
+        String filedStr = null;
+        if (datas != null) {
+            for (Map<String, Object> line : datas) {
+                if (filedStr == null){
+                    filedStr = String.valueOf(line.get("Name")) ;
+                }else {
+                    filedStr = filedStr + "," +String.valueOf(line.get("Name"));
+                }
+            }
+        }
+        return filedStr;
+    }
+
+    /**
+     *  获取formfeild表的Name数据,并排序
+     *  * @param CompanyId
+     * @param FormName
+     * @return
+     */
+    public String getFormFiledStr (String CompanyId, String FormName){
+
+       // String sql = "SELECT Name  FROM [FormFiled] WHERE FormName=? order by Index_number";
+       // String sql = "SELECT Name FROM [FormFiled] WHERE FormName=? order by case when filedGroup is null then 1 else 0 end ,filedGroup,cast(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)) as int),Index_number";
+       String sql ="SELECT * FROM FormFiled WHERE FormName=? and type!='HeadButton' ORDER BY CONVERT(INT, IsNull(substring(filedGroup,charindex('[^]',filedGroup)+3,len(filedGroup)-charindex('[^]',filedGroup)),'100')), Index_number";
+        String[] parameters = {FormName};
+        List<Map<String, Object>> datas = new ArrayList<>();
+        datas = sqlHelper.executeQueryList(CompanyId, sql, parameters);
+      //  List<String> names = new ArrayList<>();
+        String filedStr = null;
+        if (datas != null) {
+            for (Map<String, Object> line : datas) {
+                if (filedStr == null){
+                    filedStr = String.valueOf(line.get("Name")) ;
+                }else {
+                    filedStr = filedStr + "," +String.valueOf(line.get("Name"));
+                }
+            }
+        }
+        return filedStr;
+    }
+
+    /**
+     * 根据name获取标题
+     * @param CompanyId
+     * @param FormName
+     * @param Name
+     * @return
+     */
+    public String getFiledTitleByName(String CompanyId, String FormName,String Name){
+        String sql = "SELECT Title FROM FormFiled WHERE FormName=? and Name=?";
+        String[] parameters = {FormName,Name};
+        Object obj = sqlHelper.ExecScalar(CompanyId,sql,parameters);
+        return sqlHelper.ExecScalar(CompanyId,sql,parameters)!=null?(String) sqlHelper.ExecScalar(CompanyId,sql,parameters):null;
+    }
+
+
+    /**
      * 根据FormName查询返回结果集
      * @param CompanyId 企业Id
      * @param FormName FormName
      * @return
      */
     public List<Map<String,Object>> getFormFeildList(String CompanyId, String FormName){
-        String sql = "SELECT * FROM [FormFiled] WHERE FormName=?";
+        String sql = "SELECT * FROM [FormFiled] WHERE FormName=? order by Index_number";
         String[] parameters = {FormName};
         List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>();
         datas = sqlHelper.executeQueryList(CompanyId,sql,parameters);
@@ -109,6 +176,8 @@ public class FormFiledDao extends BaseDao {
             formFiled.setListAttributeId(ObjIsNull(map.get("listAttributeId"), ""));
             formFiled.setShowState(ObjIsNull(map.get("showState"), ""));
             formFiled.setShowPage(ObjIsNull(map.get("showPage"), ""));
+            formFiled.setFiledGroup(ObjIsNull(map.get("filedGroup"), ""));
+            formFiled.setFiledGroup(ObjIsNull(map.get("onlyOne"), ""));
         }
         return formFiled;
     }
@@ -139,7 +208,6 @@ public class FormFiledDao extends BaseDao {
 
     /**
      * 查询模板控件信息
-     *
      * @param Company_Id 企业id
      * @param formName   模板名称
      * @param showType   模板类型，是否是复合模板 1是 0否
@@ -148,17 +216,18 @@ public class FormFiledDao extends BaseDao {
     public List<View> getFormContorl(String Company_Id, String formName, String showType) {
         StringBuilder sb = new StringBuilder("");
         if (showType != null) {
-            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
+            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target,IsNull,FormFiled.filedGroup," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
+            sb.append(",FormFiled.listAttributeId,FormFiled.ValidateExpreesion,FormFiled.ValidateErrorMessage,FormFiled.onlyOne,FormFiled.FormName,FormFiled.data_replacer ");
             sb.append(" from FormFiled INNER JOIN OaCopModel_b ON OaCopModel_b.copFormName=FormFiled.FormName");
             sb.append(" AND OaCopModel_b.showType='" + showType + "'");
         } else {
-            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target," +
+            sb.append("SELECT FormFiled.Index_number,FormFiled.Type,FormFiled.attributeId,FormFiled.target,IsNull,FormFiled.filedGroup," +
                     "FormFiled.Name,FormFiled.iosAttribute,FormFiled.Title,FormFiled.androidAttribute,FormFiled.windowsAttribute,FormFiled.wapAttribute,FormFiled.transferParams ");
+            sb.append(",FormFiled.listAttributeId,FormFiled.ValidateExpreesion,FormFiled.ValidateErrorMessage,FormFiled.onlyOne,FormFiled.FormName,FormFiled.data_replacer ");
             sb.append(" from FormFiled ");
             sb.append(" where FormFiled.FormName='" + formName + "'");
         }
-//        System.out.println("sql:" + sb.toString());
         return sqlHelper.executeQueryList(Company_Id, sb.toString(), null, View.class);
     }
 
@@ -192,7 +261,6 @@ public class FormFiledDao extends BaseDao {
 
     /**
      * 获取控件属性
-     *
      * @param id 属性id
      * @return
      */
@@ -204,7 +272,6 @@ public class FormFiledDao extends BaseDao {
         String str = null;
         if (id != null && !"".equals(id))
             str = (String) sqlHelper.ExecScalar(Company_Id, sql, null);
-//        System.out.println("=========str===============" + str);
         return str;
     }
 

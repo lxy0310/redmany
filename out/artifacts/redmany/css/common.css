@@ -1436,6 +1436,45 @@ div:first-child
     top: 367px;
 }
 
+
+
+
+/*  newForm  的样式*/
+
+.newFormLeft>span>label{
+    color: red;
+}
+
+/* table 样式*/
+table{border-collapse:collapse;margin:0 auto; }
+table tbody {
+    display: block;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch; // 为了滚动顺畅
+}
+table tbody::-webkit-scrollbar {
+    display: none; // 隐藏滚动条
+}
+table thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+table td:hover{
+
+    overflow:auto;
+    text-overflow:clip;
+}
+table thead {
+    /*width: calc(100% - 1em)*/
+}
+
+.tableOverflow{
+    /*white-space: nowrap;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 @media only screen and (min-width: 768px){
     .hovertable td {
         background-color: white;

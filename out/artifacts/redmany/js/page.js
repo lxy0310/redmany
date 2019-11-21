@@ -2,6 +2,7 @@
 
 
 function gotoPage(target, transferParams) {
+
     if(target.indexOf('goto:ServiceDetailsPage,Cus_ServiceDetailsForm')>=0){
         alert("相关功能还在持续优化升级中，敬请关注！");
         return;
@@ -43,10 +44,100 @@ function gotoPage(target, transferParams) {
         alert("相关功能还在持续优化升级中，敬请关注！");
         return;
     }
+
+    //登出处理
     if (target.indexOf('logout:') >= 0) {
-         goto('login?out=1&url=' + escape(genUrl('goto:OaLoginHM,LoginForm', null)));
+        //登出注销
+         //获取后面的是否配置了goto事件
+         if(target.indexOf('[^]') > 0){
+             var strs = target.split('[^]');
+             if(strs.length>=2){
+                 var gotoStr=strs[1];
+                 if(gotoStr.indexOf('goto:') >=0){
+                     goto('login?out=1&url=' + escape(genUrl(gotoStr, null)));
+                     return;
+                 }
+                 //没有配置goto
+                 goto('login?out=1&url=' + escape(genUrl('goto:OaLoginHM,LoginForm', null)));
+             }
+
+
+         }else{
+             goto('login?out=1&url=' + escape(genUrl('goto:OaLoginHM,LoginForm', null)));
+         }
+
         return;
     }
+
+    //登录事件
+    if(target.indexOf('login:') >= 0){
+        var loginAfterUrl=null;
+        if(target.indexOf('[^]') > 0){
+            var strs = target.split('[^]');
+            if(strs.length>=2){
+                var gotoStr=strs[1];
+                if(gotoStr.indexOf('goto:') >=0){
+                    loginAfterUrl=""+genUrl(gotoStr, null);
+
+                }
+
+             }
+
+        }
+        if(loginAfterUrl==null){
+            //没有设置goto情况下，跳到默认界面
+            loginAfterUrl=""+genUrl('goto:OaLoginHM,LoginForm', null);
+         }
+         //ajax
+         //获取账号密码
+         var UserName=$("#UserName0").val();
+        //alert(UserName);
+        var password=$("#password0").val();
+        //alert(password);
+     /*   $.ajax({
+            url:'login',
+            type:"post",
+            data:{"userName":UserName,"password":password},
+            dataType:"json",
+            success:function (data) {
+                alert(1);
+            }
+
+        });*/
+        $.post("login",{"userName":UserName,"password":password},function (data) {
+                var result=data.toString();
+                if(result=="success"){
+                    goto(loginAfterUrl);
+                }else{
+                    alert(data);
+                }
+        },"json");
+        return;
+    /*    $.ajax({
+            url:"login",
+            type:"post",
+            data:{"userName":UserName,"password":password},
+            dataType:"json",
+            success:function(result){
+                var flag = result.flag;
+                if(flag==true){
+                    //如果登录成功则跳转到成功页面
+                    window.location.href="<%=basePath%>/pages/front/success.jsp";
+                }else{
+                    //跳回到Index.jsp登录页面，同时在登录页面给用户一个友好的提示
+                    $(".tip").text("您输入的用户名或者密码不正确");
+                }
+            }
+
+        });*/
+
+    }
+
+   //刷新事件
+    if(target.indexOf('refresh:') >= 0){
+        location.reload();
+    }
+
     if (target.indexOf('submit:') >= 0 && target.indexOf('[^]') > 0) {
         //{Id}在生成的页面的java，替换好
         var strs = target.split('[^]');
@@ -133,19 +224,23 @@ function gotoPage(target, transferParams) {
         }
         return;
 
-    } else if (target.indexOf('finish:') >= 0) {
+    }
+    else if (target.indexOf('finish:') >= 0) {
         window.history.back();
         return;
-    } else if (target == 'changepwd:') {
+    }
+    else if (target == 'changepwd:') {
         var url = genUrl('goto:修改密码deformname,修改密码showtype', transferParams);
         goto(url);
         return;
-    } else if(target.indexOf('wxpay:') >= 0 && target.indexOf('[^]') > 0){
+    }
+    else if(target.indexOf('wxpay:') >= 0 && target.indexOf('[^]') > 0){
         var nstr = target.split('[^]');
         if (nstr[0].indexOf('wxpay') >= 0) {
            goto('wxpay');
         }
-    }else if (target.indexOf('goto:') < 0) {
+    }
+    else if (target.indexOf('goto:') < 0) {
        // alert(transferParams);
         postdo(target, transferParams);
 
