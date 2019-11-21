@@ -12,17 +12,20 @@ public class Button extends ParentView {
     protected HtmlBodyElement<?> create() {
         com.sangupta.htmlgen.tags.body.forms.Button btn = new com.sangupta.htmlgen.tags.body.forms.Button();
         btn.id(getName());
+        btn.attr("type","button");
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
         String color = getDataProvider().getTextColor(this, getForm());
+        btn.text(getView().getTitle());
         /**
          * p.id={Id}$flag=0      flag=1或者0或者2(标签，1为立即购买，0为加入购物车，2为修改)
          * */
 
         String onclick = getDataProvider().getOnClick(getForm(), this, getView().getTarget(), getView().getTransferParams());
         if (onclick != null) {
-            String Id = getData("Id");
+
+           String Id = getData("Id");
             String id = getData("id");
             System.out.println("Id--------------"+Id+"id:----------------"+id);
             if(Id!=null){
@@ -51,14 +54,16 @@ public class Button extends ParentView {
             int userid = getForm().getPage().getUserId();
             String companyId = getForm().getCompanyId();
             String formName = getForm().getFormName();
-            String pId = getForm().getPage().getmParams("p.Id");
+            //String pId = getForm().getPage().getmParams("p.Id");
+            String pId = getForm().getPage().getInnerParams(getFormName(),"p.Id");
             btn.onClick("addShoppingcart('"+userid+"','"+companyId+"','"+formName+"','"+pId+"');");
         }else if(getView().getName().equals("buy")){
             int userid = getForm().getPage().getUserId();
             String companyId = getForm().getCompanyId();
             String formName = getForm().getFormName();
-            String pId = getForm().getPage().getmParams("p.Id");
-            btn.onClick("addShoppingcart('"+userid+"','"+companyId+"','"+formName+"','"+pId+"');");
+            //String pId = getForm().getPage().getmParams("p.Id");
+            String pId = getForm().getPage().getInnerParams(getFormName(),"p.Id");//20190916修改
+             btn.onClick("addShoppingcart('"+userid+"','"+companyId+"','"+formName+"','"+pId+"');");
         }
         if(text!=null) {
             btn.text(text);

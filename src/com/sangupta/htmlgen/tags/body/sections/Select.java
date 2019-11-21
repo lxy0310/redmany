@@ -1,5 +1,6 @@
 package com.sangupta.htmlgen.tags.body.sections;
 
+import com.sangupta.htmlgen.core.HtmlAttribute;
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 
 /**
@@ -27,4 +28,11 @@ public class Select extends HtmlBodyElement<Select> {
         this.add(option);
         return option;
     }
+    //lay-ignore
+
+    public Select ignore(String ignore) {
+        addAttribute(new HtmlAttribute("lay-ignore", ignore));
+        return this;
+    }
+
 }

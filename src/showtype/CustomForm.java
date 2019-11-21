@@ -1,7 +1,9 @@
 package showtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
+import com.sangupta.htmlgen.tags.body.forms.Form;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
+import com.sangupta.htmlgen.tags.body.text.Label;
 import common.utils.TextUtils;
 import viewtype.ParentView;
 import viewtype.View;
@@ -13,10 +15,27 @@ public class CustomForm extends ParentForm {
 
     @Override
     public HtmlBodyElement<?> createViews() {
-        Div div = new Div();
+        Form dataForm=new Form();
+        if("MDnewForm".equalsIgnoreCase(getPage().getShowType())){
+            dataForm.id(formName.split(",")[0]+"Form");
+        }else {
+            dataForm.id(formName+"Form");
+        }
+        dataForm.addCssClass("layui-form");
+        dataForm.attr("method","post");
+        dataForm.attr("enctype","multipart/form-data");
+        Div div =  dataForm.div();
         div.id(formName);
         make(div);
-        return div;
+        return dataForm;
+    }
+
+    public void  formStyle(String styles){
+        Div div =  new Div();
+        div.styles(styles);
+        div.id(formName);
+
+
     }
 
     protected void make(Div div) {
@@ -26,7 +45,6 @@ public class CustomForm extends ParentForm {
     protected String getHtmlTemplate() {
         return mFormData != null ? mFormData.getHtml_template() : null;
     }
-
 
     protected String makeViews(List<String> list, View view, Map<String, Object> datas, String html) {
         if (view == null) return null;
@@ -39,13 +57,40 @@ public class CustomForm extends ParentForm {
         if (!TextUtils.isEmpty(html) && html.contains(key)) {
             return html.replace(key, childView);
         }
+
+        //判断生成的页面元素是否有{}的形式,进行相应的替换
+        if( parentView !=null && parentView.getDatas()!=null && parentView.getDatas().size()>0){
+            for (String filed: parentView.getDatas().keySet()) { //formfile
+                if(childView.indexOf("{"+filed+"}")>=0){
+                    childView=childView.replace("{"+filed+"}", parentView.getDatas().get(filed).toString());
+                }
+            }
+        }else if(parentView !=null && parentView.getForm() !=null && parentView.getForm().getDatas()!=null && parentView.getForm().getDatas().size()>0 && parentView.getForm().getDatas().get(0)!=null&& parentView.getForm().getDatas().get(0).size()>0){
+
+        }else if(parentView !=null && parentView.getForm() !=null && parentView.getForm().getDatas()!=null && parentView.getForm().getDatas().size()>0 && parentView.getForm().getDatas().get(0)!=null && parentView.getForm().getDatas().get(0).size()>0){
+
+           for (String filed:
+                   parentView.getForm().getDatas().get(0).keySet()) {
+               if(childView.indexOf("{"+filed+"}")>=0){
+                   childView=childView.replace("{"+filed+"}",  parentView.getForm().getDatas().get(0).get(filed).toString());
+               }
+           }
+
+        }
+       /* if (html!=null){
+
+        }*/
         list.add(childView);
         return null;
     }
 
-    protected String addMakeViews(List<String> list, View view, Map<String, Object> datas, String html) {
+
+
+
+
+    protected String makeView(View view, Map<String, Object> datas, String html) {
         if (view == null) return null;
-        ParentView parentView = makeTypes(view);
+        ParentView parentView = makeType(view);
         if (parentView != null) {
             parentView.setDatas(datas);
         }
@@ -54,9 +99,52 @@ public class CustomForm extends ParentForm {
         if (!TextUtils.isEmpty(html) && html.contains(key)) {
             return html.replace(key, childView);
         }
+
+        System.out.println(childView);
+
+       // list.add(childView);
+        return childView;
+    }
+
+
+
+
+
+    protected String addMakeViews(List<String> list, View view, Map<String, Object> datas, String html) {
+        if (view == null) return null;
+        ParentView parentView = makeTypes(view);
+        if (parentView != null) {
+            parentView.setDatas(datas);
+        }
+        String childView = toHtml(parentView);
+
+        String key = "##" + view.getName();
+        if (!TextUtils.isEmpty(html) && html.contains(key)) {
+            return html.replace(key, childView);
+        }
         list.add(childView);
         return null;
     }
+
+
+    protected String addMakeViewMap(Map<String,String> map, View view, Map<String, Object> datas, String html) {
+        if (view == null) return null;
+        ParentView parentView = makeTypes(view);
+        if (parentView != null) {
+            parentView.setDatas(datas);
+        }
+        String childView = toHtml(parentView);
+
+        String key = "##" + view.getName();
+        if (!TextUtils.isEmpty(html) && html.contains(key)) {
+            return html.replace(key, childView);
+        }
+        //list.add(childView);
+        map.put(view.getTitle(),childView);
+        return null;
+    }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.sangupta.htmlgen.tags.body.table;
 
+import com.sangupta.htmlgen.core.HtmlAttribute;
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 
 public class TableRow extends HtmlBodyElement<TableRow> {
@@ -69,5 +70,10 @@ public class TableRow extends HtmlBodyElement<TableRow> {
 	public TableRow th(TableHeaderCell cell) {
 		return this.addChild(cell);
 	}
-	
+
+	public TableRow fixed(String fixed){
+		addAttribute(new HtmlAttribute("fixed", fixed));
+		return this;
+	}
+
 }

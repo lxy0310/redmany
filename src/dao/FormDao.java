@@ -18,6 +18,18 @@ public class FormDao extends BaseDao {
     }
 
     /**
+     * 根据formname获取数据表名(tableName)
+     * @param Company_Id
+     * @param FormName
+     * @return
+     */
+    public String getTableNameByFormName(String Company_Id,String FormName){
+        String sql="select Table_name from Form where FormName=?";
+        String[] parameters={FormName};
+        return  sqlHelper.ExecScalar(Company_Id,sql,parameters)!=null?(String) sqlHelper.ExecScalar(Company_Id,sql,parameters):null;
+    }
+
+    /**
      * 根据FormName查询返回结果集
      * @param CompanyId 企业Id
      * @param FormName FormName

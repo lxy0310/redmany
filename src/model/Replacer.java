@@ -15,6 +15,7 @@ public class Replacer implements Serializable {
     private String Child_Control;
     private String Child_Replacer;
     private String Datasql_Two_Level;
+    private String StripNumber;
     private String current_father_value = "-9999";
 
     public Integer getID() {
@@ -82,6 +83,12 @@ public class Replacer implements Serializable {
     public void setDatasql_Two_Level(String datasql_Two_Level) {
         Datasql_Two_Level = datasql_Two_Level;
     }
+
+    public String getStripNumber() {
+        return StripNumber;
+    }
+
+    public void setStripNumber(String stripNumber) { StripNumber = stripNumber; }
 
     public String getCurrent_father_value() {
         return current_father_value;

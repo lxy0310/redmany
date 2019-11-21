@@ -5,10 +5,7 @@ import com.sangupta.htmlgen.HtmlBody;
 import com.sangupta.htmlgen.HtmlHead;
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.head.Meta;
-import common.APPConfig;
-import common.AccountHelper;
-import common.CommonUtils;
-import common.SQLHelper;
+import common.*;
 import common.utils.CookieHelper;
 import common.utils.SafeString;
 import common.utils.TextUtils;
@@ -26,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -44,9 +42,15 @@ public class Page implements ParentForm.ISQLReplacer {
     public static final String LOC_ADDRESS = CommonUtils.LOC_ADDRESS;
 
     public static final String COMPANYID = APPConfig.COMPANYID;
-    public static final String platform = "1";
 
 
+    private String isPc="1";  //是否是Pc端,0-手机 1-PC，默认为0
+    public static String platform = "0";//前后端 0-前端，1-后端，默认为0
+    private String theme=COMPANYID; //主题。默认为COMPANYID
+    private int pageIndex=1; //当前页码
+    private int pageSize=5;//每页条数
+    private int pageCount=1;//总页数
+    private  int dataCount=0;//总条数
     public static String getLoginPage() {
         return getHomeUrl("OaLoginHM", "LoginForm");
     }
@@ -55,6 +59,15 @@ public class Page implements ParentForm.ISQLReplacer {
 
     public HttpServletRequest getHttpServletRequest() {
         return mHttpServletRequest;
+    }
+
+    public String getRequestParamter(String name){
+        try {
+            getHttpServletRequest().setCharacterEncoding("utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return getHttpServletRequest().getParameter(name);
     }
 
     public interface Settings {
@@ -122,6 +135,45 @@ public class Page implements ParentForm.ISQLReplacer {
     }
 
 
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+        if(this.pageIndex>pageCount){
+            this.pageIndex=this.pageCount;
+        }
+    }
+
+    public int getDataCount() {
+        return dataCount;
+    }
+
+    public void setDataCount(int dataCount) {
+        this.dataCount = dataCount;
+        if(dataCount%pageSize==0){
+            setPageCount(dataCount/pageSize);
+        }else{
+            setPageCount(dataCount/pageSize+1);
+        }
+    }
 
     /**
      * 首页链接
@@ -142,6 +194,8 @@ public class Page implements ParentForm.ISQLReplacer {
     public static String getOrderTabUrl(String formName, String showType, String tab) {
         return getHomeUrl(formName, showType) + "&" + TAB_NAME + "=" + tab;
     }
+
+
 
     public String getIP() {
         return mIP;
@@ -169,7 +223,8 @@ public class Page implements ParentForm.ISQLReplacer {
         mPageServlet = pServlet;
         mDefTitle = title;
         HttpServletRequest req = pServlet.getRequest();
-         HttpServletResponse res = pServlet.getResponse();
+        HttpServletResponse res = pServlet.getResponse();
+
         this.sSQLHelper = new SQLHelper(req);
         mAccountHelper = new AccountHelper(req, res);
         mainDao = new MainDao(sSQLHelper);
@@ -179,6 +234,8 @@ public class Page implements ParentForm.ISQLReplacer {
         this.mHttpServletRequest = req;
         this.mHttpServletResponse = res;
         this.mIP = BaseServlet.getRemortIP(req);
+        this.pageIndex=req.getParameter("pageIndex")==null?this.pageIndex:Integer.parseInt(req.getParameter("pageIndex"));
+        this.pageSize=req.getParameter("pageSize")==null?this.pageSize:Integer.parseInt(req.getParameter("pageSize"));
         urlStrings.clear();
         String url = mHttpServletRequest.getQueryString();
         if (url != null) {
@@ -200,6 +257,16 @@ public class Page implements ParentForm.ISQLReplacer {
         return mParams.get(key);
     }
 
+    /**
+     * 根据内外键获取参数值
+     * @param outSizeKey
+     * @param innerKey
+     * @return
+     */
+    public String getInnerParams(String outSizeKey,String innerKey){
+            return DataUtil.getInnerParam(mParams,outSizeKey,innerKey);
+    }
+    /** 上个页面传过来的 transferParams参数的键值对 */
     private Map<String, String> mParams = new HashMap<>();
     private Map<String, String> gVariable = new HashMap<>();
 
@@ -211,16 +278,35 @@ public class Page implements ParentForm.ISQLReplacer {
 
     private void doTransferParams() {
         mParams.clear();
+
+
         String transferParams = checkTransferParams();
+
         if (transferParams != null) {
             String[] params = transferParams.split("\\[\\^\\]");
             for (String p : params) {
                 try {
                     String val = p.contains(":") ? p.split(":")[1] : p;
                     String globalVar = p.split(":")[0];
+
+                    if(p.contains(":")){
+                        //把变量按:分成键值对
+                        mParams.put(p.split(":")[0],p.split(":")[1]);
+                        int i = val.indexOf("=");
+                        if (i > 0) {
+                           // mParams.put(val.substring(0, i).trim(), val.substring(i + 1).trim());
+                            if (globalVar.equals("globalVariable")) {
+                                gVariable.put("fromGlobal_" + val.substring(0, i).trim(), val.substring(i + 1).trim());
+                            }
+                        }
+                    }
+                    /*
+                    //把formName按键值对存起来
                     if(p.contains(":")){
                         mParams.put(p.split(":")[0],p.split(":")[0]);
                     }
+
+
                     if(val.contains("and")){
                         String[] andVal = val.split("and");
                         for (String a : andVal) {
@@ -229,14 +315,14 @@ public class Page implements ParentForm.ISQLReplacer {
                                 mParams.put(a.substring(0, idx).trim(), a.substring(idx + 1).trim());
                             }
                         }
-                    }
-                    int i = val.indexOf("=");
+                    } */
+                   /* int i = val.indexOf("=");
                     if (i > 0) {
                         mParams.put(val.substring(0, i).trim(), val.substring(i + 1).trim());
                         if(globalVar.equals("globalVariable")){
                             gVariable.put("fromGlobal_"+val.substring(0, i).trim(), val.substring(i + 1).trim());
                         }
-                    }
+                    }*/
                 } catch (Exception e) {
                     System.err.println("doTransferParams fail=" + p);
                 }
@@ -251,6 +337,31 @@ public class Page implements ParentForm.ISQLReplacer {
         return mHttpServletRequest == null ? null : mHttpServletRequest.getSession();
     }
 
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    public String getIsPc() {
+        return isPc;
+    }
+
+    public void setIsPc(String isPc) {
+        this.isPc = isPc;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
     public String getShowType() {
         return showType;
     }
@@ -262,6 +373,8 @@ public class Page implements ParentForm.ISQLReplacer {
     public String getParameter(String name) {
         return getParameter(name, null);
     }
+
+
 
     public String getParameter(String name, String def) {
         return getUrlParameter(name, def);
@@ -311,10 +424,25 @@ public class Page implements ParentForm.ISQLReplacer {
      */
     protected String applyTransferParams(ParentForm baseForm,String sql) {
 
-        String transferParams = checkTransferParams();
+
+       if(mParams.containsKey(baseForm.getFormName().toString()));{
+            String val =mParams.get(baseForm.getFormName().toString());
+
+            if (needParam(val)) {
+                if (sql.toLowerCase(Locale.US).contains("where")) {
+                    sql += " and " + val;
+                } else {
+                    sql += " where " + val;
+                }
+            }
+        }
+        //获取url上面的TransferParams参数
+       /* String transferParams = checkTransferParams();
         if (transferParams != null) {
+            //transferParams分割，获取参数的字符串数组
             String[] params = transferParams.split("\\[\\^\\]");
             for (String p : params) {
+                //1.将参数分割为paramsName和paramsVal
                 String paramsName = p.contains(":") ? p.split(":")[0] : p;
               //  String paramsVal = p.contains(":") ? p.split(":")[1] : p;
                 String paramsVal="";
@@ -327,8 +455,11 @@ public class Page implements ParentForm.ISQLReplacer {
                 }else{
                     paramsVal=p;
                 }
+
+                //循环遍历Page初始化，生成的mParams
                 for (Map.Entry<String, String> e : mParams.entrySet()) {
-                    String val = e.getKey() + "=" + e.getValue();
+                     String val = e.getValue();
+                    //   String val = e.getKey() + "=" + e.getValue();
                     if(val.equalsIgnoreCase("cc.state=?")){
                         val=null;
                     }
@@ -353,7 +484,7 @@ public class Page implements ParentForm.ISQLReplacer {
                 }
             }
         }
-
+          */
         return sql;
     }
 
@@ -427,17 +558,11 @@ public class Page implements ParentForm.ISQLReplacer {
         if (hasMenu) {
             menuForm.setPage(this);
             HtmlBodyElement element = getHtml(menuForm);
-
-
             if (element != null) {
                 body.add(element);
-
-
             }
         }
         try {
-
-
             out.println(html.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -446,17 +571,20 @@ public class Page implements ParentForm.ISQLReplacer {
 
     public void writeHead(HtmlHead head) {
         head.meta("viewport", "width=device-width");
-        head.css("css/bootstrap.min.css");
+      //  head.css("css/bootstrap.min.css");
         head.css("css/bootstrap-theme.min.css");
         head.meta(new Meta().httpEquiv("Content-Type").content("text/html; charset=utf-8"));
         head.meta(new Meta().httpEquiv("Access-Control-Allow-Origin").content("*"));
         head.title(getTitle());
-        head.script().text("var gCompany_Id='"+Company_Id+"';var gUesrId=" + getUserId()+";var gplatform=" +";var gValues=new Array();\n" +
+//        head.script().text("var gCompany_Id='"+Company_Id+"';var gUesrId=" + getUserId()+";var gplatform=" +";var gValues=new Array();\n" +
+//                "gValues['isNeedLogin']=" + (mAccountHelper.isLogin() ? 0 : 1) + ";\n");//isNeedLogin
+        head.script().text("var gCompany_Id='"+Company_Id+"';var gUesrId=1" +";var gplatform=1"+";var gValues=new Array();\n" +
                 "gValues['isNeedLogin']=" + (mAccountHelper.isLogin() ? 0 : 1) + ";\n");//isNeedLogin
         head.script("js/page.js?v=" + APPConfig.VERSION);
         head.script("js/jquery.min.js");
         head.script("js/ShoppingCarPage.js");
-        head.script("js/cardInfo.js");
+    //    head.script("js/cardInfo.js");
+
         String name = getCopformName();
         head.css("css/" + name + ".css");
         head.css("css/common.css");
@@ -469,6 +597,7 @@ public class Page implements ParentForm.ISQLReplacer {
 
         head.css("layui/css/layui.css");
         head.script("layui/layui.js");
+        head.script("js/commonUtils.js");
         /*树形图*/
         head.css("css/demo.css");
         head.css("css/zTreeStyle.css");
@@ -479,7 +608,9 @@ public class Page implements ParentForm.ISQLReplacer {
       /*  head.css("css/bounced/dialog.css");
         head.script("../js/bounced/dialog.js");
         head.script("../js/bounced/zepto.min.js");*/
-
+        //富文本编辑器插件
+        head.script("ueditor/ueditor.config.js");
+        head.script("ueditor/ueditor.all.js");
 
     }
 
@@ -497,13 +628,17 @@ public class Page implements ParentForm.ISQLReplacer {
         if (LOG) {
             System.err.println(sql);
         }
+        //循环transferParams生成的键值对mParams
         for (Map.Entry<String, String> e : mParams.entrySet()) {
             String paramsName=e.getKey();
             String formVal = e.getValue();
-
-            if(baseForm.getFormName().toString().equals(formVal)){
-                    sql = applyTransferParams(baseForm,sql);
+            //判断
+            if(baseForm.getFormName().toString().equals(paramsName)){
+                sql = applyTransferParams(baseForm,sql);
             }
+         /*   if(baseForm.getFormName().toString().equals(formVal)){
+                    sql = applyTransferParams(baseForm,sql);
+            }*/
         }
         String loc = getCookieValue(Page.LOC_POS);
         String lat = "0";

@@ -21,6 +21,7 @@
 
 package com.sangupta.htmlgen.tags.body.grouping;
 
+import com.sangupta.htmlgen.core.HtmlAttribute;
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.Text;
 
@@ -47,6 +48,12 @@ public class ListItem extends HtmlBodyElement<ListItem> {
 	
 	public ListItem text(String text) {
 		this.addChild(new Text(text));
+		return this;
+	}
+
+	//引用layui的一些标签所要用到的方法
+	public ListItem layid(String layid) {
+		addAttribute(new HtmlAttribute("lay-id", layid));
 		return this;
 	}
 	

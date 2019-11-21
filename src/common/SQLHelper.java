@@ -288,7 +288,7 @@ public class SQLHelper {
                 for (int j = 0; j < fields.length; j++) {
                     Field f = fields[j];
                     str = rsm.getColumnName(i);
-                    if (f.getName().equals(str)) {
+                     if (f.getName().equals(str)) {
                         boolean flag = f.isAccessible();
                         f.setAccessible(true);
                         if (String.class.equals(f.getType()) && !(value instanceof String)) {

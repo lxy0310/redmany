@@ -1,15 +1,22 @@
 package showtype;
 
+import com.google.gson.Gson;
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 import commandCenter.CommandCenter;
 import common.SQLHelper;
+import common.SQLUtil;
 import common.utils.DataHelper;
 import dao.FormDao;
 import dao.FormFiledDao;
 import dao.OaAttributeDao;
 import model.Form;
+import model.FormFiled;
 import model.OaAttribute;
+import org.apache.commons.lang.StringUtils;
 import page.Page;
+import service.FormFileAttribute;
+import service.PagingService;
+import service.impl.FormFileAttributeImpl;
 import viewtype.View;
 import viewtype.DefaultDataProvider;
 import viewtype.IDataProvider;
@@ -49,6 +56,7 @@ public abstract class ParentForm {
     protected List<View> mViews;
     protected View view;
     private List<String> mViewNames;
+
     /**
      * Get_data_sql
      */
@@ -59,8 +67,9 @@ public abstract class ParentForm {
     private static FormFiledDao sFormFiledDao;
     private static OaAttributeDao oaAttributeDao;
     private static FormDao sFormDao;
-
+    private  static FormFileAttribute formFileAttribute;
     protected SQLHelper sqlHelper;
+
 
     public ParentForm() {
 
@@ -107,20 +116,20 @@ public abstract class ParentForm {
 
     public List<String> getFormFieldNames() {
         if (mViewNames == null) {
+            System.out.println(mFormData.getList_fields());
             mViewNames = DataHelper.toList(mFormData.getList_fields());
         }
         return mViewNames;
     }
 
-    public List<String> getFormFieldNames(Form mFormDate) {
+
+
+    public List<String> getFormFieldNames(String mFormDate) {
         if (mViewNames == null) {
-            mViewNames = DataHelper.toList(mFormDate.getList_fields());
+            mViewNames = DataHelper.toList(mFormDate);
         }
         return mViewNames;
     }
-
-
-
 
     public List<View> getViews() {
         List<String> names = getFormFieldNames();
@@ -129,9 +138,10 @@ public abstract class ParentForm {
             //List_fields不为空，则按照这个字段的顺序去添加
             int count = names.size();
             for (int i = 0; i < count; i++) {
-                String name = names.get(i);
+                String name = names.get(i).toLowerCase();
                 View view = getViewByName(name);
-                if (view != null) {
+                boolean flag = getFormFiledByName(name);
+                if (view != null && flag) {
                     views.add(view);
                 }
             }
@@ -141,6 +151,9 @@ public abstract class ParentForm {
         }
     }
 
+
+
+
     public List<View> getViewLists(String ListFeilds) {
         // mFormData=sFormDao.getForm(companyId, formNames);
         List<String> names = DataHelper.toList(ListFeilds);
@@ -149,7 +162,7 @@ public abstract class ParentForm {
             //List_fields不为空，则按照这个字段的顺序去添加
             int count = names.size();
             for (int i = 0; i < count; i++) {
-                String name = names.get(i);
+                String name = names.get(i);  //.toLowerCase()
                 View view = getViewByName(name);
                 if (view != null) {
                     views.add(view);
@@ -198,26 +211,32 @@ public abstract class ParentForm {
                 }
             }
         }
+        if(formFileAttribute==null){
+            synchronized(FormFileAttributeImpl.class) {
+                formFileAttribute = new FormFileAttributeImpl(pSQLHelper);
 
+            }
+        }
     }
 
     public void loadData(SQLHelper pSQLHelper, ISQLReplacer pISQLReplacer) {
         initDao(pSQLHelper);
         String companyId = getCompanyId();
         String formName = getFormName();
-
+        //获取Form表的实体对象
         mFormData = sFormDao.getForm(companyId, formName);
-
-
 //        System.out.println(getFormName() + " form:" + mFormData);
-
+        //获取FormFiled表的数据集mViews
         if (getFormName().contains(",")){   //双列表
             String fFormCloumn = formName.split(",")[0];
-            mViews = sFormFiledDao.getFormContorl(getCompanyId(), fFormCloumn, null);
+            mViews = sFormFiledDao.getFormContorl(companyId, fFormCloumn, null);
+            mFormData = sFormDao.getForm(companyId, fFormCloumn);
         }else{
-            mViews = sFormFiledDao.getFormContorl(getCompanyId(), getFormName(), null);
+
+           mViews = sFormFiledDao.getFormContorl(companyId, getFormName(), null);
         }
         if (mViews != null) {
+            //循环mViews获取相应的样式配置
             for (View v : mViews) {
 //                System.out.println("mViews-v-getTransferParams====>"+v.getTransferParams());
 //                String str = v.getAndroidAttribute();
@@ -227,7 +246,8 @@ public abstract class ParentForm {
 //                String windowsAttribute = v.getWindowsAttribute();
 
                 //如果有attributeId，则查询出这个OAAttribute
-                if (v.getAttributeId()!=null){
+
+          /*      if (v.getAttributeId()!=null){
                     String wapAttributes =oaAttributeDao.getAttributeById(getCompanyId(),Integer.valueOf(v.getAttributeId().toString()));
                     if (wapAttributes!=null){
                         wapAttribute=wapAttributes;
@@ -235,10 +255,13 @@ public abstract class ParentForm {
                     }else {
                         wapAttribute=v.getWapAttribute();
                     }
+
                 }else{
                     wapAttribute=v.getWapAttribute();
-                }
+                }*/
+                wapAttribute=formFileAttribute.getAttributeStr(v,getCompanyId(),mPage.getShowType(),mPage.getIsPc(),mPage.getTheme());
                 v.setAttributeStr(wapAttribute);
+                v.setWapAttribute(wapAttribute);
             }
             if (LOG) {
                 System.out.println(getClass().getSimpleName() + ":Views:" + mViews);
@@ -247,7 +270,8 @@ public abstract class ParentForm {
         if (LOG) {
             System.out.println(getFormName() + "/" + getViewType() + ",initData=" + mViews);
         }
-        if (mFormData != null) {
+        //Form的实体对象不为空，则获取相应的数据
+        if (mFormData != null) { // && !"newForm".equalsIgnoreCase(getPage().getShowType())
             String Get_data_sql = DataHelper.toString(mFormData.getGet_data_sql());
             if (Get_data_sql != null && Get_data_sql.length() > 0) {
                 String sql;
@@ -301,22 +325,24 @@ public abstract class ParentForm {
     }
     public abstract HtmlBodyElement<?> createViews();
     public  HtmlBodyElement createView() {
+
         HtmlBodyElement<?> element = createViews();
 
         if(element!=null){
             if(sAttrs==null){
-                /* sAttrs = oaAttributeDao.getOaAttribute(companyId,formName);*/
+                 /*sAttrs = oaAttributeDao.getOaAttribute(companyId,formName);
                 if(sAttrs!=null){
                     String wapAttrs = sAttrs.getWapAttribute();
                     Map<String,String> map =parseAttribute(wapAttrs);
                     if(wapAttrs!=null){
 
+
                     }
-                }
-//            if (onclick!=null){element.styles(map.get("style"));
+                }*/
+
             }
-//                element.onClick(onclick);
-//            }
+
+
 
         }
         return element;
@@ -355,6 +381,144 @@ public abstract class ParentForm {
         return attrs;
     }
 
+    /**
+     *
+     * @param paramId
+     * @param sql
+     * @return
+     */
+    public String sqlGetID(String paramId,String sql){
+        sql = sql.toLowerCase();
+        if (paramId!=null){
+            if (sql.contains("where")){
+                //截取
+                String before = StringUtils.substringBefore(sql, "where");
+                String after = StringUtils.substringAfter(sql, "where");
+                sql = before + " where Id="+paramId  +" and "+after;
+            }else {
+                if(sql.contains("order by")){
+                    String after = sql.substring(sql.indexOf("order by"),sql.length());
+                    String before = StringUtils.substringBefore(sql, "order by");
+                    sql = before +" where Id="+paramId +after;
+                }else {
+                    sql=sql+" where Id="+paramId;
+                }
+            }
+        }
+        return sql;
+    }
+    // sql Id 拼接
+    public String sqlGetIDs(String paramId,String sql,String ReplaceName){
+
+        if (paramId!=null){
+            String str = sql.toLowerCase();
+           // sql = sql.toLowerCase();
+            if (str.contains("where")){
+                //截取
+                String before = StringUtils.substringBefore(sql, "where");
+                String after = StringUtils.substringAfter(sql, "where");
+                sql = before + " where "+ReplaceName+".Id="+paramId  +" and "+after;
+            }else {
+                if(str.contains("order by")){
+                    String after = str.substring(str.indexOf("order by"),str.length());
+                    String before = StringUtils.substringBefore(sql, "order by");
+                    sql = before +" where "+ReplaceName+".Id= "+paramId +after;
+                }else {
+                    sql=sql+" where "+ReplaceName+".Id= "+paramId;
+                }
+
+            }
+        }
+        return sql;
+    }
+
+    //双列表 关键字段
+    public String sqlGetMD(String mdAssoWord,String sql,String ReplaceName){
+
+        if (mdAssoWord!=null){
+            String str =  sql.toLowerCase();
+          //  sql = sql.toLowerCase();
+            mdAssoWord = mdAssoWord.replace(":","=");
+            if (str.contains("where")){
+                String before = StringUtils.substringBefore(str, "where");
+                String after = StringUtils.substringAfter(str, "where");
+                // " where "+ReplaceName+".Id="
+                sql = before + " where "+ReplaceName+"."+mdAssoWord  +" and "+after;
+            }else {
+                if(str.contains("order by")){
+                    String after = str.substring(str.indexOf("order by"),sql.length());
+                    String before = StringUtils.substringBefore(str, "order by");
+                    sql = before +" where "+ReplaceName+"."+mdAssoWord +"  "+after;
+                }else {
+                    sql=sql+" where "+ReplaceName+"."+mdAssoWord;
+                }
+            }
+        }
+        return sql;
+    }
+
+    //搜索条件 拼接
+    public String sqlSearchCondition(String searchCondition,String sql,String ReplaceName,String Search_fields){ sql = sql.toLowerCase();
+        System.out.println("searchCondition:\t"+searchCondition);
+        String[] search = Search_fields.split(",");
+        if (searchCondition!=null){
+            searchCondition = searchCondition.substring(1,searchCondition.length()-1);
+            String[] str1 = searchCondition.split(",");
+            String con = "";
+            Map<String,Object> map = new HashMap() ;
+            for (int i = 0; i < str1.length; i++) {
+                String str2 = str1[i];//UserName:yonghu2
+                String name = str2.substring(0,str2.indexOf(":"));
+                String value = str2.substring(str2.indexOf(":")+1,str2.length());
+                map.put(name,value);
+            }
+
+            for (int i = 0; i <search.length ; i++) {
+                String s = search[i];
+             /*   if(map.containsKey(search[i].replace("%",""))) {
+                    con += search[i].replace("%", "") + (s.indexOf("%") > 0 ? " like " : " = ") + (s.indexOf("%") > 0 ? "%" : "") + map.get(search[i].replace("%", "")) + (s.indexOf("%") > 0 ? "%" : "") + " and ";
+                }*/
+                List<View> views = getViewLists(Search_fields.replaceAll("%",""));
+                if (views!=null && views.size()>0){
+                    for (View view : views) {
+                        if (s.equalsIgnoreCase(view.getName()) && view.getType().equalsIgnoreCase("Datetime") ){
+                            String date  = s + "1";
+                            if(map.containsKey(date)) {
+                                con += "DATEDIFF(SECOND," + s + ",'" + map.get(s + "1") + "')<0 AND DATEDIFF(SECOND," + s + ",'" + map.get(s + "2") + "') > 0 and ";
+                            }
+                        }else if (view.getName().equalsIgnoreCase(s.replace("%","")) ){
+                            if(map.containsKey(search[i].replace("%",""))) {
+                                con += search[i].replace("%", "") + (s.indexOf("%") > 0 ? " like " : " = ") +
+                                        (s.indexOf("%") > 0 ? "'%" : "") + map.get(search[i].replace("%", "")) +
+                                        (s.indexOf("%") > 0 ? "%'" : "") + " and ";
+                            }
+                        }
+                    }
+                }else {
+                    System.out.println(search[i].replace("%",""));
+                    if(map.containsKey(search[i].replace("%",""))) {
+                        con += search[i].replace("%", "") + (s.indexOf("%") > 0 ? " like " : " = ") +
+                                (s.indexOf("%") > 0 ? "'%" : "") + map.get(search[i].replace("%", "")) +
+                                (s.indexOf("%") > 0 ? "%'" : "") + " and ";
+                    }
+                }
+
+            }
+            System.out.println(con);
+            if (con!=null && !con.equals("")){
+                con = con.substring(0,con.length()-4); //去掉最后的and
+                if(sql.contains("order by")){
+                    String after = sql.substring(sql.indexOf("order by"),sql.length());
+                    String before = StringUtils.substringBefore(sql, " order by ");
+                    sql = "select * from ("+before+") "+ReplaceName+" where "+con+after;
+                }else {
+                    sql = "select * from ("+sql+") "+ReplaceName+" where "+con;
+                }
+            }
+        }
+        return  sql;
+    }
+
 
     public String get(Map<String, Object> data, String key) {
         Object var = data.get(key);
@@ -380,7 +544,21 @@ public abstract class ParentForm {
         }
         return null;
     }
-    public View getViewByNames(String name) {
+
+    public boolean getFormFiledByName(String name){
+        List<FormFiled> formFileds = sFormFiledDao.getFormFiledContorl(companyId, getFormName(), mPage.getShowType());
+        if (formFileds == null) return false;
+        for (FormFiled view : formFileds) {
+            if (name.equalsIgnoreCase(view.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+/*    public View getViewByNames(String name) {
         if (mViews == null) return null;
         for (View view : mViews) {
             if (name.equalsIgnoreCase(view.getName())) {
@@ -388,13 +566,15 @@ public abstract class ParentForm {
             }
         }
         return null;
-    }
+    }*/
 
     /**
      * 根据type反射
      */
     public ParentView makeType(View view) {
         ParentView parentView = CommandCenter.makeFormField(this, view, mPage.getDataProvider());
+
+        System.out.println("parentView"+parentView);
         if (parentView == null) {
             parentView = new NoData();
         }

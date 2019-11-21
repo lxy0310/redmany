@@ -43,11 +43,6 @@
         <servlet-class>servlet.ShopCarServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
-        <servlet-name>OrderPayServlet</servlet-name>
-        <servlet-class>servlet.OrderPayServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
 
     <servlet>
         <servlet-name>PhoneCodeServlet</servlet-name>
@@ -65,6 +60,55 @@
         <servlet-class>servlet.PopupServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>ImageServlet</servlet-name>
+        <servlet-class>servlet.ImageServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>CommonServlet</servlet-name>
+        <servlet-class>servlet.CommonServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+   <servlet>
+       <servlet-name>BackMarServelt</servlet-name>
+       <servlet-class>servlet.BackMarServelt</servlet-class>
+       <load-on-startup>1</load-on-startup>
+   </servlet>
+    <servlet>
+        <servlet-name>ViewServlet</servlet-name>
+        <servlet-class>servlet.ViewServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <servlet-class>servlet.UploadFileServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>SubmitServlet</servlet-name>
+        <servlet-class>servlet.SubmitServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>BackLoginServlet</servlet-name>
+        <servlet-class>servlet.BackLoginServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CommonServlet</servlet-name>
+        <url-pattern>/common</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackMarServelt</servlet-name>
+        <url-pattern>/backMar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImageServlet</servlet-name>
+        <url-pattern>/servlet/ImageServlet</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>LocationServlet</servlet-name>
         <url-pattern>/location</url-pattern>
@@ -97,6 +141,11 @@
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BackLoginServlet</servlet-name>
+        <url-pattern>/backLogin</url-pattern>
+    </servlet-mapping>
+
 
     <servlet-mapping>
         <servlet-name>SearchServlet</servlet-name>
@@ -105,10 +154,6 @@
     <servlet-mapping>
         <servlet-name>OrderChangeServlet</servlet-name>
         <url-pattern>/orderChange</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>OrderPayServlet</servlet-name>
-        <url-pattern>/pay</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -121,16 +166,27 @@
         <url-pattern>/popup</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>ViewServlet</servlet-name>
+        <url-pattern>/view</url-pattern>
+    </servlet-mapping>
 
-
-
-
-
-
-
-
-
-
-
-
+    <servlet-mapping>
+        <servlet-name>SubmitServlet</servlet-name>
+        <url-pattern>/submit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <url-pattern>/uploadFile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
+        <url-pattern>*.png</url-pattern>
+        <url-pattern>*.gif</url-pattern>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>*.ttf</url-pattern>
+        <url-pattern>*.woff</url-pattern>
+    </servlet-mapping>
 </web-app>

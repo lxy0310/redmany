@@ -68,7 +68,9 @@ public abstract class ParentView {
     public void setDatas(Map<String, Object> datas) {
         mDatas = datas;
     }
-
+    public  Map<String, Object> getDatas(){
+        return  mDatas;
+    }
     public String getData(String key) {
         if (mDatas == null || mDatas.size() == 0) {
             return null;
@@ -120,20 +122,7 @@ public abstract class ParentView {
             }else if ("professionalName".equals(element2.getId())){
                 ListForm form = new ListForm();
                 String professionalName = (String) mDatas.get("professionalName");
-                if (professionalName.equals("1")){
-                    element2.text(form.one);
-                    System.out.println(form.one);
-                }else if (professionalName.equals("2")){
-                    element2.text(form.two);
-                    System.out.println(form.two);
-                }else if (professionalName.equals("3")){
-                    element2.text(form.three);
-                    System.out.println(form.three);
-                }else if (professionalName.equals("4")){
-                    element2.text(form.four);
-                    System.out.println(form.four);
-                }
-                System.out.println("form.one======>"+form.one);
+
             }
 //            if ("homePage".equalsIgnoreCase(getFormName())) {
 //                String state = getData("state");
@@ -212,19 +201,38 @@ public abstract class ParentView {
             return mView;
         }
         return mView;
-
     }
 
     //type='textNoTitle' formName='jkdView' name='line'
     public final void initView(ParentForm form, View view, IDataProvider dataProvider) {
-
         mForm = form;
         mView = view;
         mName = view.getName();
-        mAttrs = parseAttribute(view.getWapAttribute());
+       // mAttrs = parseAttribute(view.getWapAttribute());
+        mAttrs = parseAttribute(view.getAttributeStr());
         mIndex = view.getIndex_number();
         mIDataProvider = dataProvider;
     }
 
+    //控件默认样式
+    public String getStyle(String type) {
+        String sytle = "";
+        if("span".equals(type)){
+            sytle = "width:250px;height:25px;font-size: 14px;";
+        }else if("select".equals(type)){
+            sytle = "width:250px;height:25px;";
+        }
+        return sytle;
+    }
+
+    //当前form是否为显示
+    public boolean isShow(String showType) {
+        if("listForm".equals(showType) || "MDlistForm".equals(showType)){
+            return true;
+        }else if("newForm".equals(showType) || "MDnewForm".equals(showType) || "listModifyForm".equals(showType) || "MDlistModifyForm".equals(showType)){
+            return false;
+        }
+        return false;
+    }
 
 }
