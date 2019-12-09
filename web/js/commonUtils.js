@@ -91,8 +91,6 @@ layui.use(['layer','element','form','upload','laydate'],function(){
 
 $("#reset").on("click",function(){ window.location.reload();}); //重置
 
-
-
 //时间
 function useLayDateMultiple(cls) {
     layui.use('laydate', function() {
@@ -760,75 +758,207 @@ function delAttachFile(divId,fileId) {
 }
 
 //selectOnline的自动完成（下拉域的id、搜索输入框的id、隐藏域id、搜索框的旧内容、下拉数据['','',...]）
-function AutoComplete(auto, search, hidden, old_value, namelist, valuelist) {
+//selectOnline的自动完成（formFiled的id、搜索框的旧内容、下拉数据['','',...]` 替换器名称 ）
+function AutoComplete(id, old_value, namelist, valuelist, rname) {
     var old_value = old_value;
     var highlightindex = -1;   //高亮
-    if ($("#" + search).val() != old_value || old_value == "") {
-        var autoNode = $("#" + auto);   //缓存对象（弹出框）
+    var param = $("#" + id + "1").val().trim();
+    if (param != old_value || old_value == "") {
+        var autoNode = $("#" + id + "_domain");   //缓存对象（弹出框）
         var carlist = new Array();
         var idlist = new Array();
         var n = 0;
-        old_value = $("#" + search).val().trim();
-        for(i=0;i<3;i++){
-            var name = namelist.substring(1,namelist.length-1).split(",")[i].trim();
-            var id = valuelist.substring(1,valuelist.length-1).split(",")[i].trim();
-            // alert(name+"  "+old_value);
-            if (name.indexOf(old_value) >= 0) {
-                carlist[n] = name;
-                idlist[n] = id;
-                n++;
-            }
-        }
-        if (carlist.length == 0) {
-            autoNode.hide();
-            return;
-        }
-        autoNode.empty();  //清空上次的记录
-        for (i in carlist) {
-            var wordNode = carlist[i];   //弹出框里的每一条内容
-            // var newDivNode = $("<div>").attr("id", i);    //设置每个节点的id值
-            var newDivNode = $("<div>").attr("id", idlist[i].trim());    //设置每个节点的id值
-            newDivNode.attr("style", "font:14px/25px arial;height:25px;padding:0 8px;cursor: pointer;");
-            newDivNode.html(wordNode).appendTo(autoNode);  //追加到弹出框
-            newDivNode.mouseover(function () {//鼠标移入高亮，移开不高亮
-                if (highlightindex != -1) {        //原来高亮的节点要取消高亮（是-1就不需要了）
-                    autoNode.children("div").eq(highlightindex).css("background-color", "white");
+        old_value = param;
+        //ajax调用
+        var result;
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url: 'view',
+            data:{viewType:3, rname:rname, pname:id, param:param},
+            success: function(data){
+                result = eval(data);
+                // var myReg = /^[\u4e00-\u9fa5]+$/;	//判断汉字的正则表达式
+                // if (myReg.test(param)) {	//输入的是汉字
+                //     alert('result: '+result[0].name+" "+result[0].value);
+                // }
+                if(result!=null){
+                    carlist = result;
                 }
-                highlightindex = $(this).attr("id");//记录新的高亮节点索引
-                $(this).css("background-color", "#ebebeb");
-            });
-            newDivNode.mouseout(function () {
-                $(this).css("background-color", "white");
-            });
-            $("#"+hidden).val("");
-            newDivNode.click(function () {//鼠标点击文字上屏
-                // var comText = autoNode.hide().children("div").eq(highlightindex).text();//取出高亮节点的文本内容
-                var comText = $("#"+highlightindex+"").text();
-                $("#"+hidden).val(highlightindex);//为隐藏域赋值
-                highlightindex = -1;
-                $("#" + search).val(comText);//文本框中的内容变成高亮节点的内容
-            })
-            if (carlist.length > 0) {    //如果返回值有内容就显示出来
-                autoNode.show();
-            } else {               //服务器端无内容返回 那么隐藏弹出框
-                autoNode.hide();
-                //弹出框隐藏的同时，高亮节点索引值也变成-1
-                highlightindex = -1;
-            }
-        }
+                for(var x in result ){
+                    var name = result[x].name;
+                    var value = result[x].value;
+                    if (name.indexOf(old_value) >= 0) {
+                        carlist[n] = name;
+                        idlist[n] = value;
+                        n++;
+                    }
+                }
+                if (carlist == null || carlist == 'null' || carlist=='undefined') {
+                    autoNode.hide();
+                    return;
+                }
+                autoNode.empty();  //清空上次的记录
+                for (i in carlist) {
+                    var wordNode = carlist[i];   //弹出框里的每一条内容
+                    // var newDivNode = $("<div>").attr("id", i);    //设置每个节点的id值
+                    var newDivNode = $("<div>").attr("id", idlist[i]);    //设置每个节点的id值
+                    newDivNode.attr("style", "font:14px/25px arial;height:25px;padding:0 8px;cursor: pointer;");
+                    newDivNode.html(wordNode).appendTo(autoNode);  //追加到弹出框
+                    newDivNode.mouseover(function () {//鼠标移入高亮，移开不高亮
+                        if (highlightindex != -1) {        //原来高亮的节点要取消高亮（是-1就不需要了）
+                            autoNode.children("div").eq(highlightindex).css("background-color", "white");
+                        }
+                        highlightindex = $(this).attr("id");//记录新的高亮节点索引
+                        $(this).css("background-color", "#ebebeb");
+                    });
+                    newDivNode.mouseout(function () {
+                        $(this).css("background-color", "white");
+                    });
+                    $("#"+id+"0").val("");
+                    newDivNode.click(function () {//鼠标点击文字上屏
+                        // var comText = autoNode.hide().children("div").eq(highlightindex).text();//取出高亮节点的文本内容
+                        var comText = $("#"+highlightindex+"").text();
+                        $("#"+id+"0").val(highlightindex);//为隐藏域赋值
+                        highlightindex = -1;
+                        $("#"+id+"1").val(comText);//文本框中的内容变成高亮节点的内容
+                    })
+                    if (carlist.length > 0) {    //如果返回值有内容就显示出来
+                        autoNode.show();
+                    } else {               //服务器端无内容返回 那么隐藏弹出框
+                        autoNode.hide();
+                        //弹出框隐藏的同时，高亮节点索引值也变成-1
+                        highlightindex = -1;
+                    }
+                }
+            },error:function(xhr){alert(xhr.responseText)}
+        });
+        // for(i=0;i<3;i++){
+        //     var name = namelist.substring(1,namelist.length-1).split(",")[i].trim();
+        //     var id = valuelist.substring(1,valuelist.length-1).split(",")[i].trim();
+        //     // alert(name+"  "+old_value);
+        //     if (name.indexOf(old_value) >= 0) {
+        //         carlist[n] = name;
+        //         idlist[n] = id;
+        //         n++;
+        //     }
+        // }
+        // // if (carlist.length == 0) {
+        // console.log("saddsg "+carlist)
+        // if (carlist == null || carlist=='undefined') {
+        //     console.log("sd "+carlist)
+        //     autoNode.hide();
+        //     return;
+        // }
+        // autoNode.empty();  //清空上次的记录
+        // for (i in carlist) {
+        //     var wordNode = carlist[i];   //弹出框里的每一条内容
+        //     // var newDivNode = $("<div>").attr("id", i);    //设置每个节点的id值
+        //     var newDivNode = $("<div>").attr("id", idlist[i].trim());    //设置每个节点的id值
+        //     newDivNode.attr("style", "font:14px/25px arial;height:25px;padding:0 8px;cursor: pointer;");
+        //     newDivNode.html(wordNode).appendTo(autoNode);  //追加到弹出框
+        //     newDivNode.mouseover(function () {//鼠标移入高亮，移开不高亮
+        //         if (highlightindex != -1) {        //原来高亮的节点要取消高亮（是-1就不需要了）
+        //             autoNode.children("div").eq(highlightindex).css("background-color", "white");
+        //         }
+        //         highlightindex = $(this).attr("id");//记录新的高亮节点索引
+        //         $(this).css("background-color", "#ebebeb");
+        //     });
+        //     newDivNode.mouseout(function () {
+        //         $(this).css("background-color", "white");
+        //     });
+        //     $("#"+id+"0").val("");
+        //     newDivNode.click(function () {//鼠标点击文字上屏
+        //         // var comText = autoNode.hide().children("div").eq(highlightindex).text();//取出高亮节点的文本内容
+        //         var comText = $("#"+highlightindex+"").text();
+        //         $("#"+id+"0").val(highlightindex);//为隐藏域赋值
+        //         highlightindex = -1;
+        //         $("#"+id+"1").val(comText);//文本框中的内容变成高亮节点的内容
+        //     })
+        //     if (carlist.length > 0) {    //如果返回值有内容就显示出来
+        //         autoNode.show();
+        //     } else {               //服务器端无内容返回 那么隐藏弹出框
+        //         autoNode.hide();
+        //         //弹出框隐藏的同时，高亮节点索引值也变成-1
+        //         highlightindex = -1;
+        //     }
+        // }
     }
     //点击页面隐藏自动补全提示框
     document.onclick = function (e) {
         var e = e ? e : window.event;
         var tar = e.srcElement || e.target;
-        if (tar.id != search) {
-            if ($("#" + auto).is(":visible")) {
-                $("#" + auto).css("display", "none")
-                var pidStr = $("#"+hidden).val();
+        if (tar.id != id+"1") {
+            if ($("#" + id +"_domain").is(":visible")) {
+                $("#" + id + "_domain").css("display", "none")
+                var pidStr = $("#"+id+"0").val();
                 if(pidStr==null || pidStr==''){
-                    $("#"+search).val("");
+                    $("#"+id+"1").val("");
                 }
             }
         }
+    }
+}
+
+var datePircker_locale = {
+    format: "YYYY-MM-DD HH:mm:ss", //设置显示格式
+    applyLabel: '确定', //确定按钮文本
+    cancelLabel: '取消', //取消按钮文本
+    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    firstDay: 1
+};
+
+/**
+ * 返回最大可选择时间（日期范围选择器中备用）
+ *  // maxDate: delay(0, 24, new Date("2019-12-20"))
+ *  以上例子效果为 2019-12-25为最大可选日期
+ * @param min
+ * @param hour
+ * @param date
+ * @returns {Date}
+ */
+function delay(min, hour, date) {
+    var oldTime=date.getTime();
+    oldTime += min * 60 * 1000 * 5;
+    oldTime += hour *60 * 60 *1000 * 5;
+    return new Date(oldTime);
+}
+
+//计算两个日期之间的间隔天数
+function  getDaysBetween(dateString1,dateString2){
+    var  startDate = Date.parse(dateString1);
+    var  endDate = Date.parse(dateString2);
+    var days=(endDate - startDate)/(1*24*60*60*1000);
+    // alert(days);
+    return  days;
+}
+
+// 租车网站预订车辆
+function buy_car(id) {
+    var hotPrice = $('#hotPrice').text();//单价
+    var use_id = $('#use_id0').val();//车辆用途
+    var car_id = $('#car_id').text();//car_id
+    var dates = $('#dates0').val();//预约日期
+    if(use_id==""){
+        alert("请选择车辆用途！");
+        return;
+    }
+    if(dates==""){
+        alert("请选择预约时间！");
+        return;
+    }else{
+        var dateStr = dates.split(" - ");
+        var dateNum = getDaysBetween(dateStr[0],dateStr[1])+1;//租赁天数
+        var price = hotPrice*dateNum;
+        // 所需值： 用途、id、金额、取车时间、还车时间、定金
+        // 判断是否有已经被租的天数 escape(transferParams)
+        // if(){
+        // }
+        var transferParams = "buy_car:id="+id+"[^]globalVariable:car_id="+id+",use_id=3,deposit=123,price="+price+",start_time="+dateStr[0]+",end_time="+dateStr[1];
+        var url = "queryStudentServlet?copformName=buy_car&showType=copForm&transferParams="+escape(transferParams);
+        document.location = url;
+        // submit:userInfo_P,listModifyForm,Id={cacheId}$$patientId={fromGlobal_patientId}╗uId={fromGlobal_uId} ╗state=2
     }
 }

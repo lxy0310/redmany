@@ -32,6 +32,15 @@ public class Select extends ParentView {
             String selectStyle = "";
             String Txtsource = "";
             String Datasql = "";
+            if (view.getWapAttribute()!=null){
+                String str=view.getWapAttribute();//获取样式
+                if(str.indexOf("isEdit:")>=0){
+                    String  num=str.substring(str.indexOf("isEdit:")+7,str.indexOf("isEdit:")+8);
+                    if ("0".equals(num.trim())){
+                        view.setIsTitle("0");
+                    }
+                }
+            }
             if (view.getData_replacer() != null) {
                 String replacerStr = view.getData_replacer();
                 CommonHelperDao dao = new CommonHelperDao();
@@ -78,7 +87,7 @@ public class Select extends ParentView {
                 Label label = div.label();
                 label.text(view.getTitle()==null?"":view.getTitle());
             }
-
+//            div.style("margin-left","350px");
             Div div1 = div.div();
             div1.addCssClass("layui-input-block");
             div1.styles("margin-top: -30px;margin-left:123px;margin-right:73px;width: 182px;");

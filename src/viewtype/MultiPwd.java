@@ -8,12 +8,12 @@ import com.sangupta.htmlgen.tags.body.text.Label;
 import com.sangupta.htmlgen.tags.body.text.Span;
 
 /**
- * 单行密码
+ * 新密码（生成一个新密码，一个确认密码）
  */
-public class CopPwd extends ParentView {
+public class MultiPwd extends ParentView {
     @Override
     public String getType() {
-        return "CopPwd";
+        return "MultiPwd";
     }
 
     @Override
@@ -23,11 +23,11 @@ public class CopPwd extends ParentView {
         String text = getDataProvider().getText(this, getForm());
         String placeholder = getDataProvider().getHintContent(this, getForm());
         //生成Div
-        Div passwordCotent = new Div();
-        passwordCotent.id(getName());
-        passwordCotent.addCssClass("tableOverflow");
-        Label label = passwordCotent.label();
-//        label.attr("for", getName() + "0");
+        Div div = new Div();
+        div.id(getName());
+        div.addCssClass("tableOverflow");
+        Label label = div.label();
+//        Label label2 = div.label();
 
         if (getView() != null) {
             View view = getView();
@@ -43,14 +43,11 @@ public class CopPwd extends ParentView {
                     }
                 } else { //文本
                     label.text(view.getTitle());
-                    // Label label = span.label();
-                    //  label.addCssClass(getName());
-                    //  label.text(view.getTitle());
-
+//                    label2.text(view.getTitle());
                 }
             }
             // 生成input
-            Input input = passwordCotent.input();
+            Input input = div.input();
             input.id(getName() + "0");
             input.type("password");
             input.placeholder(placeholder != null && placeholder.length() > 0 ? placeholder : "请输入密码");
@@ -59,15 +56,16 @@ public class CopPwd extends ParentView {
             if (onclick != null) {
                 input.onClick(onclick);
             }
-            /*  *//*   if(text!=null){
-            span.text(text);
-        }*//*
-        if (getView()!=null){
-            View view=getView();
-
-        }*/
-
+            Input input2 = div.input();
+            input2.id(getName() + "again0");
+            input2.type("password");
+            input2.placeholder(placeholder != null && placeholder.length() > 0 ? placeholder : "请确认密码");
+            input2.attr("required","required");
+            String onclick2 = getDataProvider().getOnClick(getForm(), this, getView().getTarget(), getView().getTransferParams());
+            if (onclick2 != null) {
+                input2.onClick(onclick2);
+            }
         }
-        return passwordCotent;
+        return div;
     }
 }

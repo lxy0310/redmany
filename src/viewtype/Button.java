@@ -2,6 +2,8 @@ package viewtype;
 
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 
+import java.util.Map;
+
 public class Button extends ParentView {
     @Override
     public String getType() {
@@ -12,22 +14,18 @@ public class Button extends ParentView {
     protected HtmlBodyElement<?> create() {
         com.sangupta.htmlgen.tags.body.forms.Button btn = new com.sangupta.htmlgen.tags.body.forms.Button();
         btn.id(getName());
+        btn.attr("class",getName());
         btn.attr("type","button");
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());
         String color = getDataProvider().getTextColor(this, getForm());
-        btn.text(getView().getTitle());
-        /**
-         * p.id={Id}$flag=0      flag=1或者0或者2(标签，1为立即购买，0为加入购物车，2为修改)
-         * */
-
+        int isEdit = 1;
+        String keyId =  getData("Id")==null?"":getData("Id").toString();
         String onclick = getDataProvider().getOnClick(getForm(), this, getView().getTarget(), getView().getTransferParams());
         if (onclick != null) {
-
            String Id = getData("Id");
             String id = getData("id");
-            System.out.println("Id--------------"+Id+"id:----------------"+id);
             if(Id!=null){
                 onclick = onclick.replace("{Id}", Id);
             }
@@ -47,6 +45,11 @@ public class Button extends ParentView {
             }
             btn.onClick(onclick);
         }
+        if("car".equals(getPage().getCompany_Id()) && "yuyueButton".equals(getName())){
+            if(keyId!=null){
+                btn.onClick("buy_car("+ keyId +")");
+            }
+        }
 
         if(getView().getName().equals("shoppingCartText")){
             btn.onClick("gotoPage('goto:shoppingCart,ShoppingCartForm');");
@@ -65,6 +68,33 @@ public class Button extends ParentView {
             String pId = getForm().getPage().getInnerParams(getFormName(),"p.Id");//20190916修改
              btn.onClick("addShoppingcart('"+userid+"','"+companyId+"','"+formName+"','"+pId+"');");
         }
+        if (getView() != null) {
+            String textStyle = "";
+            if (getView().getWapAttribute()!=null){
+                String str=getView().getWapAttribute();//获取样式
+                String[] strs = str.split("\\[\\^\\]");
+                if (strs!=null){
+                    for(int i=0;i<strs.length;i++){
+                        if (strs[i].contains("style")){
+                            int index = strs[i].indexOf(":");
+                            if (index > 0) {
+                                textStyle = strs[i].substring(index + 1);
+                                btn.styles(textStyle);
+                            }
+                        }
+                        if (strs[i].contains("isEdit")){//当有背景图时，为防止文字挡住图片，可设置为0，即为不显示按钮文字
+                            String  num=strs[i].substring(strs[i].lastIndexOf(":")+i+1);
+                            if ("0".equals(num.trim())){
+                                isEdit = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(isEdit==1){
+            btn.text(getView().getTitle());
+        }
         if(text!=null) {
             btn.text(text);
         }
@@ -78,7 +108,6 @@ public class Button extends ParentView {
             btn.addCssClass(css);
         }
         if("confirmReceipt".equals(getName()) && getPage().getCopformName().equals("Order_main")){
-
             btn.style("display","none");
         }else if("confirmPayment".equals(getName()) && getForm().getValue("state").equals("4")){
             btn.style("display","none");
@@ -87,6 +116,5 @@ public class Button extends ParentView {
         }
         return btn;
     }
-
 
 }

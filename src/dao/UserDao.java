@@ -19,7 +19,6 @@ public class UserDao extends BaseDao {
 
     /**
      * 检测CompanyId
-     *
      * @param companyid
      * @return
      */
@@ -32,7 +31,6 @@ public class UserDao extends BaseDao {
 
     /**
      * 获取 企业 电脑端用户数
-     *
      * @param CompanyId
      * @return
      */
@@ -48,7 +46,6 @@ public class UserDao extends BaseDao {
 
     /**
      * 获取 企业 移动端用户数
-     *
      * @param CompanyId
      * @return
      */
@@ -99,7 +96,6 @@ public class UserDao extends BaseDao {
 
     /**
      * 登录获取用户信息
-     *
      * @param Company_Id
      * @param username
      * @param password
@@ -166,7 +162,6 @@ public class UserDao extends BaseDao {
 
     /**
      * 根据用户Id查询用户信息
-     *
      * @param CompanyId
      * @param Id
      * @return
@@ -235,4 +230,34 @@ public class UserDao extends BaseDao {
         }
         return map;
     }
+
+    /**
+     * 修改登录密码时的比对
+     * @param Company_Id
+     * @param userid
+     * @return
+     */
+    public List<Map<String, Object>> checkPwd(String Company_Id, String userid) {
+        String sql = "SELECT * FROM [User] WHERE Id=?";
+        String[] parameters = {userid};
+        List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>();
+        datas = sqlHelper.executeQueryList(Company_Id, sql, parameters);
+        return datas;
+    }
+
+    /**
+     * 根据userID修改密码
+     * @param CompanyId
+     * @param userid
+     * @param pwd
+     * @return
+     */
+    public int changePwd(String CompanyId, String userid, String pwd) {
+        int result = 0;
+        String sql = "update [User] set UserPassword=? where id=?";
+        String[] parameters = {pwd, userid};
+        result = sqlHelper.ExecuteNonQuery(CompanyId, sql, parameters);
+        return result;
+    }
+
 }

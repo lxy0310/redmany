@@ -21,6 +21,7 @@ import dao.MenuDao;
 import model.Form;
 import model.Menu;
 import org.apache.commons.lang.StringUtils;
+import page.Page;
 import service.PagingService;
 import service.impl.PagingServiceImpl;
 import viewtype.View;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static page.Page.platform;
+
 
 /**
  * Created by Su on 2017/12/21.
@@ -91,7 +92,7 @@ public class ListModifyForm extends CustomForm {
         }
         //查询是否有分组
         group = 0;  //默认没有分组
-        if (platform.equals("1") || platform == "1") {  //platform 1 为后台
+        if (getPage().getPlatform().equals("1") || getPage().getPlatform() == "1") {  //platform 1 为后台
             // if (isShow!=null){
             Integer formStateId = commonDao.getFormStateIdByFormName(getCompanyId(), getFormName());
             if (formStateId != null) {
@@ -99,7 +100,7 @@ public class ListModifyForm extends CustomForm {
                 formStateOperation = commonDao.getFormStateOperationByStateId(getCompanyId(), formStateId.toString());
             }
         }
-        if (platform.equals("0")) {
+        if (getPage().getPlatform().equals("0")) {
             sql = sql + " where u.Id=" + getPage().getUserId();
         }
         //获取总的条数
@@ -119,8 +120,8 @@ public class ListModifyForm extends CustomForm {
         div.add(new Script("js/colResizable-1.6.min.js"));
         div.add(new Script("js/colResizable-1.6.js"));
 
-        System.out.println(platform);
-        if (platform.equals("1") || platform == "1" ) {//1为后台
+        System.out.println(getPage().getPlatform());
+        if (getPage().getPlatform().equals("1") || getPage().getPlatform() == "1" ) {//1为后台
             //没有分组
             if (group == 0) {
                 /*List<View> views = getViews();
@@ -395,6 +396,7 @@ public class ListModifyForm extends CustomForm {
                 Div item = div.div();
                 item.addCssClass(formName + "-item");
                 for (View view : views) {
+                    view.setIsTitle("1");
                     html = makeViews(list, view, line, html);
                 }
                 if (!TextUtils.isEmpty(html)) {

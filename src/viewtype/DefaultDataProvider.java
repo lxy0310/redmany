@@ -7,6 +7,7 @@ import common.utils.DataHelper;
 import common.utils.SafeString;
 import common.utils.TextUtils;
 import model.Variable;
+import org.apache.commons.lang.StringUtils;
 import page.Page;
 import showtype.ParentForm;
 import servlet.StudentServlet;
@@ -181,7 +182,6 @@ public class DefaultDataProvider implements IDataProvider {
         if (!map.containsKey("cacheId")) {
             map.put("cacheId", pParentForm.getPage().getUserId());
         }
-
         transferParams = transferParams.replace("{cacheId}", "" + pParentForm.getPage().getUserId());
         //{serviceid}
         for (Map.Entry<String, Object> e : map.entrySet()) {
@@ -199,10 +199,8 @@ public class DefaultDataProvider implements IDataProvider {
         if (target == null) {
             return null;
         }else if(target.indexOf("submit:") >= 0 && target.indexOf("[^]") > 0){
-
             String targetSubmit = target.split("\\[\\^\\]")[0];
             if(target.contains("{cacheId}")){
-
                 target = target.replace("{cacheId}", "" + baseForm.getPage().getUserId());
             }
             if(targetSubmit!=null&&targetSubmit.indexOf("$$")>0&&targetSubmit.indexOf("╗")>0){
@@ -218,7 +216,6 @@ public class DefaultDataProvider implements IDataProvider {
                     String keys = e.getKey();
                     String oldTargetVal = e.getValue();
                     if (oldTargetVal.equals("{cacheId}")) {
-
                         target = target.replace("{cacheId}", "" + baseForm.getPage().getUserId());
                     }
                 }
@@ -237,7 +234,6 @@ public class DefaultDataProvider implements IDataProvider {
                     String keys = e.getKey();
                     String oldTargetVal = e.getValue();
                     if (oldTargetVal.equals("{cacheId}")){
-
                         target = target.replace("{cacheId}", "" + baseForm.getPage().getUserId());
                     }
                     if(newParams!=null){
@@ -271,6 +267,23 @@ public class DefaultDataProvider implements IDataProvider {
                     }
                 }
             }
+        }else if(target.indexOf("submit:") >= 0){
+            if(target.contains("{cacheId}")){
+                target = target.replace("{cacheId}", "" + baseForm.getPage().getUserId());
+            }
+            String[] targetSubmit = target.split(",");
+            if(targetSubmit.length==3){//当有传递参数时，替换其中的全局参数
+                String[] paramVal = targetSubmit[2].split("╗");
+                for (String r : paramVal) {
+                    if(r.indexOf("fromGlobal_")>0){
+                        String param[] = r.split("=");
+                        String sd = param[1].substring(param[1].indexOf("{")+1,param[1].indexOf("}")).trim();
+                        String oldVal = StringUtils.substringAfterLast(sd,"fromGlobal_");
+                        String newVal = Variable.globalVariable.get(oldVal);
+                        target = target.replace(param[1],newVal);
+                    }
+                }
+            }
         }else if(target.indexOf("goto:") >= 0 && target.indexOf("|") > 0){
             String showtype="";
             if(target.indexOf(",")>0){
@@ -287,18 +300,6 @@ public class DefaultDataProvider implements IDataProvider {
             String[] params = transferParams.split("\\[\\^\\]");
             for (String str : params) {
                 String p = str;
-                /*if(p.indexOf("Medical_getDoctorData:m.state=?")>=0){
-                    if(p.equals("Medical_getDoctorData:m.state=?")){
-                       p= p.replace("Medical_getDoctorData:m.state=?","");
-                       transferParams = transferParams.replace("Medical_getDoctorData:m.state=?", "");
-                    }
-                }
-                if(p.indexOf("Medical_MyCoupon:cc.state=?")>=0){
-                    if(p.equals("Medical_MyCoupon:cc.state=?")){
-                        p= p.replace("Medical_MyCoupon:cc.state=?","");
-                        transferParams = transferParams.replace("Medical_MyCoupon:cc.state=?", "");
-                    }
-                }*/
                 if (!p.equals("")) {
                     String val = "";
                     boolean flag = p.contains(":");
@@ -336,23 +337,7 @@ public class DefaultDataProvider implements IDataProvider {
                             transferParams = transferParams.replace(oldVal, val);
                         }
                     }
-
-
-               /*     for (Map.Entry<String, String> m : newParams.entrySet()) {
-                        String nkey = m.getKey();
-                        String val = DataHelper.toString(m.getValue(), "");
-
-                        if(nkey.equals("mro.id")){
-                            if(oldVal.equals("{doctorId}")){
-                                transferParams = transferParams.replace(oldVal, val);
-                            }
-                        }
-                        if(nkey.equalsIgnoreCase(key)){
-                            transferParams = transferParams.replace(oldVal, val);
-                        }
-                    }*/
                 }
-
                 if (globalVar != null) {
                     //判断是否需要替换全局变量
                     if (oldVal.indexOf("fromGlobal_") >= 0) {

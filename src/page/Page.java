@@ -32,7 +32,6 @@ import java.util.Map;
 public class Page implements ParentForm.ISQLReplacer {
     private SQLHelper sSQLHelper;
 
-
     public static final String ORDER_ID = CommonUtils.ORDER_ID;
     //定位
     public static final String TAB_NAME = CommonUtils.TAB_NAME;
@@ -43,9 +42,8 @@ public class Page implements ParentForm.ISQLReplacer {
 
     public static final String COMPANYID = APPConfig.COMPANYID;
 
-
     private String isPc="0";  //是否是Pc端,0-手机 1-PC，默认为0
-    public static String platform = "1";//前后端 0-前端，1-后端，默认为0
+//    private String platform = "0";//前后端 0-前端，1-后端，默认为0
     private String theme=COMPANYID; //主题。默认为COMPANYID
     private int pageIndex=1; //当前页码
     private int pageSize=5;//每页条数
@@ -80,6 +78,7 @@ public class Page implements ParentForm.ISQLReplacer {
         String TARGETURL = "targetUrl";
         String IP = "ip";
         String DeptId = "deptId";
+        String platform = "0";//前后端 0-前端，1-后端，默认为0
     }
 
     protected MainDao mainDao;
@@ -131,7 +130,12 @@ public class Page implements ParentForm.ISQLReplacer {
 
 
     public int getUserId() {
-        return mAccountHelper.getUserId();
+        String userid = mHttpServletRequest.getParameter("userid");
+        if(userid!=null && !"".equals(userid.trim())){
+            mHttpServletRequest.getSession().setAttribute("userid",userid);
+            return Integer.parseInt(userid);
+        }
+        return mHttpServletRequest.getSession().getAttribute("userid")==null?1230:Integer.parseInt(mHttpServletRequest.getSession().getAttribute("userid").toString());
     }
 
 
@@ -278,55 +282,38 @@ public class Page implements ParentForm.ISQLReplacer {
 
     private void doTransferParams() {
         mParams.clear();
-
-
         String transferParams = checkTransferParams();
-
         if (transferParams != null) {
             String[] params = transferParams.split("\\[\\^\\]");
             for (String p : params) {
                 try {
                     String val = p.contains(":") ? p.split(":")[1] : p;
                     String globalVar = p.split(":")[0];
-
                     if(p.contains(":")){
                         //把变量按:分成键值对
                         mParams.put(p.split(":")[0],p.split(":")[1]);
                         int i = val.indexOf("=");
                         if (i > 0) {
-                           // mParams.put(val.substring(0, i).trim(), val.substring(i + 1).trim());
                             if (globalVar.equals("globalVariable")) {
+                                if(val.trim().indexOf(",")>0){
+                                    String globalStr[] = val.trim().split(",");
+                                    for(String g : globalStr){
+                                        if(g.indexOf("=")>0){
+                                            getHttpSession().setAttribute(g.substring(0, g.indexOf("=")).trim(), g.substring(g.indexOf("=") + 1).trim());
+                                            gVariable.put(g.substring(0, g.indexOf("=")).trim(), g.substring(g.indexOf("=") + 1).trim());
+                                        }
+                                    }
+                                }else{
+                                    getHttpSession().setAttribute(val.substring(0, i).trim(), val.substring(i + 1).trim());
+                                    gVariable.put(val.substring(0, i).trim(), val.substring(i + 1).trim());
+                                }
                                 gVariable.put("fromGlobal_" + val.substring(0, i).trim(), val.substring(i + 1).trim());
                             }
                         }
                     }
-                    /*
-                    //把formName按键值对存起来
-                    if(p.contains(":")){
-                        mParams.put(p.split(":")[0],p.split(":")[0]);
-                    }
-
-
-                    if(val.contains("and")){
-                        String[] andVal = val.split("and");
-                        for (String a : andVal) {
-                            int idx = a.indexOf("=");
-                            if (idx > 0) {
-                                mParams.put(a.substring(0, idx).trim(), a.substring(idx + 1).trim());
-                            }
-                        }
-                    } */
-                   /* int i = val.indexOf("=");
-                    if (i > 0) {
-                        mParams.put(val.substring(0, i).trim(), val.substring(i + 1).trim());
-                        if(globalVar.equals("globalVariable")){
-                            gVariable.put("fromGlobal_"+val.substring(0, i).trim(), val.substring(i + 1).trim());
-                        }
-                    }*/
                 } catch (Exception e) {
                     System.err.println("doTransferParams fail=" + p);
                 }
-
             }
             Variable.mParam=mParams;
             Variable.globalVariable=gVariable;
@@ -355,11 +342,16 @@ public class Page implements ParentForm.ISQLReplacer {
     }
 
     public String getPlatform() {
-        return platform;
+        String platform = mHttpServletRequest.getParameter("platform");
+        if(platform!=null && !"".equals(platform.trim())){
+            mHttpServletRequest.getSession().setAttribute("platform",platform);
+            return platform;
+        }
+        return mHttpServletRequest.getSession().getAttribute("platform")==null?"1":mHttpServletRequest.getSession().getAttribute("platform").toString();
     }
 
     public void setPlatform(String platform) {
-        this.platform = platform;
+        platform = platform;
     }
 
     public String getShowType() {
@@ -367,14 +359,18 @@ public class Page implements ParentForm.ISQLReplacer {
     }
 
     public String getCompany_Id() {
-        return Company_Id;
+        String CompanyId= Company_Id;
+        String Company_Id = mHttpServletRequest.getParameter("Company_Id");
+        if(Company_Id!=null && !"".equals(Company_Id.trim())){
+            mHttpServletRequest.getSession().setAttribute("Company_Id",Company_Id);
+            return Company_Id;
+        }
+        return mHttpServletRequest.getSession().getAttribute("Company_Id")==null?CompanyId:mHttpServletRequest.getSession().getAttribute("Company_Id").toString();
     }
 
     public String getParameter(String name) {
         return getParameter(name, null);
     }
-
-
 
     public String getParameter(String name, String def) {
         return getUrlParameter(name, def);
@@ -418,21 +414,28 @@ public class Page implements ParentForm.ISQLReplacer {
 
     /**
      * 从url获取参数
-     *
      * @param sql
      * @return
      */
     protected String applyTransferParams(ParentForm baseForm,String sql) {
-
-
        if(mParams.containsKey(baseForm.getFormName().toString()));{
             String val =mParams.get(baseForm.getFormName().toString());
-
             if (needParam(val)) {
-                if (sql.toLowerCase(Locale.US).contains("where")) {
-                    sql += " and " + val;
-                } else {
-                    sql += " where " + val;
+                if(val.indexOf(",")>0){
+                    String[] valStr = val.split(",");
+                    for(int i=0; i<valStr.length; i++){
+                        if (sql.toLowerCase(Locale.US).contains("where")) {
+                            sql += " and " + valStr[i];
+                        } else {
+                            sql += " where " + valStr[i];
+                        }
+                    }
+                }else{
+                    if (sql.toLowerCase(Locale.US).contains("where")) {
+                        sql += " and " + val;
+                    } else {
+                        sql += " where " + val;
+                    }
                 }
             }
         }
@@ -578,12 +581,12 @@ public class Page implements ParentForm.ISQLReplacer {
         head.title(getTitle());
 //        head.script().text("var gCompany_Id='"+Company_Id+"';var gUesrId=" + getUserId()+";var gplatform=" +";var gValues=new Array();\n" +
 //                "gValues['isNeedLogin']=" + (mAccountHelper.isLogin() ? 0 : 1) + ";\n");//isNeedLogin
-        head.script().text("var gCompany_Id='"+Company_Id+"';var gUesrId=1" +";var gplatform=1"+";var gValues=new Array();\n" +
+        head.script().text("var gCompany_Id='"+Company_Id+"';var gUesrId="+ getUserId()+";var gplatform=1"+";var gValues=new Array();\n" +
                 "gValues['isNeedLogin']=" + (mAccountHelper.isLogin() ? 0 : 1) + ";\n");//isNeedLogin
         head.script("js/page.js?v=" + APPConfig.VERSION);
-        head.script("js/jquery.min.js");
+        head.script("js/jquery-2.1.4.min.js");
+        head.script("js/jquery-1.8.1.js");
         head.script("js/ShoppingCarPage.js");
-    //    head.script("js/cardInfo.js");
 
         String name = getCopformName();
         head.css("css/" + name + ".css");
@@ -592,8 +595,6 @@ public class Page implements ParentForm.ISQLReplacer {
         head.css("css/bootstrap.css");
         head.script("js/bootstrap.js");
         head.script("js/swiper.min.js");
-       /* head.script("js/"+name+".js");*/
-        head.script("js/jquery-1.8.1.js");
 
         head.css("layui/css/layui.css");
         head.script("layui/layui.js");
@@ -611,7 +612,10 @@ public class Page implements ParentForm.ISQLReplacer {
         //富文本编辑器插件
         head.script("ueditor/ueditor.config.js");
         head.script("ueditor/ueditor.all.js");
-
+        //日期范围选取器
+        head.script("daterangepicker/moment.min.js");
+        head.script("daterangepicker/daterangepicker.js");
+        head.css("daterangepicker/daterangepicker.css");
     }
 
     public void writeBody(HtmlBodyElement<?> body) {

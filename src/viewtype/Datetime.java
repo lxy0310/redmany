@@ -22,9 +22,8 @@ public class Datetime extends ParentView {
         String txtName =getDataProvider().getTextName(this,getForm());
         String isEdit =getDataProvider().getTextEdit(this,getForm());
         String color = getDataProvider().getTextColor(this, getForm());
-
+        String optype = getPage().getParameter("optype");//修改1查看2
         if (getView() != null) {
-
             View view=getView();
             Label label = span.label();
             if(view.getIsTitle()!=null && "1".equals(view.getIsTitle())) {//不长title
@@ -55,15 +54,27 @@ public class Datetime extends ParentView {
                 input2.type("text");
                 input2.onClick("useLayDateMultiple('"+getName()+"')");
                 input2.placeholder("请选择"+getView().getTitle());
+                if(text!=null && optype!=null){
+                    input2.value(text);
+                }
+                if((optype!=null && "2".equals(optype)) || view.getIsReadonly()=="1"){
+                    input2.attr("readonly","false");
+                    input2.styles("color: #939192;background: #f5f5f5!important;border: 1px solid;");
+                }
             }else {
                 Input input = span.input();
                 input.addCssClass(getName()+"-val");
                 input.id(getName()); //getName()
+                input.name(getName());
                 input.type("text");
                 input.onClick("useLayDateMultiple('"+getName()+"')");
                 input.placeholder("请选择"+getView().getTitle());
-                if(text!=null){
+                if(text!=null && optype!=null){
                     input.value(text);
+                }
+                if((optype!=null && "2".equals(optype)) || view.getIsReadonly()=="1"){
+                    input.attr("readonly","false");
+                    input.styles("color: #939192;background: #f5f5f5!important;border: 1px solid;");
                 }
             }
 
@@ -75,8 +86,6 @@ public class Datetime extends ParentView {
             name.text(txtName);
         }
 
-
-
         if (color != null) {
             span.style("color", color);
         }
@@ -86,9 +95,6 @@ public class Datetime extends ParentView {
         if (css != null) {
             span.addCssClass(css);
         }
-
-
-
         return span;
     }
 }
