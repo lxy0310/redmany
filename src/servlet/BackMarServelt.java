@@ -47,8 +47,11 @@ public class BackMarServelt extends BaseServlet {
             request.getSession().setAttribute("getPanelId",panelId);
             String realName = session.getAttribute("realName").toString();
             request.getSession().setAttribute("realName",realName);
-            String headImg = session.getAttribute("headImg").toString();
-            request.getSession().setAttribute("headImg",headImg);
+            if (session.getAttribute("headImg")!=null){
+                String headImg = session.getAttribute("headImg").toString();
+                request.getSession().setAttribute("headImg",headImg);
+            }
+
            /* System.out.println("menuList"+menuList.toString());
             System.out.println("panelList"+panelList.toString());
             System.out.println("getPanelId"+panelId.toString());*/

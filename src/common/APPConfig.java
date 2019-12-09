@@ -9,7 +9,7 @@ public interface APPConfig {
     //域名
     String HOST = "oa.redmany.com";
     //项目名
-    String COMPANYID = "mallTakeouts";//waihui  CloudMall huasier  antmall mallTakeouts
+    String COMPANYID = "redmany2020";//waihui  CloudMall huasier  antmall mallTakeouts
 
     int VERSION=11;
 
@@ -21,12 +21,13 @@ public interface APPConfig {
     //百度定位
     String BAIDU_KEY = "8EKE5OcQz2LlyAQtSPzrduxeP6f6Cg37";
 
+    //String hosts = "193.112.244.24";
     String hosts = "193.112.244.24";
     //数据库
 //    String URL_BZ5155 = "jdbc:sqlserver://iZjr5omeqdh7qsZ;DatabaseName=redmany_[CompanyId];useunicode=true;characterEncoding=UTF-8";
     String URL_BZ5155 = "jdbc:sqlserver://"+hosts+";DatabaseName=redmany_[CompanyId];useunicode=true;characterEncoding=UTF-8";
     String USERNAME = "redmany2908";
-    String PASSWORD = "g_z38248269_";
+    String PASSWORD = "g_z38248269_"; //Bainaohuia702   g_z38248269_
 
     //测试数据库
     String URL_LOCAL = "jdbc:sqlserver://193.112.244.24;DatabaseName=redmany_[CompanyId];useunicode=true;characterEncoding=UTF-8";

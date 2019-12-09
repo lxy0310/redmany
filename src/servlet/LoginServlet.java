@@ -126,7 +126,9 @@ public class LoginServlet extends BaseServlet {
                             if(userPassword.equals(md5Password)){
                                 HttpSession session = req.getSession();
                                 session.setAttribute("realName",user.get("RealName").toString());
-                                session.setAttribute("headImg",user.get("headImg").toString());
+                                if (user.get("headImg")!=null ){
+                                    session.setAttribute("headImg",user.get("headImg").toString());
+                                }
                                 AccountHelper accountHelper = new AccountHelper(req, resp);
                                 boolean falg = accountHelper.onLogin(user,pwd,false);
                                 loginMsg="success";
