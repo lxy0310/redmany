@@ -29,7 +29,6 @@ public class SelectOnline extends ParentView {
         String optype = getPage().getParameter("optype");//修改1查看2
         Div div = new Div();
         div.id(getName());
-        div.styles("left: 0; position: relative;");
         String styles = getDataProvider().getStyles(this, getForm());
         String css = getDataProvider().getCssClass(this, getForm());
         String text = getDataProvider().getText(this, getForm());//input值
@@ -37,10 +36,11 @@ public class SelectOnline extends ParentView {
         String onclick = getDataProvider().getOnClick(getForm(),this, getView().getTarget(), getView().getTransferParams());
         if (getView()!=null){
             View view=getView();
+            String replacerStr ="";
             String Txtsource = "";
             String Datasql = "";
             if (view.getData_replacer() != null) {
-                String replacerStr = view.getData_replacer();
+                replacerStr = view.getData_replacer();
                 CommonHelperDao dao = new CommonHelperDao();
                 String sql = "Select * from Replacer where Replacername='"+replacerStr+"'";
                 Replacer replacer = dao.getReplacerBySql(getPage().getCompany_Id(),sql);
@@ -86,7 +86,8 @@ public class SelectOnline extends ParentView {
                 Label label = div.label();
                 label.text(view.getTitle()==null?"":view.getTitle());
             }
-
+            div.styles("left: 0; position: relative;");
+//            div.style("margin-left","350px");
             Input hidden = div.input();//隐藏域，保存选择的下拉value值
             hidden.id(getName()+"0");
             hidden.name(getName());
@@ -155,15 +156,18 @@ public class SelectOnline extends ParentView {
             //当点击搜索框时，自动完成匹配
             div.add(new Script().text("$(function(){" +
                     "var old_value = $(\"#"+getName()+"1\").val();"+
-                    "$(\"#"+getName()+"1\").focus(function () {"+
-                        "if ($(\"#"+getName()+"1\").val() == \"\") {"+
-                            "AutoComplete(\""+getName()+"_domain\", \""+getName()+"1\",\""+getName()+"0\", old_value, \""+names+"\", \""+values+"\");"+
-                        "}"+
-                    "});"+
+//                    "$(\"#"+getName()+"1\").focus(function () {"+
+//                        "if ($(\"#"+getName()+"1\").val() == \"\") {"+
+//                            "AutoComplete(\""+getName()+"_domain\", \""+getName()+"1\",\""+getName()+"0\", old_value, \""+names+"\", \""+values+"\");"+
+//                        "}"+
+//                    "});"+
                     "$(\"#"+getName()+"1\").keyup(function () {"+
-                        "AutoComplete(\""+getName()+"_domain\", \""+getName()+"1\",\""+getName()+"0\", old_value, \""+names+"\" , \""+values+"\");"+
+                        "AutoComplete(\""+getName()+"\", old_value, \""+names+"\" , \""+values+"\", \""+replacerStr+"\");"+
                     "});"+
                     "});"));
+//                    "onmouseup="+
+//                        "AutoComplete(\""+getName()+"_domain\", \""+getName()+"1\",\""+getName()+"0\", old_value, \""+names+"\" , \""+values+"\");"+
+//                    "});"));
 
         }
         if(onclick != null){

@@ -168,9 +168,6 @@ public class StudentServlet extends BaseServlet {
 
         if (mMenuForm == null) {
             OaSystemSettingDao systemSettingDao = new OaSystemSettingDao(pSQLHelper);
-            //通用
-            //SystemSetting homepage = systemSettingDao.getSystemSetting(companyId, "homepage");
-            //巴中
             SystemSetting homepage = systemSettingDao.getSystemSetting(companyId, "homepage");
             System.out.println("///////////////////////////"+homepage+"//////////////////////");
             if(homepage!=null){
@@ -180,8 +177,6 @@ public class StudentServlet extends BaseServlet {
                 String type = vals.get(1);
                 System.err.println(vals);
                 mMenuForm = CommandCenter.compositeTemplate(companyId, type, name);
-
-
             }
             mMenuForm.loadData(pSQLHelper, new ParentForm.ISQLReplacer() {
                 @Override
@@ -189,14 +184,12 @@ public class StudentServlet extends BaseServlet {
                     return sql;
                 }
             });
-
         }
         return mMenuForm;
     }
 
     /**
      * 是否有菜单
-     *
      * @param menuForm
      * @param copformName
      * @param showType
@@ -251,7 +244,6 @@ public class StudentServlet extends BaseServlet {
                 return;
             }
         }
-
 
         //获取首页
         ParentForm parentForm = getMenuForm(getCompany_Id(), sqlHelper);

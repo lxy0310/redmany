@@ -1,6 +1,8 @@
 package commandCenter;
 
-import page.*;
+import page.CopPage;
+import page.Page;
+import page.SinglePage;
 import servlet.StudentServlet;
 import showtype.ParentForm;
 import viewtype.IDataProvider;
@@ -31,11 +33,9 @@ public class CommandCenter {
             parentForm = (ParentForm) clazz.newInstance();
 
         } catch (Exception e) {
-            //
         }
         return parentForm;
     }
-
 
     /**
      * 根据type反射
@@ -65,16 +65,11 @@ public class CommandCenter {
             System.err.println("makeFormField,type=" + type + ",view=" + view.getName() + ",form=" + form.getFormName());
 //                e.printStackTrace();
         }
-
-
-
         return parentView;
     }
 
-
     /**
      * 拿到数据库的字段根据字段数据进行反射，并返回页面代码
-     *
      * @param showType  类
      * @param formName  form表
      * @param companyId
@@ -90,10 +85,8 @@ public class CommandCenter {
         }
         try {
             parentForm.init(companyId, showType, formName);
-            //  System.out.println(companyId+"------------------------------++"+showType+formName);
         } catch (Throwable e) {
             System.err.println("init form showType=" + showType + ",formname=" + formName);
-//            e.printStackTrace();
         }
         //内部代码拼接html
         return parentForm;

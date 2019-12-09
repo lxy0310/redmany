@@ -1,6 +1,5 @@
 package showtype;
 
-
 import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.body.forms.Button;
 import com.sangupta.htmlgen.tags.body.forms.Input;
@@ -25,13 +24,10 @@ import service.PagingService;
 import service.impl.PagingServiceImpl;
 import viewtype.View;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static page.Page.platform;
 
 /**
  * Created by Su on 2017/12/21.
@@ -54,16 +50,18 @@ public class ListForm extends CustomForm {
     private PagingService pagingService=new PagingServiceImpl();
 
 
+
     @Override
     public HtmlBodyElement<?> createViews() {
         Div div = new Div();
         div.id(formName);
-
         make(div);
-        //添加分页菜单栏
-        pagingService.addPagingMenuBar(div,getPage());
+        if (getPage().getPlatform().equals("1")){
+            pagingService.addPagingMenuBar(div,getPage());//添加分页菜单栏
+        }
         return div;
     }
+
     protected void initDao(SQLHelper pSQLHelper) {
         menuDao = new MenuDao(pSQLHelper);
         commonDao = new CommonDao(pSQLHelper);
@@ -88,7 +86,7 @@ public class ListForm extends CustomForm {
         }
         //查询是否有分组
         group = 0;  //默认没有分组
-        if (platform.equals("1") || platform == "1") {  //platform 1 为后台
+        if (getPage().getPlatform().equals("1") || getPage().getPlatform() == "1") {  //platform 1 为后台
             // if (isShow!=null){
             Integer formStateId = commonDao.getFormStateIdByFormName(getCompanyId(), getFormName());
             if (formStateId != null) {
@@ -96,33 +94,28 @@ public class ListForm extends CustomForm {
                 formStateOperation = commonDao.getFormStateOperationByStateId(getCompanyId(), formStateId.toString());
             }
         }
-        if (platform.equals("0")) {
-            sql = sql + " where u.Id=" + getPage().getUserId();
-        }
         System.out.println("没分页前\t"+sql);
-       //获取总的条数
-        Integer dataCount=(Integer) getPage().getSQLHelper().ExecScalar(companyId, SQLUtil.getCountSql(sql),null);
-        if(dataCount!=null&& dataCount>0){
-            getPage().setDataCount(dataCount);
+        if (getPage().getPlatform().equals("1")) {
+            //获取总的条数
+            Integer dataCount=(Integer) getPage().getSQLHelper().ExecScalar(companyId, SQLUtil.getCountSql(sql),null);
+            if(dataCount!=null&& dataCount>0){
+                getPage().setDataCount(dataCount);
+            }
+            //获取到分页后的url
+            sql= SQLUtil.getPagingSQL(sql,getPage().getPageSize(),getPage().getPageIndex(),getFormData().getReplaceName());
+            System.out.println("没分页后\t"+sql);
         }
-        //获取到分页后的url
-        sql= SQLUtil.getPagingSQL(sql,getPage().getPageSize(),getPage().getPageIndex(),getFormData().getReplaceName());
-        System.out.println("没分页后\t"+sql);
-
         super.loadData(sql);
-
     }
-
-
 
     @Override
     protected void make(Div div) {
-        div.add(new Script("js/jquery.js"));
+//        div.add(new Script("js/jquery.js"));
+//        div.add(new Script("js/jquery-2.1.4.min.js"));
         div.add(new Script("js/colResizable-1.6.min.js"));
         div.add(new Script("js/colResizable-1.6.js"));
-
-        System.out.println(platform);
-        if (platform.equals("1") || platform == "1" ) {//1为后台
+        System.out.println(getPage().getPlatform());
+        if (getPage().getPlatform().equals("1") || getPage().getPlatform() == "1" ) {//1为后台
             //没有分组
             if (group == 0) {
                 showBack(div);
@@ -405,6 +398,7 @@ public class ListForm extends CustomForm {
                 Div item = div.div();
                 item.addCssClass(formName + "-item");
                 for (View view : views) {
+                    view.setIsTitle("1");
                     html = makeViews(list, view, line, html);
                 }
                 if (!TextUtils.isEmpty(html)) {

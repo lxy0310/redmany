@@ -32,13 +32,7 @@ public class MD5Util {
                 buf.append(Integer.toHexString(i));
             }
             str = buf.toString();
-
         return str;
     }
-
-
-
-
-
 
 }

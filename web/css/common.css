@@ -1215,9 +1215,6 @@ table thead {
     margin-right: 20px;
 }
 
-
-
-
 @media only screen and (min-width: 768px){
     .hovertable td {
         background-color: white;
@@ -1230,7 +1227,14 @@ table thead {
         display: table-cell;
         cursor: default;
     }
+}
 
+/**
+租车网站预约按钮
+ */
+.yuyueButton{
+    background-image:url(http://193.112.244.24:50003/document/租车_预定按钮.png);
+    background-repeat:no-repeat;background-size:100% 100%;width: 80px;height: 30px;
 }
 
 

@@ -15,6 +15,7 @@ import dao.FormDao;
 import dao.FormFiledDao;
 import model.Form;
 import model.ShopCarPageInfo;
+import org.apache.commons.lang.StringUtils;
 import page.Page;
 
 import java.util.ArrayList;
@@ -35,7 +36,6 @@ public class Text extends ParentView {
         String url = ApiParser.getShopCarUrl(userId, null);
         String rs = HttpUtils.get(url);
         if (rs != null) {
-          //  System.err.println(rs);
             return ApiParser.parseList(rs, ShopCarPageInfo.class);
         }
         return new ArrayList<>();
@@ -49,7 +49,6 @@ public class Text extends ParentView {
 
     @Override
     protected HtmlBodyElement<?> create() {
-        boolean isShow = isShow(getForm().getPage().getShowType());
         String optype = getPage().getParameter("optype");//修改1查看2
         Div div = new Div();
         div.id(getName());
@@ -71,9 +70,22 @@ public class Text extends ParentView {
                 div.text(text==null?"":text);
                 return div;
             }else{
-                Label label = div.label();
-                label.text(view.getTitle()==null?"":view.getTitle());
+                boolean isSearch = false;
+                if (view.getWapAttribute()!=null){
+                    String str=view.getWapAttribute();//获取样式
+                    if(str.indexOf("isSearch:")>=0){
+                        String  num=str.substring(str.indexOf("isSearch:")+9,str.indexOf("isSearch:")+10);
+                        if ("0".equals(num.trim())){
+                            isSearch = true;
+                        }
+                    }
+                }
+                if(!isSearch){
+                    Label label = div.label();
+                    label.text(view.getTitle()==null?"":view.getTitle());
+                }
             }
+//            div.style("margin-left","350px");
             Input input = div.input();
             input.id(getName()+'0');
             input.addCssClass(getName());
@@ -150,6 +162,14 @@ public class Text extends ParentView {
                        if (strs[i].contains("hintContent")){
                            hintContent = strs[i].substring(strs[i].lastIndexOf(":")+i);
                        }
+                       if (strs[i].contains("content")){ //文本默认内容
+                           text = StringUtils.substringAfterLast(strs[i],":");
+                           if(text.indexOf("fromGlobal_")>0){
+                               text = strs[i].substring(strs[i].indexOf("{")+1,strs[i].indexOf("}")).trim();
+                               text = StringUtils.substringAfterLast(text,"fromGlobal_");
+                               text = getPage().getHttpSession().getAttribute(text).toString();
+                           }
+                       }
                    }
                }
             }
@@ -163,13 +183,9 @@ public class Text extends ParentView {
                 }
                 input.placeholder("请输入"+num);
             }
-
             if (text!=null && optype!=null){
-
                 input.value(text);
-            }/*else if (view.getValue()!=null && optype!=null ){
-                input.value(view.getValue());
-            }*/
+            }
             if(optype!=null && "2".equals(optype)){
                 input.attr("readonly","false");
             }else if (view.getIsReadonly()=="1"){

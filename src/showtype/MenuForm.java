@@ -4,20 +4,17 @@ import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.body.embed.Img;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import com.sangupta.htmlgen.tags.body.text.Span;
-import common.APPConfig;
 import common.SQLHelper;
 import dao.FormDao;
 import dao.MenuDao;
 import model.Form;
 import model.Menu;
-import viewtype.ParentView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static page.Page.platform;
 
 /**
  * Created by Suhaibo on 2018/2/23.
@@ -140,24 +137,6 @@ public class MenuForm extends CustomForm {
             Div div1 = span.div();
             div1.text(mDatas.get(i).get("MenuName").toString());
         }
-
-        /*for (Map<String, Object> line : mDatas){
-            Span span = div.span();
-            span.styles(" width: "+width+"%;" + "height: 200px;float: left;text-align: center;");
-            Img img1 = span.img("http://oa.redmany.com:50003/document/"+line.get("Icon").toString());
-            Div div1 = span.div();
-            div1.text(line.get("MenuName").toString());
-        }*/
-
-
-
-
-      /*  if (platform.equals("1") || platform == "1" ) {//1为后台
-
-        }else{
-
-        }*/
-
         return div;
     }
 }
