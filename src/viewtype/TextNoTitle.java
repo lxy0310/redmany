@@ -4,6 +4,7 @@ import com.sangupta.htmlgen.core.HtmlBodyElement;
 import com.sangupta.htmlgen.tags.body.embed.Img;
 import com.sangupta.htmlgen.tags.body.grouping.Div;
 import common.CommonUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by hy on 2017/10/25.
@@ -27,6 +28,25 @@ public class TextNoTitle extends ParentView {
         String color = getDataProvider().getTextColor(this, getForm());
         String onclick = getDataProvider().getOnClick(getForm(),this, getView().getTarget(), getView().getTransferParams());
 
+        if (getView()!=null){
+            View view=getView();
+            if (view.getWapAttribute()!=null){
+                String str=view.getWapAttribute();//获取样式
+                String[] strs = str.split("\\[\\^\\]");
+                if (strs!=null){
+                    for(int i=0;i<strs.length;i++){
+                        if (strs[i].contains("content")){ //文本默认内容
+                            text = StringUtils.substringAfterLast(strs[i],":");
+                            if(text.indexOf("fromGlobal_")>0){
+                                text = strs[i].substring(strs[i].indexOf("{")+1,strs[i].indexOf("}")).trim();
+                                text = StringUtils.substringAfterLast(text,"fromGlobal_");
+                                text = getPage().getHttpSession().getAttribute(text).toString();
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         if(onclick != null){
             span.onClick(onclick);
@@ -46,12 +66,9 @@ public class TextNoTitle extends ParentView {
             span.addCssClass(css);
         }
         if("avatarStatic".equals(getName())){
-
-//            System.out.println("img:"+getForm().getValue("headImg"));
             Img img = span.img(url+"20171220175135.jpg");
         }
         if("greyLine".equals(getName())){
-
             Div div = span.div();
             div.style("background","gray").style("height","1px").style("margin-top","5px");
         }
@@ -63,7 +80,6 @@ public class TextNoTitle extends ParentView {
             Div div = span.div();
             div.text("yonghu2");
         }
-//        System.out.println("textNoTitle.state"+ getForm().getValue("state"));
         if("orderState".equals(getName()) && getForm().getValue("state").equals("1")){
             span.text("本单未付款");
         } else if("orderState".equals(getName()) && getForm().getValue("state").equals("4")){
@@ -71,7 +87,6 @@ public class TextNoTitle extends ParentView {
         }
 
         if("cardType".equals(getName()) && text.equals("2")){
-
             span.text("储蓄卡");
         } else if("cardType".equals(getName()) && text.equals("1")){
             span.text("信用卡");

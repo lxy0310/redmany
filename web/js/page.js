@@ -78,11 +78,8 @@ function gotoPage(target, transferParams) {
                 var gotoStr=strs[1];
                 if(gotoStr.indexOf('goto:') >=0){
                     loginAfterUrl=""+genUrl(gotoStr, null);
-
                 }
-
              }
-
         }
         if(loginAfterUrl==null){
             //没有设置goto情况下，跳到默认界面
@@ -105,12 +102,12 @@ function gotoPage(target, transferParams) {
 
         });*/
         $.post("login",{"userName":UserName,"password":password},function (data) {
-                var result=data.toString();
-                if(result=="success"){
-                    goto(loginAfterUrl);
-                }else{
-                    alert(data);
-                }
+            var result=data.toString();
+            if(result=="success"){
+                goto(loginAfterUrl);
+            }else{
+                alert(data);
+            }
         },"json");
         return;
     /*    $.ajax({
@@ -157,20 +154,41 @@ function gotoPage(target, transferParams) {
             }
             var formName = submit1s[0];
             var showType = submit1s[1];
-            //alert(formName);
-           // alert(showType);
-            //参数 itemProvideId={Id}╗price={totalPrice}
-            var subparam="Company_Id=" + gCompany_Id + "&userid=" + gUesrId;
-            //获取表单参数集
-            //获取sumit formName
-            //var formParam=    $("#"+formName+"Form").serialize();
-            //alert( formParam);
-           // $("#"+formName+"Form").attr("action","submit?formName="+formName+"&showType="+showType);
-            //$("#"+formName+"Form").submit();
+            var paramStr = "";
             var form=document.getElementById(formName+"Form");
+            var hiddenId=$(".paramId").val(); //存在paramId即为修改
             var formData=new FormData(form);
             formData.set("formName",formName);
             formData.set("showType",showType);
+            if(submit1s.length=3){
+                paramStr = submit1s[2];//参数 itemProvideId={Id}╗price={totalPrice}
+                var params = paramStr.split("╗");
+                for(var i =0;i<params.length;i++){
+                    if(params[i]!=""){
+                        if(params[i].indexOf("=")>0){
+                            var formParam = params[i].split("=");
+                            if(formParam[1].indexOf("{")>=0 && formParam[1].indexOf("}")>=0){
+                                //没有被全局替换的参数，从页面中拿值替换
+                                var valStr = formParam[1].substr(formParam[1].indexOf("{")+1,formParam[1].length-2);
+                                var newVal = $('#'+valStr+'0').val();
+                                if(newVal=='' || newVal==null || newVal == undefined){
+                                    newVal = $('#'+valStr).text().trim();
+                                    if(newVal=='' || newVal==null || newVal == undefined){
+                                        newVal = null;
+                                    }
+                                }
+                                formData.append(formParam[0],newVal);
+                            }else{
+                                formData.append(formParam[0],formParam[1]);
+                            }
+                        }
+                    }
+                }
+            }
+            var subparam="Company_Id=" + gCompany_Id + "&userid=" + gUesrId;
+            //获取表单参数集
+            //获取sumit formName
+            //alert( formParam);
             //alert(formData);
             var optype=$("#optype").val();
             $.ajax({
@@ -181,21 +199,17 @@ function gotoPage(target, transferParams) {
                 processData:false,
                 cache:false,
                 success:function (data) {
-
                  if(data>0){
                      if(showType=="MDnewForm"  ){
                          if($("#mdID").val()==""){
                              $("#mdID").val(data);
-
                              var a= $("#mdAddIframe").attr("onclick").replace("null",data+"");
                               $("#mdAddIframe").attr("onclick",a);
-
                              var a= $("#mdIframe").attr("src").replace("null",data+"");
-
                              document.getElementById('mdIframe').src=a;
                          }
                          layer.msg("操作成功！",{icon:6});
-                     }else if (optype!=null){
+                     }else if (optype!=null || hiddenId!=null){
                          layer.msg("操作成功！",{icon:6});
                          location.reload();
                      }
@@ -209,15 +223,11 @@ function gotoPage(target, transferParams) {
                      layer.msg("操作失败！",{icon:5});
                      window.location.reload();
                  }
-
-
                 }
             });
        /*    for (var t=1;t<submitArr.length;t++) {
-
                if (submitArr[t].indexOf("╗") >= 0) {
                    // var subparam = submitArr[1].replace('╗', '&') + "Company_Id=" + gCompany_Id + "&userid=" + gUesrId;
-
                    var subparam1 = submitArr[t].split('╗');//submitArr[1] = 'account={account}╗'   subparam1=  0:account={account}  1:null
                    var subparam2 = subparam1[0];  //subparam2='account={account}'
                    //alert(subparam2);
@@ -287,9 +297,33 @@ function gotoPage(target, transferParams) {
         return;
     }
     else if (target == 'changepwd:') {
-        var url = genUrl('goto:修改密码deformname,修改密码showtype', transferParams);
-        goto(url);
-        return;
+        // var url = genUrl('goto:修改密码deformname,修改密码showtype', transferParams);
+        // goto(url);
+        // return;
+        var oldpwd=$("#oldpwd0").val();
+        var pwd=$("#pwd0").val();
+        var pwdagain=$("#pwdagain0").val();
+        if(pwd != pwdagain){
+            alert("两次输入的新密码不一致！")
+            return;
+        }else if(pwd == undefined || pwd == null || pwd == ""){
+            alert("新密码不能为空！")
+            return;
+        }else if(pwdagain == undefined || pwdagain == null || pwdagain == ""){
+            alert("确认密码不能为空！")
+            return;
+        }else{//修改密码后不跳转
+            $.post("login",{"oldpwd":oldpwd,"pwd":pwd,"pwdagain":pwdagain,"changepwd":'changepwd'},function (data) {
+                var result=data.toString();
+                if(result=="success"){
+                    // goto(loginAfterUrl);
+                    alert("修改成功!");
+                }else{
+                    alert(data);
+                }
+            },"json");
+            return;
+        }
     }
     else if(target.indexOf('wxpay:') >= 0 && target.indexOf('[^]') > 0){
         var nstr = target.split('[^]');
@@ -298,11 +332,8 @@ function gotoPage(target, transferParams) {
         }
     }
     else if (target.indexOf('goto:') < 0) {
-       // alert(transferParams);
         postdo(target, transferParams);
-
         return;
-
     }
     if (target.indexOf('goto:') < 0) {
         //非跳转
@@ -341,6 +372,35 @@ function gotoPage(target, transferParams) {
     var targetUrl = null;
     var ifIndex = 0;
 
+    // 跳转事件的同时从前一个form中传递参数过去下一个要跳转的页面
+    if(target.indexOf('goto:')>=0 && target.indexOf('goSearch:')>=0){
+        var goto_str = '';
+        var transfer = '';
+        var searchForm = '';
+        for (var i = 0; i < ws.length; i++) {
+            if(ws[i].indexOf('goto:')>=0){
+                goto_str=ws[i];
+            }else if(ws[i].indexOf('goSearch:')>=0){
+                var searchStr = (ws[i].split('goSearch:')[1]).split('#');
+                searchForm = searchStr[0];
+                var searchParam = searchStr[1].split(',');
+                for(var j=0; j<searchParam.length; j++){
+                    var search = searchParam[j];
+                    var parmas = searchParam[j].split('=');
+                    var value = $('#'+parmas[1]+'0').val();
+                    if (value != undefined && value != null && value != "") {
+                        var newstr=search.replace(parmas[1],value);
+                        transfer = transfer+newstr+',';
+                    }
+                }
+                transfer = searchForm + ':' + transfer.substr(0,transfer.length-1)
+            }
+        }
+        var url = genUrl(goto_str, transfer);
+        goto(url);
+        return;
+    }
+
     for (var i = 0; i < ws.length; i++) {
         var str = ws[i];
         if (str.indexOf('goto:') == 0) {
@@ -359,8 +419,6 @@ function gotoPage(target, transferParams) {
                 } else if (str.lastIndexOf('3') == str.length - 1) {
                     //我的
                     targetUrl = 'goto:Service_personal,copForm';
-
-
                 } else if (str.lastIndexOf('4') == str.length - 1) {
                     //客服
                     targetUrl = 'goto:OaLoginHM,LoginForm';
@@ -391,7 +449,6 @@ function gotoPage(target, transferParams) {
                         } else {
                             goto('login?autologin=1&goto=' + escape(targetUrl));
                         }
-
                         console.log('need login ' + str + ' after goto ' + targetUrl);
                     } else {
                         console.log('dont work ' + str);
@@ -450,10 +507,8 @@ function postdo(_action, _params, _ok, _error) {
 }
 
 function genUrl(targetUrl, transferParams) {
-
     if(targetUrl.indexOf('goto:')>= 0){
         var strs = (targetUrl.split('goto:')[1]).split(',');
-
         var url = getUrl(strs[0], strs[1]);
     }
     if (transferParams != undefined && transferParams != null && transferParams != "") {

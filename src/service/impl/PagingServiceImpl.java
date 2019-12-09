@@ -40,7 +40,6 @@ public class PagingServiceImpl implements PagingService {
         dataCountPage.text("共 "+page.getDataCount()+" 条");
         dataCountPage.addCssClass("layui-laypage-count");
 
-
         A prePage = pageContent.a();
         prePage.id("prePage");
         prePage.text("上一页");
@@ -74,13 +73,11 @@ public class PagingServiceImpl implements PagingService {
 
           //是否生成省略号
         if(page.getPageIndex()-1>3){
-
             Span sprSpan=pageContent.span();
             sprSpan.id("sprSpan");
             sprSpan.addCssClass("layui-laypage-spr");
             sprSpan.text("...");
         }else {
-
             //生成2-5
             for (int i=2;i<=5 ;i++){
                 if(i!=page.getPageIndex() && i<page.getPageCount()){
@@ -95,12 +92,9 @@ public class PagingServiceImpl implements PagingService {
                     currPage.addCssClass("layui-laypage-curr");
                     currPage.text("<em class=\"layui-laypage-em\"></em><em>"+page.getPageIndex()+"</em></span>");
                 }
-
-
             }
         }
        if(page.getPageIndex()-1>3 && page.getPageCount()-page.getPageIndex()>=3){
-
            for (int i=page.getPageIndex()-2;i<=page.getPageIndex()+2;i++){
                if(i<0){
                    continue;
@@ -112,22 +106,16 @@ public class PagingServiceImpl implements PagingService {
                    A butPage=pageContent.a();
                    butPage.attr("href","javascript:pageJump('"+page.getCopformName()+"','"+page.getShowType()+"',"+i+")");
                    butPage.text(i+"");
-
                }else{
-
                    Span currPage=pageContent.span();
                    currPage.id("currPage");
                    currPage.addCssClass("layui-laypage-curr");
                    currPage.text("<em class=\"layui-laypage-em\"></em><em>"+page.getPageIndex()+"</em></span>");
                }
-
-
            }
-
-
        }
 
-        if(page.getPageCount()-page.getPageIndex()>3){
+        if(page.getPageCount()-page.getPageIndex()>3 && page.getPageCount()>5){
             Span sprSpan=pageContent.span();
             sprSpan.id("sprSpan");
             sprSpan.addCssClass("layui-laypage-spr");
@@ -136,7 +124,7 @@ public class PagingServiceImpl implements PagingService {
         }else if(page.getPageCount()-page.getPageIndex()<3){
 
             for (int i=page.getPageCount()-4;i<page.getPageCount();i++){
-                if(i<=1){
+                if(i<=4){
                     continue;
                 }
                 if(i!=page.getPageIndex()){
@@ -145,23 +133,16 @@ public class PagingServiceImpl implements PagingService {
                     butPage.text(i+"");
 
                 }else{
-
                     Span currPage=pageContent.span();
                     currPage.id("currPage");
                     currPage.addCssClass("layui-laypage-curr");
                     currPage.text("<em class=\"layui-laypage-em\"></em><em>"+page.getPageIndex()+"</em></span>");
                 }
-
-
             }
-
-
         }
-
 
         //最后一页
         if(page.getPageIndex()<page.getPageCount() && page.getPageCount()!=1){
-
             A lastPage=pageContent.a();
             lastPage.id("lastPage");
             lastPage.attr("href","javascript:pageJump('"+page.getCopformName()+"','"+page.getShowType()+"',"+page.getPageCount()+")");
@@ -173,7 +154,6 @@ public class PagingServiceImpl implements PagingService {
             currPage.id("currPage");
             currPage.addCssClass("layui-laypage-curr");
             currPage.text("<em class=\"layui-laypage-em\"></em><em>"+page.getPageCount()+"</em></span>");
-
         }
 
         A nextPage=pageContent.a();

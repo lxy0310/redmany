@@ -40,10 +40,9 @@ public class LoginServlet extends BaseServlet {
             }else{
                 resp.sendRedirect(Page.getLoginPage());
             }
-
-           // resp.sendRedirect("queryStudentServlet");
             return;
         }
+
         //判断是否是自动登录
         String autologing = req.getParameter("autologin");
         if (autologing != null && autologing.length() > 0) {
@@ -91,7 +90,8 @@ public class LoginServlet extends BaseServlet {
 
         String results = "";//输出
         String pcPort =  req.getParameter("pcPort");
-        if (pcPort=="1" || pcPort.equals("1")){ //后台
+        String changepwd =  req.getParameter("changepwd");
+        if (pcPort!=null && (pcPort=="1" || pcPort.equals("1"))){ //后台
             String piccode=(String) req.getSession().getAttribute("verifyCode"); //获取验证码
             String  checkCode= req.getParameter("message");//获取输入验证码
             //判断验证是否正确
@@ -158,8 +158,12 @@ public class LoginServlet extends BaseServlet {
                 results = "验证码错误！";
                 out.print(results);
             }
+        }else if(changepwd!=null && "changepwd".equals(changepwd)){//修改密码
+            results = changePwd(req,resp,out);
+            out.print(JSON.toJSONString(results));
         }else{
-            login(req,resp,out);
+            results = login(req,resp,out);
+            out.print(JSON.toJSONString(results));
         }
 
         //旧的登录实现逻辑,走rob平台的登录
@@ -207,7 +211,6 @@ public class LoginServlet extends BaseServlet {
             }
         }*/
 
-
     }
 
     /**
@@ -217,7 +220,6 @@ public class LoginServlet extends BaseServlet {
      * @param out
      */
     public String login(HttpServletRequest req,HttpServletResponse resp,PrintWriter out){
-
         //获取输入的账号名
         String name = req.getParameter("username");
         if (name == null) {
@@ -244,10 +246,9 @@ public class LoginServlet extends BaseServlet {
                 if(userPassword.equals(md5Password)){
                     HttpSession session = req.getSession();
                     session.setAttribute("realName",user.get("RealName").toString());
-                   // session.setAttribute("","");
+                    session.setAttribute("userid",user.get("Id").toString());
                     AccountHelper accountHelper = new AccountHelper(req, resp);
                     boolean falg = accountHelper.onLogin(user,pwd,false);
-
                     loginMsg="success";
                 }else{
                     loginMsg="账号或者密码错误";
@@ -268,9 +269,8 @@ public class LoginServlet extends BaseServlet {
             //out.println(loginResult);
             return loginResult;
         }
-        return null;
+        return loginMsg;
     }
-
 
     /**
      * 检查CompanyId
@@ -304,7 +304,57 @@ public class LoginServlet extends BaseServlet {
         return flag;
     }
 
+    /**
+     * 修改密码
+     * @param req
+     * @param resp
+     * @param out
+     */
+    public String changePwd(HttpServletRequest req,HttpServletResponse resp,PrintWriter out){
+        String changeMsg=null;
+        String oldpwd = req.getParameter("oldpwd");//旧密码
+        String pwd = req.getParameter("pwd");//新密码
+        String pwdagain = req.getParameter("pwdagain");//确认密码
 
+        String userid = req.getSession().getAttribute("userid")==null?"":req.getSession().getAttribute("userid").toString();
+        if(!"".equals(userid)){
+            UserDao userDao=new UserDao(new SQLHelper(req));
+            List<Map<String, Object>> userInfo=userDao.checkPwd(getCompany_Id(),userid);
+            if (userInfo!=null && userInfo.size()>0){
+                Map<String,Object> user=userInfo.get(0);
+                String userPassword = user.get("UserPassword").toString();
+                String md5Password=null;
+                try {
+                    md5Password= MD5Util.passWordMd5(oldpwd);
+                    if(userPassword.equals(md5Password)){//对比旧密码
+                        int flag = userDao.changePwd(getCompany_Id(),userid,MD5Util.passWordMd5(pwdagain));
+                        if(flag>=0){
+                            changeMsg="success";
+                        }
+                    }else{
+                        changeMsg="原密码输入错误";
+                    }
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                //用户不存在
+                changeMsg="账号不存在";
+            }
+            if(changeMsg!=null){
+                AccountHelper accountHelper = new AccountHelper(req, resp);
+                accountHelper.onLogin(userInfo.get(0),pwd,false);
+                String loginResult= changeMsg;
+                return loginResult;
+            }
+            return changeMsg;
+        }else{
+            changeMsg="请先登录账号";
+        }
+        return changeMsg;
+    }
 
 
 }
