@@ -148,7 +148,7 @@
                                                         <c:if test="${m.Id==panel.ParentMenu}">
                                                             <dl class="layui-nav-child">
                                                                 <dd>
-                                                                    <a href="javascript:;" class="con-demo-active" dataUrl="${panel.TemplateFrom}" >${panel.MenuName }</a>
+                                                                    <a href="javascript:;" class="con-demo-active"  lay-id="${m.Id}" dataUrl="${panel.TemplateFrom}" >${panel.MenuName }</a>
                                                                 </dd>
                                                             </dl>
                                                         </c:if>

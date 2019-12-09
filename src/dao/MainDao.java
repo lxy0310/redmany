@@ -72,7 +72,11 @@ public class MainDao extends BaseDao {
     }
 
     public List<HomeForm> getFormToMenu(String Company_Id, String formName) {
+
+    /*    String sql = "select Id from ReplaceModel_b where compoundName='" + formName + "'";
+
        /* String sql = "select Id from ReplaceModel_b where compoundName='" + formName + "'";
+
         Integer copFormId =sqlHelper.ExecScalar(Company_Id,sql,null)!=null?(Integer)sqlHelper.ExecScalar(Company_Id,sql,null):null;*/
         StringBuilder sb = new StringBuilder("");
         sb.append("SELECT OaCopModel_b.copFormName,OaCopModel_b.showType FROM OaCopModel_b WHERE OaCopModel_b.compoundName='" + formName + "'");
